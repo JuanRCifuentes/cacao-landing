@@ -9,10 +9,10 @@ products:
     subtitle: Cacao puro
     description: The full character of cacao. A bold starting point for a moment of your own.
     image:
-      src: https://images.unsplash.com/photo-1623660053975-cf75a8be0908?fm=jpg&fit=crop&w=900&h=600&q=85
-      alt: Overlapping chocolate tablets on a pale stone surface
-      width: 900
-      height: 600
+      src: https://pub-d09057114081496392499a9aa11104a3.r2.dev/03-rugged-weathered-wood.webp
+      alt: Cacao pieces arranged on weathered wood
+      width: 1200
+      height: 800
     cta:
       label: Get product updates
       href: "#newsletter"
@@ -21,10 +21,10 @@ products:
     subtitle: Con panela
     description: The depth of cacao meets the warm sweetness of panela.
     image:
-      src: https://images.unsplash.com/photo-1610450949065-1f2841536c88?fm=jpg&fit=crop&w=900&h=600&q=85
-      alt: Stacked pieces of chocolate with scattered crumbs on a pale surface
-      width: 900
-      height: 600
+      src: https://pub-d09057114081496392499a9aa11104a3.r2.dev/paired-03-rugged-oak.webp
+      alt: Origen Tolima cacao with panela package and cacao pieces on weathered wood
+      width: 1200
+      height: 800
     cta:
       label: Get product updates
       href: "#newsletter"
