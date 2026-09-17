@@ -21,9 +21,9 @@ const { eyebrow, heading, description, images } = await getLandingSection('pure-
 			<p class="mt-8 text-sm leading-[1.65] tracking-[-0.01em] text-black/70">{description}</p>
 		</header>
 
-		<div class="passion__gallery mt-16 flex flex-col gap-16 lg:relative lg:mt-10 lg:block lg:h-[1500px] xl:h-[1650px]">
+		<div class="passion__gallery mt-16 flex flex-col gap-16 lg:mt-10 lg:gap-0">
 			{images.map((image) => (
-				<figure class="passion__figure mx-auto flex w-full max-w-[540px] flex-col lg:absolute lg:mx-0 lg:max-w-none" data-motion="image">
+				<figure class="passion__figure mx-auto flex w-full max-w-[540px] flex-col lg:mx-0 lg:w-1/3 lg:max-w-none" data-motion="image">
 					<div class="passion__frame aspect-[3/4] overflow-hidden rounded-[2px] bg-black/5">
 						<img
 							src={image.src}
@@ -42,16 +42,9 @@ const { eyebrow, heading, description, images } = await getLandingSection('pure-
 
 <style>
 	@media (min-width: 1024px) {
-		.passion__figure:nth-child(1) { top: 0; left: 58.333%; width: 25%; }
-		.passion__figure:nth-child(1) .passion__frame { aspect-ratio: 161 / 215; }
-		.passion__figure:nth-child(2) { top: 360px; left: 8.333%; width: 33.333%; }
-		.passion__figure:nth-child(2) .passion__frame { aspect-ratio: 147 / 179; }
-		.passion__figure:nth-child(3) { top: 760px; right: 4.166%; width: 41.666%; }
-		.passion__figure:nth-child(3) .passion__frame { aspect-ratio: 551 / 735; }
-	}
-
-	@media (min-width: 1280px) {
-		.passion__figure:nth-child(2) { top: 390px; }
-		.passion__figure:nth-child(3) { top: 790px; }
+		.passion__figure:nth-child(odd) { margin-left: auto; margin-right: 8.333%; }
+		.passion__figure:nth-child(even) { margin-left: 8.333%; }
+		/* A gentle stagger, with gallery height determined by the images and captions. */
+		.passion__figure + .passion__figure { margin-top: clamp(-12rem, -13vw, -6rem); }
 	}
 </style>
