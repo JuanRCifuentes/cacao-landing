@@ -36,6 +36,11 @@ const { brand } = footer.data;
 	.site-intro__signature {
 		position: relative;
 		width: min(74vw, 360px);
+	}
+
+	.site-intro__signature :global(.cocoa-logo__mark),
+	.site-intro__signature :global(.cocoa-logo__wordmark) {
+		transform-box: border-box;
 		transform-origin: top left;
 	}
 
@@ -45,9 +50,10 @@ const { brand } = footer.data;
 		opacity: 1;
 	}
 	:global(html[data-intro='showing'] [data-site-content]) { visibility: hidden; }
-	:global(html[data-intro] [data-hero-brand]) { visibility: hidden; }
+	:global(html[data-intro] [data-hero-brand]),
+	:global(html[data-intro] [data-hero-wordmark]) { visibility: hidden; }
 
-	/* Reveal the image during the flight; let the copy follow once the logo lands. */
+	/* Let the name settle into the hero before the supporting copy appears. */
 	:global(html[data-intro='showing'] #hero),
 	:global(html[data-intro='showing'] #hero *),
 	:global(html[data-intro] #hero .hero__content *) { animation-play-state: paused !important; }
@@ -60,7 +66,8 @@ const { brand } = footer.data;
 		transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
 	}
 
-	:global(html[data-intro='leaving']) .site-intro__signature {
+	:global(html[data-intro='leaving']) .site-intro__signature :global(.cocoa-logo__mark),
+	:global(html[data-intro='leaving']) .site-intro__signature :global(.cocoa-logo__wordmark) {
 		transform: translate3d(var(--intro-x, 0px), var(--intro-y, 0px), 0) scale(var(--intro-scale, 1));
 		transition: transform 1100ms cubic-bezier(0.76, 0, 0.24, 1);
 	}
@@ -69,17 +76,25 @@ const { brand } = footer.data;
 		:global(html[data-intro]) { overflow: visible; }
 		:global(html[data-intro]) .site-intro { display: none; }
 		:global(html[data-intro] [data-site-content]) { visibility: visible; }
-		:global(html[data-intro] [data-hero-brand]) { visibility: visible; }
+		:global(html[data-intro] [data-hero-brand]),
+		:global(html[data-intro] [data-hero-wordmark]) { visibility: visible; }
 	}
 </style>
 
 <script>
 	const root = document.documentElement;
 	const intro = document.querySelector<HTMLElement>('[data-site-intro]');
-	const signature = intro?.querySelector<HTMLElement>('[data-intro-signature]');
-	const destination = document.querySelector<HTMLElement>('[data-hero-brand]');
+	const mark = intro?.querySelector<SVGSVGElement>('.cocoa-logo__mark');
+	const wordmark = intro?.querySelector<HTMLElement>('.cocoa-logo__wordmark');
+	const headerMark = document.querySelector<SVGSVGElement>('[data-hero-brand] .cocoa-logo__mark');
+	const heroWordmark = document.querySelector<HTMLElement>('[data-hero-wordmark]');
 
-	if (intro && signature && destination && root.dataset.intro === 'showing') {
+	if (intro && mark && wordmark && headerMark && heroWordmark && root.dataset.intro === 'showing') {
+		const parts = [
+			{ element: mark, destination: headerMark },
+			{ element: wordmark, destination: heroWordmark },
+		];
+		const arrived = new Set<EventTarget>();
 		const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 		let exitTimer: ReturnType<typeof setTimeout>;
 		const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -92,7 +107,7 @@ const { brand } = footer.data;
 			window.removeEventListener('pagehide', finish);
 			window.removeEventListener('resize', finishOnResize);
 			motionPreference.removeEventListener('change', finish);
-			signature.removeEventListener('transitionend', finishOnArrival);
+			for (const { element } of parts) element.removeEventListener('transitionend', finishOnArrival);
 		};
 
 		const skipOnKey = (event: KeyboardEvent) => {
@@ -104,7 +119,10 @@ const { brand } = footer.data;
 		};
 
 		const finishOnArrival = (event: TransitionEvent) => {
-			if (event.target === signature && event.propertyName === 'transform') finish();
+			if (event.target === event.currentTarget && event.propertyName === 'transform') {
+				arrived.add(event.target);
+				if (arrived.size === parts.length) finish();
+			}
 		};
 
 		window.addEventListener('keydown', skipOnKey, true);
@@ -112,7 +130,7 @@ const { brand } = footer.data;
 		window.addEventListener('pagehide', finish);
 		window.addEventListener('resize', finishOnResize);
 		motionPreference.addEventListener('change', finish);
-		signature.addEventListener('transitionend', finishOnArrival);
+		for (const { element } of parts) element.addEventListener('transitionend', finishOnArrival);
 
 		const image = document.querySelector<HTMLImageElement>('#hero img');
 		const imageReady = image?.decode().catch(() => {}) ?? Promise.resolve();
@@ -125,17 +143,19 @@ const { brand } = footer.data;
 		]).then(() => {
 			if (root.dataset.intro !== 'showing') return;
 
-			// Match the real navigation position at every viewport size. Both logos
-			// use the same proportions, so the completed mark settles without a redraw.
-			const from = signature.getBoundingClientRect();
-			const to = destination.getBoundingClientRect();
-			if (!from.width || !to.width) {
-				finish();
-				return;
+			// The pod goes to the navigation; the live lettering becomes the hero title.
+			// Measure each part separately so both settle exactly at every viewport size.
+			for (const { element, destination } of parts) {
+				const from = element.getBoundingClientRect();
+				const to = destination.getBoundingClientRect();
+				if (!from.width || !to.width) {
+					finish();
+					return;
+				}
+				element.style.setProperty('--intro-x', `${to.left - from.left}px`);
+				element.style.setProperty('--intro-y', `${to.top - from.top}px`);
+				element.style.setProperty('--intro-scale', `${to.width / from.width}`);
 			}
-			signature.style.setProperty('--intro-x', `${to.left - from.left}px`);
-			signature.style.setProperty('--intro-y', `${to.top - from.top}px`);
-			signature.style.setProperty('--intro-scale', `${to.width / from.width}`);
 			root.dataset.intro = 'leaving';
 			exitTimer = setTimeout(finish, 1250);
 		});

@@ -1,9 +1,6 @@
 ---
 type: hero
 eyebrow: Cacao de autor
-heading:
-  - A moment
-  - to savour.
 cta:
   label: Discover our cacao
   href: "#products"
