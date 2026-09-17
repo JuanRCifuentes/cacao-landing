@@ -1,4 +1,11 @@
 ---
+import Hero from '../components/sections/Hero.astro';
+import PurePassion from '../components/sections/PurePassion.astro';
+import Video from '../components/sections/Video.astro';
+import Heritage from '../components/sections/Heritage.astro';
+import PartnershipsNews from '../components/sections/PartnershipsNews.astro';
+import ExclusiveUpdates from '../components/sections/ExclusiveUpdates.astro';
+import Footer from '../components/sections/Footer.astro';
 import '../styles/global.css';
 ---
 
@@ -12,6 +19,14 @@ import '../styles/global.css';
 		<title>Astro</title>
 	</head>
 	<body>
-		<h1 class="text-3xl font-bold underline">Astro</h1>
+		<main>
+			<Hero />
+			<PurePassion />
+			<Video />
+			<Heritage />
+			<PartnershipsNews />
+			<ExclusiveUpdates />
+		</main>
+		<Footer />
 	</body>
 </html>
