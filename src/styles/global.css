@@ -5,6 +5,10 @@ html {
 	scroll-padding-top: var(--site-header-height);
 }
 
+@media (prefers-reduced-motion: no-preference) {
+	html { scroll-behavior: smooth; }
+}
+
 @media (max-width: 600px) {
 	html { --site-header-height: 86px; }
 }
