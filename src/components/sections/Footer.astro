@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import CocoaLogo from '../CocoaLogo.astro';
+import PackagingPattern from '../PackagingPattern.astro';
 
 const footer = await getEntry('footer', 'main');
 
@@ -82,5 +83,8 @@ const { brand, tagline, labels, navigation, policies, newsletter, socials, conta
 		<a href="#hero" aria-label={`${brand}, ${labels.backToTop}`} class="block w-full max-w-[320px]">
 			<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 		</a>
+	</div>
+	<div class="border-t border-[#c6ab86]/15 bg-[#16100b] py-2 md:py-3">
+		<PackagingPattern class="h-12 text-[#c6ab86]/45 md:h-16 md:[--pattern-size:480px]" />
 	</div>
 </footer>

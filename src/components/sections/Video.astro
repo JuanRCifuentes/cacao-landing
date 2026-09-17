@@ -1,11 +1,13 @@
 ---
 import { getLandingSection } from '../../lib/content';
+import PackagingPattern from '../PackagingPattern.astro';
 
 const { heading, description, video } = await getLandingSection('video', 'video');
 ---
 
 <section id="video" aria-labelledby="video-heading" class="film">
 	<header class="film__header" data-motion="rise">
+		<PackagingPattern fade class="mx-auto mb-7 h-6 w-36 text-[#c6ab86]/45 [--pattern-size:240px] md:mb-9" />
 		<h2 id="video-heading" class="film__heading">
 			{heading.map((line) => <span class="block">{line}</span>)}
 		</h2>
