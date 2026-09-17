@@ -9,7 +9,7 @@ if (!footer) {
 	throw new Error('Missing brand content');
 }
 
-const { brand } = footer.data;
+const { brand, tagline } = footer.data;
 ---
 
 <section id="hero" class="hero" aria-labelledby="hero-heading">
@@ -29,10 +29,11 @@ const { brand } = footer.data;
 	<div class="hero__shade" aria-hidden="true"></div>
 
 	<div class="hero__content">
-		<p class="hero__eyebrow">{eyebrow}</p>
+		<p class="hero__eyebrow text-balance">{eyebrow}</p>
 		<h1 id="hero-heading" class="hero__heading">
 			<span data-hero-wordmark>{brand}</span>
 		</h1>
+		<p class="hero__tagline">{tagline}</p>
 		<a class="hero__cta" href={cta.href}>
 			<span>{cta.label}</span>
 			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -119,6 +120,24 @@ const { brand } = footer.data;
 	}
 
 	.hero__heading > span { display: inline-block; white-space: nowrap; }
+	.hero__tagline {
+		max-width: 26ch;
+		margin: 18px auto 0;
+		font-family: Georgia, 'Times New Roman', serif;
+		font-size: clamp(18px, 1.7vw, 22px);
+		font-style: italic;
+		font-weight: 400;
+		line-height: 1.5;
+		letter-spacing: 0.01em;
+		text-wrap: balance;
+		color: #e5d6bd;
+		text-shadow: 0 1px 8px rgb(22 16 11 / 75%);
+		animation: hero-fade 0.9s ease-out 0.4s backwards;
+	}
+
+	@media (min-width: 768px) {
+		.hero__tagline { max-width: none; margin-top: 20px; }
+	}
 
 	.hero__cta {
 		display: inline-flex;
@@ -186,6 +205,7 @@ const { brand } = footer.data;
 	@media (prefers-reduced-motion: reduce) {
 		.hero__media img,
 		.hero__eyebrow,
+		.hero__tagline,
 		.hero__cta { animation: none; transition: none; }
 	}
 </style>
