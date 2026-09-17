@@ -11,7 +11,7 @@ const { heading, description, video } = section.data;
 ---
 
 <section id="video" aria-labelledby="video-heading" class="film">
-	<header class="film__header">
+	<header class="film__header" data-motion="rise">
 		<h2 id="video-heading" class="film__heading">
 			{heading.map((line) => <span class="block">{line}</span>)}
 		</h2>
