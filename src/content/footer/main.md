@@ -4,6 +4,8 @@ tagline: Cacao de autor un legado de bienestar
 navigation:
   - label: Home
     href: "#hero"
+  - label: Products
+    href: "#products"
   - label: Our cocoa
     href: "#pure-passion"
   - label: The Cocoa story

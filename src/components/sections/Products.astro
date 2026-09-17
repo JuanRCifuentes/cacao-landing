@@ -1,0 +1,170 @@
+---
+import { getEntry } from 'astro:content';
+
+const section = await getEntry('landingSections', 'products');
+
+if (!section || section.data.type !== 'products') {
+	throw new Error('Missing landing section content: products');
+}
+
+const { eyebrow, heading, description, products } = section.data;
+---
+
+<section id="products" class="products" aria-labelledby="products-heading">
+	<div class="products__inner">
+		<header class="products__header">
+			<div>
+				<p class="products__eyebrow">{eyebrow}</p>
+				<h2 id="products-heading">{heading}</h2>
+			</div>
+			<p class="products__description">{description}</p>
+		</header>
+
+		<div class="products__scroller" tabindex="0" role="region" aria-label="Product collection">
+			<ul class="products__list" role="list">
+				{products.map((product) => (
+					<li class="products__item">
+						<article class="product" aria-labelledby={`product-${product.id}`}>
+							<div class="product__image">
+								<img
+									src={product.image.src}
+									alt={product.image.alt}
+									width={product.image.width}
+									height={product.image.height}
+									loading="lazy"
+									decoding="async"
+								/>
+							</div>
+							<div class="product__body">
+								<p class="product__subtitle">{product.subtitle}</p>
+								<h3 id={`product-${product.id}`}>{product.name}</h3>
+								<p class="product__description">{product.description}</p>
+								<a class="product__cta" href={product.cta.href} aria-label={`${product.cta.label}: ${product.name}`}>
+									<span>{product.cta.label}</span>
+									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+										<path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.25" />
+									</svg>
+								</a>
+							</div>
+						</article>
+					</li>
+				))}
+			</ul>
+		</div>
+	</div>
+</section>
+
+<style>
+	.products {
+		--products-gutter: 24px;
+		padding: 28px 0 56px;
+		background: #16100b;
+		color: #f4f0e8;
+	}
+
+	.products__inner { width: 100%; max-width: 1200px; margin-inline: auto; }
+	.products__header { padding-inline: var(--products-gutter); margin-bottom: 24px; }
+	.products__eyebrow,
+	.product__subtitle {
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 1.5;
+		letter-spacing: 0.16em;
+		text-transform: uppercase;
+	}
+
+	.products__eyebrow { margin-bottom: 10px; color: #c6ab86; }
+	.products h2,
+	.product h3 {
+		font-family: 'Abril Fatface', Georgia, serif;
+		font-weight: 400;
+		letter-spacing: -0.025em;
+	}
+
+	.products h2 { font-size: clamp(38px, 4.2vw, 58px); line-height: 1.1; }
+	.products__description,
+	.product__description { font-size: 13px; line-height: 1.7; color: #c1b7ab; }
+	.products__description { max-width: 350px; margin-top: 12px; }
+
+	.products__scroller {
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--products-gutter);
+		scrollbar-width: none;
+	}
+
+	.products__scroller::-webkit-scrollbar { display: none; }
+	.products__scroller:focus-visible { outline: 1px solid #c6ab86; outline-offset: -1px; }
+	.products__list {
+		display: flex;
+		gap: 16px;
+		width: max-content;
+		margin: 0;
+		padding: 4px var(--products-gutter) 8px;
+		list-style: none;
+	}
+
+	.products__item { width: min(82vw, 460px); flex-shrink: 0; scroll-snap-align: start; }
+	.product { display: flex; flex-direction: column; height: 100%; }
+	.product__image { aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid rgb(244 240 232 / 8%); background: #241b15; }
+	.product__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
+	.product__body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding-top: 18px; }
+	.product__subtitle { margin-bottom: 6px; color: #c6ab86; }
+	.product h3 { font-size: clamp(26px, 2.4vw, 32px); line-height: 1.2; }
+	.product__description { max-width: 34ch; margin-top: 8px; margin-bottom: 14px; }
+	.product__cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		min-height: 44px;
+		margin-top: auto;
+		border-bottom: 1px solid rgb(244 240 232 / 30%);
+		font-size: 10px;
+		font-weight: 500;
+		line-height: 1.4;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		transition: color 180ms, border-color 180ms;
+	}
+
+	.product__cta svg { width: 18px; height: 18px; flex-shrink: 0; }
+	.product__cta:hover { color: #e7c681; border-color: #e7c681; }
+	.product__cta:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
+
+	@media (max-width: 767px) {
+		.products {
+			/* Keep brown beneath Safari's controls when its address bar collapses. */
+			min-height: calc(100lvh + 32px);
+			padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+		}
+		.products h2 { font-size: clamp(32px, 9vw, 38px); }
+		.product__image {
+			/* Leave room for the heading, details and link with Safari's bars expanded. */
+			height: clamp(160px, min(34svh, calc(100svh - 400px)), 272px);
+			aspect-ratio: auto;
+		}
+	}
+
+	@media (min-width: 768px) {
+		.products { --products-gutter: 32px; padding-block: 56px 112px; }
+		.products__header { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 48px; }
+		.products__description { max-width: 300px; margin: 0 0 4px; }
+		.products__scroller { overflow: visible; }
+		.products__list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: auto; gap: 24px; }
+		.products__item { width: auto; min-width: 0; }
+	}
+
+	@media (min-width: 1024px) {
+		.products { --products-gutter: 40px; }
+	}
+
+	@media (min-width: 1280px) {
+		.products { --products-gutter: 64px; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.product__cta { transition: none; }
+	}
+</style>

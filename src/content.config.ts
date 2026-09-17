@@ -23,6 +23,25 @@ const landingSections = defineCollection({
 			}),
 		}),
 		z.object({
+			type: z.literal('products'),
+			eyebrow: z.string(),
+			heading: z.string(),
+			description: z.string(),
+			products: z.array(z.object({
+				id: z.string(),
+				name: z.string(),
+				subtitle: z.string(),
+				description: z.string(),
+				image: z.object({
+					src: z.string(),
+					alt: z.string(),
+					width: z.number().positive(),
+					height: z.number().positive(),
+				}),
+				cta: z.object({ label: z.string(), href: z.string() }),
+			})).min(1),
+		}),
+		z.object({
 			type: z.literal('heritage'),
 			eyebrow: z.string(),
 			heading: z.string(),

@@ -6,13 +6,15 @@ heading:
   - to savour.
 cta:
   label: Discover our cacao
-  href: "#pure-passion"
+  href: "#products"
 scrollLabel: Scroll to discover
-scrollHref: "#pure-passion"
+scrollHref: "#products"
 contactLabel: Stay in touch
 navigation:
   - label: Home
     href: "#hero"
+  - label: Products
+    href: "#products"
   - label: Our cacao
     href: "#pure-passion"
   - label: Our story
