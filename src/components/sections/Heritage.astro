@@ -12,52 +12,53 @@ const { eyebrow, heading, description, cta, images } = heritage.data;
 
 <section
 	id="heritage"
+	data-motion-scene="heritage"
 	aria-labelledby="heritage-heading"
 	class="relative isolate h-svh min-h-[700px] overflow-hidden bg-white text-black lg:min-h-[900px]"
 >
 	<div class="absolute inset-0 flex justify-center lg:items-center" aria-hidden="true">
 		<div class="relative h-full w-full max-w-[1440px] lg:max-h-[900px]">
-			<div class="absolute top-[4%] left-1/2 z-30 hidden aspect-video w-[min(42%,640px)] -translate-x-1/2 overflow-hidden lg:block">
+			<div class="heritage__layer absolute top-[4%] left-1/2 z-30 hidden aspect-video w-[min(42%,640px)] -translate-x-1/2 overflow-hidden lg:block" style="--heritage-y: 30px; --heritage-drift: -3%;">
 				<img src={images.team} alt="" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[38%] left-[-5%] z-20 hidden aspect-video w-[min(22%,320px)] overflow-hidden lg:block">
+			<div class="heritage__layer absolute top-[38%] left-[-5%] z-20 hidden aspect-video w-[min(22%,320px)] overflow-hidden lg:block" style="--heritage-x: -36px; --heritage-delay: 100ms; --heritage-drift: 4%;">
 				<img src={images.coffee} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[10%] left-[8%] z-10 hidden aspect-3/2 w-[min(16%,220px)] overflow-hidden opacity-30 lg:block">
+			<div class="heritage__layer absolute top-[10%] left-[8%] z-10 hidden aspect-3/2 w-[min(16%,220px)] overflow-hidden opacity-30 lg:block" style="--heritage-x: -24px; --heritage-delay: 160ms; --heritage-drift: -5%;">
 				<img src={images.roastery} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[12%] left-[85%] z-10 hidden aspect-3/2 w-[min(22%,430px)] overflow-hidden opacity-30 lg:block">
+			<div class="heritage__layer absolute top-[12%] left-[85%] z-10 hidden aspect-3/2 w-[min(22%,430px)] overflow-hidden opacity-30 lg:block" style="--heritage-x: 32px; --heritage-delay: 120ms; --heritage-drift: 4%;">
 				<img src={images.beans} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[48%] left-[75%] z-10 hidden aspect-3/2 w-[min(14%,200px)] overflow-hidden opacity-30 lg:block">
+			<div class="heritage__layer absolute top-[48%] left-[75%] z-10 hidden aspect-3/2 w-[min(14%,200px)] overflow-hidden opacity-30 lg:block" style="--heritage-x: 24px; --heritage-delay: 200ms; --heritage-drift: -4%;">
 				<img src={images.barista} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[75%] left-[18%] z-10 hidden aspect-3/2 w-[min(15%,210px)] overflow-hidden opacity-35 lg:block">
+			<div class="heritage__layer absolute top-[75%] left-[18%] z-10 hidden aspect-3/2 w-[min(15%,210px)] overflow-hidden opacity-35 lg:block" style="--heritage-x: -28px; --heritage-delay: 220ms; --heritage-drift: 5%;">
 				<img src={images.harvest} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[70%] left-[82%] z-20 hidden aspect-8/5 w-[min(32%,300px)] overflow-hidden lg:block">
+			<div class="heritage__layer absolute top-[70%] left-[82%] z-20 hidden aspect-8/5 w-[min(32%,300px)] overflow-hidden lg:block" style="--heritage-x: 36px; --heritage-delay: 260ms; --heritage-drift: -3%;">
 				<img src={images.cup} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[2%] left-[-18%] z-10 aspect-4/3 w-[42vw] overflow-hidden opacity-[0.14] lg:hidden">
+			<div class="heritage__layer absolute top-[2%] left-[-18%] z-10 aspect-4/3 w-[42vw] overflow-hidden opacity-[0.14] lg:hidden" style="--heritage-x: -20px; --heritage-drift: -4%;">
 				<img src={images.coffee} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[6%] left-[78%] z-10 aspect-3/2 w-[40vw] overflow-hidden opacity-[0.16] lg:hidden">
+			<div class="heritage__layer absolute top-[6%] left-[78%] z-10 aspect-3/2 w-[40vw] overflow-hidden opacity-[0.16] lg:hidden" style="--heritage-x: 20px; --heritage-delay: 100ms; --heritage-drift: 4%;">
 				<img src={images.roastery} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[68%] left-[-12%] z-10 aspect-4/3 w-[38vw] overflow-hidden opacity-[0.14] lg:hidden">
+			<div class="heritage__layer absolute top-[68%] left-[-12%] z-10 aspect-4/3 w-[38vw] overflow-hidden opacity-[0.14] lg:hidden" style="--heritage-x: -20px; --heritage-delay: 180ms; --heritage-drift: 5%;">
 				<img src={images.beans} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 
-			<div class="absolute top-[72%] left-[62%] z-10 aspect-4/3 w-[52vw] overflow-hidden opacity-20 lg:hidden">
+			<div class="heritage__layer absolute top-[72%] left-[62%] z-10 aspect-4/3 w-[52vw] overflow-hidden opacity-20 lg:hidden" style="--heritage-x: 20px; --heritage-delay: 240ms; --heritage-drift: -5%;">
 				<img src={images.barista} alt="" loading="lazy" class="h-full w-full object-cover" />
 			</div>
 		</div>
@@ -65,26 +66,67 @@ const { eyebrow, heading, description, cta, images } = heritage.data;
 
 	<div class="relative z-10 flex h-full flex-col items-center justify-center px-4 py-10 lg:justify-end lg:pb-48 lg:pt-0">
 		<div class="flex w-full max-w-[438px] flex-col items-center gap-8 text-center">
-			<div class="relative aspect-16/10 w-[78vw] max-w-[320px] overflow-hidden lg:hidden" aria-hidden="true">
+			<div class="heritage__portrait relative aspect-16/10 w-[78vw] max-w-[320px] overflow-hidden lg:hidden" aria-hidden="true" data-motion="image">
 				<img src={images.team} alt="" class="h-full w-full object-cover" />
 			</div>
 
-			<p class="-mb-4 text-xs font-medium uppercase leading-none tracking-[0.72px]">{eyebrow}</p>
+			<p class="-mb-4 text-xs font-medium uppercase leading-none tracking-[0.72px]" data-motion="rise" style="--heritage-delay: 40ms;">{eyebrow}</p>
 			<h2
 				id="heritage-heading"
+				data-motion="rise"
+				style="--heritage-delay: 100ms;"
 				class="w-full text-[40px] font-medium uppercase leading-[0.85] tracking-[2.24px] lg:text-[56px]"
 			>
 				{heading}
 			</h2>
-			<p class="w-full text-sm leading-[1.6] tracking-[-0.14px] text-black/80">
+			<p class="w-full text-sm leading-[1.6] tracking-[-0.14px] text-black/80" data-motion="rise" style="--heritage-delay: 160ms;">
 				{description}
 			</p>
-			<a
-				href={cta.href}
-				class="inline-flex h-9 min-w-[220px] items-center justify-center rounded-[2px] bg-black px-4 text-sm font-medium uppercase tracking-[0.84px] text-white transition-colors hover:bg-black/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
-			>
-				{cta.label}
-			</a>
+			<div class="flex justify-center" data-motion="rise" style="--heritage-delay: 220ms;">
+				<a
+					href={cta.href}
+					class="inline-flex h-9 min-w-[220px] items-center justify-center rounded-[2px] bg-black px-4 text-sm font-medium uppercase tracking-[0.84px] text-white transition-colors hover:bg-black/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
+				>
+					{cta.label}
+				</a>
+			</div>
 		</div>
 	</div>
 </section>
+
+<style>
+	@media (prefers-reduced-motion: no-preference) {
+		#heritage[data-motion-state] .heritage__layer {
+			transform: translate3d(0, 0, 0) scale(1);
+			transition: transform 1400ms cubic-bezier(0.22, 1, 0.36, 1);
+		}
+
+		#heritage[data-motion-state] .heritage__layer > img {
+			opacity: 1;
+			scale: 1.12;
+			translate: 0 calc(var(--motion-progress, 0) * var(--heritage-drift, 4%));
+			transition: opacity 1100ms ease, translate 180ms ease-out;
+		}
+
+		#heritage[data-motion-state='visible'] .heritage__layer,
+		#heritage[data-motion-state='visible'] .heritage__layer > img {
+			transition-delay: var(--heritage-delay, 0ms), 0ms;
+		}
+
+		#heritage[data-motion-state='below'] .heritage__layer {
+			transform: translate3d(var(--heritage-x, 0px), var(--heritage-y, 22px), 0) scale(0.94);
+		}
+
+		#heritage[data-motion-state='below'] .heritage__layer > img { opacity: 0; }
+
+		#heritage [data-motion][data-motion-state='visible'] { transition-delay: var(--heritage-delay, 0ms); }
+		.heritage__portrait[data-motion-state] > img { scale: 1; transition: scale 1400ms cubic-bezier(0.22, 1, 0.36, 1); }
+		.heritage__portrait[data-motion-state='below'] > img { scale: 1.08; }
+
+		#heritage[data-motion-immediate] .heritage__layer,
+		#heritage:focus-within .heritage__layer { transform: none; transition: none; }
+		#heritage[data-motion-immediate] .heritage__layer > img,
+		#heritage:focus-within .heritage__layer > img { opacity: 1; transition: none; }
+		.heritage__portrait[data-motion-immediate] > img { scale: 1; transition: none; }
+	}
+</style>

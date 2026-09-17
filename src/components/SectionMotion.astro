@@ -1,0 +1,141 @@
+<style is:global>
+	[data-motion][data-motion-state] {
+		--motion-distance: 16px;
+		--motion-duration: 780ms;
+		opacity: 1;
+		translate: 0 0;
+		transition:
+			opacity var(--motion-duration) cubic-bezier(0.22, 1, 0.36, 1),
+			translate var(--motion-duration) cubic-bezier(0.22, 1, 0.36, 1);
+	}
+
+	[data-motion='image'][data-motion-state] {
+		--motion-distance: 20px;
+		--motion-duration: 1000ms;
+	}
+
+	[data-motion='card'][data-motion-state] {
+		/* Stay within the horizontal rails' existing padding. */
+		--motion-distance: 8px;
+	}
+
+	[data-motion][data-motion-state='visible'] { transition-delay: var(--motion-delay, 0ms); }
+	[data-motion][data-motion-state='below'] {
+		opacity: 0;
+		translate: 0 var(--motion-distance);
+		transition: none;
+	}
+
+	/* Keyboard navigation must never wait for a reveal. */
+	[data-motion][data-motion-state]:focus-within,
+	[data-motion][data-motion-state][data-motion-immediate] {
+		opacity: 1;
+		translate: none;
+		transition: none;
+	}
+
+	@media (max-width: 767px) {
+		[data-motion][data-motion-state='visible'] { transition-delay: 0ms; }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		[data-motion][data-motion-state] {
+			opacity: 1;
+			translate: none;
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	type MotionState = 'visible' | 'below';
+	const targets = [...document.querySelectorAll<HTMLElement>('[data-motion], [data-motion-scene]')];
+	const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const revealed = new WeakSet<HTMLElement>(preference.matches ? targets : []);
+	let frame = 0;
+	let enabled = !preference.matches;
+
+	// Only a few siblings enter together, with a short stagger on wider screens.
+	for (const section of document.querySelectorAll('main > section')) {
+		section.querySelectorAll<HTMLElement>('[data-motion="card"]').forEach((card, index) => {
+			card.style.setProperty('--motion-delay', `${Math.min(index, 2) * 70}ms`);
+		});
+	}
+
+	const showAll = () => {
+		cancelAnimationFrame(frame);
+		frame = 0;
+		for (const target of targets) {
+			revealed.add(target);
+			delete target.dataset.motionState;
+			delete target.dataset.motionImmediate;
+			target.style.removeProperty('--motion-progress');
+		}
+	};
+
+	const update = (immediate = false) => {
+		if (!enabled) return;
+		try {
+			const bottomEdge = window.innerHeight - 24;
+			// Batch geometry reads before writes. Remove our animated translation from
+			// the measured position so an element never triggers its own entrance.
+			const states = targets.map((target) => {
+				const isScene = target.hasAttribute('data-motion-scene');
+				if (revealed.has(target) && !isScene) return { target, state: 'visible' as MotionState };
+				const rect = target.getBoundingClientRect();
+				if (!rect.width || !rect.height) return { target, state: null };
+				const translation = getComputedStyle(target).translate.split(' ');
+				const offset = Number.parseFloat(translation[1] ?? '0') || 0;
+				const top = rect.top - offset;
+				// Reveals are permanent. Content skipped by an anchor or a quick swipe
+				// is also ready to read when the visitor scrolls back to it.
+				const state: MotionState = revealed.has(target) || top < bottomEdge || target.contains(document.activeElement)
+					? 'visible' : 'below';
+				const progress = isScene
+					? Math.max(-1, Math.min(1, (window.innerHeight - top * 2 - rect.height) / (window.innerHeight + rect.height)))
+					: undefined;
+				return { target, state, progress };
+			});
+
+			for (const { target, state, progress } of states) {
+				if (!state) {
+					delete target.dataset.motionState;
+					continue;
+				}
+				if (state === 'visible') revealed.add(target);
+				if (immediate && state === 'visible') target.dataset.motionImmediate = '';
+				if (target.dataset.motionState !== state) target.dataset.motionState = state;
+				if (progress !== undefined) target.style.setProperty('--motion-progress', progress.toFixed(4));
+			}
+		} catch {
+			// Content remains usable if this enhancement cannot initialize or update.
+			enabled = false;
+			showAll();
+		}
+	};
+
+	const schedule = () => {
+		if (!enabled || frame) return;
+		frame = requestAnimationFrame(() => {
+			frame = 0;
+			for (const target of targets) delete target.dataset.motionImmediate;
+			update();
+		});
+	};
+
+	// A single frame per scroll event; CSS does the interpolation between states.
+	// Cards share their vertical reveal, so horizontal swipes stay fully readable.
+	window.addEventListener('scroll', schedule, { passive: true });
+	window.addEventListener('resize', schedule, { passive: true });
+	document.addEventListener('focusin', schedule);
+	document.addEventListener('focusout', schedule);
+	window.addEventListener('pageshow', () => update(true));
+	preference.addEventListener('change', () => {
+		enabled = !preference.matches;
+		if (enabled) update(true);
+		else showAll();
+	});
+
+	update(true);
+	document.fonts.ready.then(schedule);
+</script>

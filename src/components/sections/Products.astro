@@ -12,7 +12,7 @@ const { eyebrow, heading, description, products } = section.data;
 
 <section id="products" class="products" aria-labelledby="products-heading">
 	<div class="products__inner">
-		<header class="products__header">
+		<header class="products__header" data-motion="rise">
 			<div>
 				<p class="products__eyebrow">{eyebrow}</p>
 				<h2 id="products-heading">{heading}</h2>
@@ -24,7 +24,7 @@ const { eyebrow, heading, description, products } = section.data;
 			<ul class="products__list" role="list">
 				{products.map((product) => (
 					<li class="products__item">
-						<article class="product" aria-labelledby={`product-${product.id}`}>
+						<article class="product" aria-labelledby={`product-${product.id}`} data-motion="card">
 							<div class="product__image">
 								<img
 									src={product.image.src}
