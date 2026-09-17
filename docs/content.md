@@ -18,6 +18,6 @@ The Markdown entries use YAML frontmatter between `---` markers; their bodies ar
 
 The page is written in Colombian Spanish (`es-CO`, with Open Graph locale `es_CO`). Brand copy is adapted from the Origen Tolima packaging: its roots in San Sebastián de Mariquita, patient craft, care for water and native forests, and the invitation to pause with each cup. Contact details also come from the packaging. Keep UI labels, image descriptions, and social preview copy in Spanish when editing content.
 
-The section order and visual behavior remain in the Astro components. See [product images](./product-images.md) and [hero image](./hero-image.md) for asset notes.
+The section order and visual behavior remain in the Astro components. See [product images](./product-images.md), [hero image](./hero-image.md), and [heritage images](./heritage-images.md) for asset notes.
 
 Run `pnpm build` after editing to check schemas and regenerate the static page.

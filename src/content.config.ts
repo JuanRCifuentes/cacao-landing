@@ -79,13 +79,13 @@ const landingSections = defineCollection({
 			description: z.string(),
 			cta: link,
 			images: z.object({
-				team: z.url(),
-				coffee: z.url(),
-				roastery: z.url(),
+				grower: z.url(),
+				pods: z.url(),
+				drying: z.url(),
 				beans: z.url(),
-				barista: z.url(),
+				cacaoTree: z.url(),
 				harvest: z.url(),
-				cup: z.url(),
+				chocolate: z.url(),
 			}),
 		}),
 		z.object({
