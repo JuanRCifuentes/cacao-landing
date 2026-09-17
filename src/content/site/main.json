@@ -1,22 +1,23 @@
 {
-	"language": "en",
+	"language": "es-CO",
 	"title": "Origen Tolima — Cacao de autor",
-	"description": "A moment to savour. Discover Origen Tolima and the world of cacao.",
+	"description": "Cacao de autor de San Sebastián de Mariquita, Tolima. Tradición, cuidado de la tierra y un proceso artesanal que invita a hacer una pausa en cada taza.",
 	"social": {
 		"siteName": "Origen Tolima",
-		"locale": "en_US",
+		"locale": "es_CO",
 		"image": {
 			"src": "https://pub-d09057114081496392499a9aa11104a3.r2.dev/03-rugged-weathered-wood.webp",
-			"alt": "Handcrafted cacao pieces arranged on warm, weathered wood",
+			"alt": "Piezas de cacao artesanal sobre una mesa de madera rústica",
 			"width": 1200,
 			"height": 800,
 			"type": "image/webp"
 		}
 	},
 	"menu": {
-		"openLabel": "Menu",
-		"closeLabel": "Close",
-		"dialogLabel": "Main navigation",
-		"navigationLabel": "Main"
+		"openLabel": "Menú",
+		"closeLabel": "Cerrar",
+		"dialogLabel": "Menú principal",
+		"navigationLabel": "Navegación principal",
+		"homeLabel": "Ir al inicio"
 	}
 }

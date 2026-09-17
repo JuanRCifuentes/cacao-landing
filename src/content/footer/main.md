@@ -1,28 +1,32 @@
 ---
 brand: Origen Tolima
 tagline: Cacao de autor un legado de bienestar
+labels:
+  backToTop: Volver al inicio
+  navigation: Navegación del pie de página
+  socialMedia: Redes sociales
 navigation:
-  - label: Home
+  - label: Inicio
     href: "#hero"
-  - label: Products
+  - label: Productos
     href: "#products"
-  - label: Our cocoa
+  - label: Nuestro cacao
     href: "#pure-passion"
-  - label: The Cocoa story
+  - label: Nuestro origen
     href: "#heritage"
-  - label: Journal
+  - label: Novedades
     href: "#partnerships-news"
-  - label: Contact
-    href: "mailto:hello@cocoa.com"
+  - label: Contacto
+    href: "mailto:energysunflower@gmail.com"
 policies:
-  - label: Privacy policy
+  - label: Política de privacidad
     href: "#"
-  - label: Terms and conditions
+  - label: Términos y condiciones
     href: "#"
-  - label: Shipping and returns
+  - label: Envíos y devoluciones
     href: "#"
 newsletter:
-  label: Join the Cocoa journal
+  label: Recibe nuestras novedades
   href: "#newsletter"
 socials:
   - label: Instagram
@@ -32,13 +36,16 @@ socials:
   - label: YouTube
     href: "#"
 contact:
-  label: Get in touch
-  email: hello@cocoa.com
+  label: Hablemos
+  email: energysunflower@gmail.com
+  phone:
+    label: +57 319 504 8115
+    href: "tel:+573195048115"
 trade:
-  label: Trade enquiries
-  email: wholesale@cocoa.com
+  label: Consultas comerciales
+  email: energysunflower@gmail.com
 location:
-  - Crafted at origin
-  - Shared worldwide
-copyright: © 2026 Cocoa. All rights reserved.
+  - San Sebastián de Mariquita
+  - Tolima, Colombia
+copyright: © 2026 Origen Tolima. Todos los derechos reservados.
 ---

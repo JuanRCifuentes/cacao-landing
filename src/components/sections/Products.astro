@@ -14,7 +14,7 @@ const { eyebrow, heading, description, products } = await getLandingSection('pro
 			<p class="products__description">{description}</p>
 		</header>
 
-		<div class="products__scroller" tabindex="0" role="region" aria-label="Product collection" data-motion-group>
+		<div class="products__scroller" tabindex="0" role="region" aria-labelledby="products-heading" data-motion-group>
 			<ul class="products__list" role="list">
 				{products.map((product, index) => (
 					<li class="products__item">
