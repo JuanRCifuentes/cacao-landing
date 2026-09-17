@@ -4,12 +4,12 @@ import CocoaLogo from './CocoaLogo.astro';
 
 const footer = await getEntry('footer', 'main');
 if (!footer) throw new Error('Missing brand content');
-const { brand, tagline } = footer.data;
+const { brand } = footer.data;
 ---
 
 <div class="site-intro" data-site-intro aria-hidden="true">
-	<div class="site-intro__signature">
-		<CocoaLogo animated revealOnLoad brand={brand} tagline={tagline} class="w-full" />
+	<div class="site-intro__signature" data-intro-signature>
+		<CocoaLogo animated revealOnLoad brand={brand} showTagline={false} class="w-full" />
 	</div>
 </div>
 
@@ -22,38 +22,64 @@ const { brand, tagline } = footer.data;
 		place-items: center;
 		height: 100dvh;
 		padding: 24px;
-		background: #faf9f6;
-		color: #17140f;
+		color: #f4f0e8;
 	}
 
-	.site-intro__signature { width: min(74vw, 360px); }
+	.site-intro::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: #16100b;
+		opacity: 0;
+	}
+
+	.site-intro__signature {
+		position: relative;
+		width: min(74vw, 360px);
+		transform-origin: top left;
+	}
 
 	:global(html[data-intro]) { overflow: hidden; }
 	:global(html[data-intro]) .site-intro { display: grid; }
+	:global(html[data-intro='showing']) .site-intro::before {
+		opacity: 1;
+	}
 	:global(html[data-intro='showing'] [data-site-content]) { visibility: hidden; }
+	:global(html[data-intro] [data-hero-brand]) { visibility: hidden; }
 
-	/* Let the hero start its own entrance only when the curtain opens. */
+	/* Reveal the image during the flight; let the copy follow once the logo lands. */
 	:global(html[data-intro='showing'] #hero),
-	:global(html[data-intro='showing'] #hero *) { animation-play-state: paused !important; }
+	:global(html[data-intro='showing'] #hero *),
+	:global(html[data-intro] #hero .hero__content *) { animation-play-state: paused !important; }
 
 	:global(html[data-intro='leaving']) .site-intro {
 		pointer-events: none;
-		transform: translateY(-100%);
-		transition: transform 700ms cubic-bezier(0.76, 0, 0.24, 1);
+	}
+
+	:global(html[data-intro='leaving']) .site-intro::before {
+		transition: opacity 900ms cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	:global(html[data-intro='leaving']) .site-intro__signature {
+		transform: translate3d(var(--intro-x, 0px), var(--intro-y, 0px), 0) scale(var(--intro-scale, 1));
+		transition: transform 1100ms cubic-bezier(0.76, 0, 0.24, 1);
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		:global(html[data-intro]) { overflow: visible; }
 		:global(html[data-intro]) .site-intro { display: none; }
 		:global(html[data-intro] [data-site-content]) { visibility: visible; }
+		:global(html[data-intro] [data-hero-brand]) { visibility: visible; }
 	}
 </style>
 
 <script>
 	const root = document.documentElement;
 	const intro = document.querySelector<HTMLElement>('[data-site-intro]');
+	const signature = intro?.querySelector<HTMLElement>('[data-intro-signature]');
+	const destination = document.querySelector<HTMLElement>('[data-hero-brand]');
 
-	if (intro && root.dataset.intro === 'showing') {
+	if (intro && signature && destination && root.dataset.intro === 'showing') {
 		const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
 		let exitTimer: ReturnType<typeof setTimeout>;
 		const delay = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms));
@@ -64,20 +90,29 @@ const { brand, tagline } = footer.data;
 			window.removeEventListener('keydown', skipOnKey, true);
 			window.removeEventListener('hashchange', finish);
 			window.removeEventListener('pagehide', finish);
+			window.removeEventListener('resize', finishOnResize);
 			motionPreference.removeEventListener('change', finish);
+			signature.removeEventListener('transitionend', finishOnArrival);
 		};
 
 		const skipOnKey = (event: KeyboardEvent) => {
 			if (event.key === 'Escape' || event.key === 'Tab') finish();
 		};
 
+		const finishOnResize = () => {
+			if (root.dataset.intro === 'leaving') finish();
+		};
+
+		const finishOnArrival = (event: TransitionEvent) => {
+			if (event.target === signature && event.propertyName === 'transform') finish();
+		};
+
 		window.addEventListener('keydown', skipOnKey, true);
 		window.addEventListener('hashchange', finish);
 		window.addEventListener('pagehide', finish);
+		window.addEventListener('resize', finishOnResize);
 		motionPreference.addEventListener('change', finish);
-		intro.addEventListener('transitionend', (event) => {
-			if (event.target === intro && event.propertyName === 'transform') finish();
-		});
+		signature.addEventListener('transitionend', finishOnArrival);
 
 		const image = document.querySelector<HTMLImageElement>('#hero img');
 		const imageReady = image?.decode().catch(() => {}) ?? Promise.resolve();
@@ -89,8 +124,20 @@ const { brand, tagline } = footer.data;
 			delay(3500),
 		]).then(() => {
 			if (root.dataset.intro !== 'showing') return;
+
+			// Match the real navigation position at every viewport size. Both logos
+			// use the same proportions, so the completed mark settles without a redraw.
+			const from = signature.getBoundingClientRect();
+			const to = destination.getBoundingClientRect();
+			if (!from.width || !to.width) {
+				finish();
+				return;
+			}
+			signature.style.setProperty('--intro-x', `${to.left - from.left}px`);
+			signature.style.setProperty('--intro-y', `${to.top - from.top}px`);
+			signature.style.setProperty('--intro-scale', `${to.width / from.width}`);
 			root.dataset.intro = 'leaving';
-			exitTimer = setTimeout(finish, 800);
+			exitTimer = setTimeout(finish, 1250);
 		});
 	}
 </script>

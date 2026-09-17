@@ -10,7 +10,7 @@ if (!section || section.data.type !== 'hero' || !footer) {
 	throw new Error('Missing hero or brand content');
 }
 
-const { eyebrow, heading, cta, scrollLabel, contactLabel, navigation, image } = section.data;
+const { eyebrow, heading, cta, scrollLabel, scrollHref, contactLabel, navigation, image } = section.data;
 const { brand, tagline, contact } = footer.data;
 ---
 
@@ -31,8 +31,8 @@ const { brand, tagline, contact } = footer.data;
 
 	<header class="hero__header">
 		<HeroMenu navigation={navigation} brand={brand} tagline={tagline} contactEmail={contact.email} />
-		<a class="hero__brand" href="#hero" aria-label={`${brand}, home`}>
-			<CocoaLogo animated brand={brand} showTagline={false} class="w-full" />
+		<a class="hero__brand" data-hero-brand href="#hero" aria-label={`${brand}, home`}>
+			<CocoaLogo brand={brand} showTagline={false} class="w-full" />
 		</a>
 		<a class="hero__contact" href="#newsletter">
 			<span>{contactLabel}</span>
@@ -57,7 +57,7 @@ const { brand, tagline, contact } = footer.data;
 		</a>
 	</div>
 
-	<a href={cta.href} class="hero__scroll">
+	<a href={scrollHref} class="hero__scroll">
 		<span>{scrollLabel}</span>
 		<svg viewBox="0 0 16 24" fill="none" aria-hidden="true">
 			<path d="M8 2v19m-5-5 5 5 5-5" stroke="currentColor" />
@@ -67,13 +67,14 @@ const { brand, tagline, contact } = footer.data;
 
 <style>
 	.hero {
+		--hero-tail: clamp(64px, 10svh, 112px);
 		position: relative;
 		isolation: isolate;
 		display: grid;
 		place-items: center;
-		min-height: max(660px, 100svh);
-		padding: 160px 24px 120px;
-		background: #261c17;
+		min-height: calc(max(660px, 100svh) + var(--hero-tail));
+		padding: 160px 24px calc(120px + var(--hero-tail));
+		background: #16100b;
 		color: #f4f0e8;
 	}
 
@@ -85,7 +86,10 @@ const { brand, tagline, contact } = footer.data;
 		pointer-events: none;
 	}
 
-	.hero__media { overflow: hidden; }
+	.hero__media {
+		bottom: var(--hero-tail);
+		overflow: hidden;
+	}
 
 	.hero__media img {
 		width: 100%;
@@ -96,7 +100,7 @@ const { brand, tagline, contact } = footer.data;
 	}
 
 	.hero__shade {
-		background: linear-gradient(180deg, rgb(26 17 12 / 55%), rgb(26 17 12 / 20%) 30%, rgb(26 17 12 / 32%) 60%, rgb(26 17 12 / 72%));
+		background: linear-gradient(180deg, rgb(26 17 12 / 55%), rgb(26 17 12 / 20%) 30%, rgb(26 17 12 / 32%) 60%, #16100b calc(100% - var(--hero-tail)), #16100b);
 	}
 
 	.hero__header {
@@ -183,7 +187,7 @@ const { brand, tagline, contact } = footer.data;
 
 	.hero__scroll {
 		position: absolute;
-		bottom: 28px;
+		bottom: calc(28px + var(--hero-tail));
 		left: 50%;
 		display: flex;
 		flex-direction: column;
@@ -210,7 +214,11 @@ const { brand, tagline, contact } = footer.data;
 	@keyframes hero-fade { from { opacity: 0; } to { opacity: 1; } }
 
 	@media (max-width: 600px) {
-		.hero { padding: 150px 24px 115px; }
+		.hero { padding: 150px 24px calc(115px + var(--hero-tail)); }
+		.hero__media img {
+			translate: 0 32px;
+			mask-image: linear-gradient(to bottom, transparent, #000 32px);
+		}
 		.hero__header { padding: 20px 24px; }
 		.hero__brand { width: 128px; }
 		.hero__contact span {
@@ -224,7 +232,7 @@ const { brand, tagline, contact } = footer.data;
 		.hero__contact { justify-content: center; width: 44px; }
 		.hero__eyebrow { margin-bottom: 22px; font-size: 10px; }
 		.hero__cta { margin-top: 32px; width: 100%; min-width: 0; }
-		.hero__scroll { bottom: 20px; }
+		.hero__scroll { bottom: calc(20px + var(--hero-tail)); }
 	}
 
 	@media (prefers-reduced-motion: reduce) {
