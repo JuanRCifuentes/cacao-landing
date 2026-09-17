@@ -1,6 +1,6 @@
 ---
-brand: Cocoa
-tagline: From origin to craft
+brand: Origen Tolima
+tagline: Cacao de autor un legado de bienestar
 navigation:
   - label: Home
     href: "#hero"
