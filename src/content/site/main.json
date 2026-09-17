@@ -2,6 +2,17 @@
 	"language": "en",
 	"title": "Origen Tolima — Cacao de autor",
 	"description": "A moment to savour. Discover Origen Tolima and the world of cacao.",
+	"social": {
+		"siteName": "Origen Tolima",
+		"locale": "en_US",
+		"image": {
+			"src": "https://pub-d09057114081496392499a9aa11104a3.r2.dev/03-rugged-weathered-wood.webp",
+			"alt": "Handcrafted cacao pieces arranged on warm, weathered wood",
+			"width": 1200,
+			"height": 800,
+			"type": "image/webp"
+		}
+	},
 	"menu": {
 		"openLabel": "Menu",
 		"closeLabel": "Close",

@@ -10,6 +10,17 @@ const site = defineCollection({
 		language: z.string().min(2),
 		title: z.string().min(1),
 		description: z.string().min(1),
+		social: z.object({
+			siteName: z.string().min(1),
+			locale: z.string().min(2),
+			image: z.object({
+				src: z.url(),
+				alt: z.string().min(1),
+				width: z.number().positive(),
+				height: z.number().positive(),
+				type: z.string().min(1),
+			}),
+		}),
 		menu: z.object({
 			openLabel: z.string(),
 			closeLabel: z.string(),
