@@ -1,0 +1,32 @@
+---
+import Hero from '../components/sections/Hero.astro';
+import PurePassion from '../components/sections/PurePassion.astro';
+import Video from '../components/sections/Video.astro';
+import Heritage from '../components/sections/Heritage.astro';
+import PartnershipsNews from '../components/sections/PartnershipsNews.astro';
+import ExclusiveUpdates from '../components/sections/ExclusiveUpdates.astro';
+import Footer from '../components/sections/Footer.astro';
+import '../styles/global.css';
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>Astro</title>
+	</head>
+	<body>
+		<main>
+			<Hero />
+			<PurePassion />
+			<Video />
+			<Heritage />
+			<PartnershipsNews />
+			<ExclusiveUpdates />
+		</main>
+		<Footer />
+	</body>
+</html>
