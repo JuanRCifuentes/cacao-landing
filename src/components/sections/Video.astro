@@ -1,13 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
+import { getLandingSection } from '../../lib/content';
 
-const section = await getEntry('landingSections', 'video');
-
-if (!section || section.data.type !== 'video') {
-	throw new Error('Missing landing section content: video');
-}
-
-const { heading, description, video } = section.data;
+const { heading, description, video } = await getLandingSection('video', 'video');
 ---
 
 <section id="video" aria-labelledby="video-heading" class="film">
@@ -22,8 +16,10 @@ const { heading, description, video } = section.data;
 		<video
 			class="h-full w-full object-cover"
 			poster={video.poster}
-			preload="metadata"
+			preload="none"
+			controls
 			playsinline
+			aria-label={video.label}
 			data-video-element
 		>
 			<source src={video.src} type="video/mp4" />
@@ -34,6 +30,7 @@ const { heading, description, video } = section.data;
 			aria-label={video.label}
 			class="absolute top-1/2 left-1/2 flex h-16 w-24 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[2px] bg-[#f4f0e8] text-[#16100b] transition-[background-color,opacity] duration-300 hover:bg-[#e7c681] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f4f0e8] md:h-20 md:w-[120px]"
 			data-video-button
+			hidden
 		>
 			<svg viewBox="0 0 13 17" class="h-[17px] w-[13px] fill-current" aria-hidden="true">
 				<path d="M0 0L12.5 8.5L0 17V0Z"></path>
@@ -79,8 +76,11 @@ const { heading, description, video } = section.data;
 		const shade = player.querySelector('[data-video-shade]');
 
 		if (!(video instanceof HTMLVideoElement) || !(button instanceof HTMLButtonElement)) return;
+		video.controls = false;
+		button.hidden = false;
 
 		const showButton = () => {
+			button.tabIndex = 0;
 			button.classList.remove('pointer-events-none', 'opacity-0');
 			shade?.classList.remove('opacity-0');
 		};
@@ -90,10 +90,19 @@ const { heading, description, video } = section.data;
 			shade?.classList.add('opacity-0');
 		};
 
-		button.addEventListener('click', () => video.play());
-		video.addEventListener('play', hideButton);
+		button.addEventListener('click', () => {
+			video.controls = true;
+			void video.play().catch(showButton);
+		});
+		video.addEventListener('play', () => {
+			hideButton();
+			button.tabIndex = -1;
+		});
 		video.addEventListener('pause', showButton);
 		video.addEventListener('ended', showButton);
-		video.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+		video.addEventListener('error', () => {
+			video.controls = true;
+			showButton();
+		});
 	});
 </script>

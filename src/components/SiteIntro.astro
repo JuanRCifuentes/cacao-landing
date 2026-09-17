@@ -20,6 +20,7 @@ const { brand } = footer.data;
 		z-index: 100;
 		display: none;
 		place-items: center;
+		height: 100vh;
 		height: 100dvh;
 		padding: 24px;
 		color: #f4f0e8;
@@ -124,8 +125,8 @@ const { brand } = footer.data;
 			if (root.dataset.intro === 'leaving') finish();
 		};
 
-		const finishOnArrival = (event: TransitionEvent) => {
-			if (event.target === event.currentTarget && event.propertyName === 'transform') {
+		const finishOnArrival = (event: Event) => {
+			if (event instanceof TransitionEvent && event.target && event.target === event.currentTarget && event.propertyName === 'transform') {
 				arrived.add(event.target);
 				if (arrived.size === parts.length) finish();
 			}
@@ -151,13 +152,17 @@ const { brand } = footer.data;
 
 			// The pod goes to the navigation; the live lettering becomes the hero title.
 			// Measure each part separately so both settle exactly at every viewport size.
-			for (const { element, destination } of parts) {
+			const positions = parts.map(({ element, destination }) => {
 				const from = element.getBoundingClientRect();
 				const to = destination.getBoundingClientRect();
-				if (!from.width || !to.width) {
-					finish();
-					return;
-				}
+				return { element, from, to };
+			});
+			if (positions.some(({ from, to }) => !from.width || !to.width)) {
+				finish();
+				return;
+			}
+			// Read both destinations before writing, avoiding a second layout flush.
+			for (const { element, from, to } of positions) {
 				element.style.setProperty('--intro-x', `${to.left - from.left}px`);
 				element.style.setProperty('--intro-y', `${to.top - from.top}px`);
 				element.style.setProperty('--intro-scale', `${to.width / from.width}`);

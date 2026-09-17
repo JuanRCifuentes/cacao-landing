@@ -3,10 +3,10 @@
 		--motion-distance: 16px;
 		--motion-duration: 780ms;
 		opacity: 1;
-		translate: 0 0;
+		transform: none;
 		transition:
 			opacity var(--motion-duration) cubic-bezier(0.22, 1, 0.36, 1),
-			translate var(--motion-duration) cubic-bezier(0.22, 1, 0.36, 1);
+			transform var(--motion-duration) cubic-bezier(0.22, 1, 0.36, 1);
 	}
 
 	[data-motion='image'][data-motion-state] {
@@ -22,7 +22,7 @@
 	[data-motion][data-motion-state='visible'] { transition-delay: var(--motion-delay, 0ms); }
 	[data-motion][data-motion-state='below'] {
 		opacity: 0;
-		translate: 0 var(--motion-distance);
+		transform: translateY(var(--motion-distance));
 		transition: none;
 	}
 
@@ -30,7 +30,7 @@
 	[data-motion][data-motion-state]:focus-within,
 	[data-motion][data-motion-state][data-motion-immediate] {
 		opacity: 1;
-		translate: none;
+		transform: none;
 		transition: none;
 	}
 
@@ -41,101 +41,153 @@
 	@media (prefers-reduced-motion: reduce) {
 		[data-motion][data-motion-state] {
 			opacity: 1;
-			translate: none;
+			transform: none;
 			transition: none;
 		}
 	}
 </style>
 
 <script>
-	type MotionState = 'visible' | 'below';
 	const targets = [...document.querySelectorAll<HTMLElement>('[data-motion], [data-motion-scene]')];
 	const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-	const revealed = new WeakSet<HTMLElement>(preference.matches ? targets : []);
-	let frame = 0;
-	let enabled = !preference.matches;
 
-	// Only a few siblings enter together, with a short stagger on wider screens.
-	for (const section of document.querySelectorAll('main > section')) {
-		section.querySelectorAll<HTMLElement>('[data-motion="card"]').forEach((card, index) => {
-			card.style.setProperty('--motion-delay', `${Math.min(index, 2) * 70}ms`);
-		});
-	}
-
-	const showAll = () => {
-		cancelAnimationFrame(frame);
-		frame = 0;
+	// CSS owns every transition; observers only trigger the first entrance.
+	// Without observer support (or with reduced motion), the HTML stays visible.
+	if ('IntersectionObserver' in window && !preference.matches) {
+		const groups = new Map<Element, HTMLElement[]>();
 		for (const target of targets) {
-			revealed.add(target);
-			delete target.dataset.motionState;
-			delete target.dataset.motionImmediate;
-			target.style.removeProperty('--motion-progress');
+			const trigger = target.closest('[data-motion-group]') ?? target;
+			groups.set(trigger, [...(groups.get(trigger) ?? []), target]);
 		}
-	};
 
-	const update = (immediate = false) => {
-		if (!enabled) return;
-		try {
-			const bottomEdge = window.innerHeight - 24;
-			// Batch geometry reads before writes. Remove our animated translation from
-			// the measured position so an element never triggers its own entrance.
-			const states = targets.map((target) => {
-				const isScene = target.hasAttribute('data-motion-scene');
-				if (revealed.has(target) && !isScene) return { target, state: 'visible' as MotionState };
-				const rect = target.getBoundingClientRect();
-				if (!rect.width || !rect.height) return { target, state: null };
-				const translation = getComputedStyle(target).translate.split(' ');
-				const offset = Number.parseFloat(translation[1] ?? '0') || 0;
-				const top = rect.top - offset;
-				// Reveals are permanent. Content skipped by an anchor or a quick swipe
-				// is also ready to read when the visitor scrolls back to it.
-				const state: MotionState = revealed.has(target) || top < bottomEdge || target.contains(document.activeElement)
-					? 'visible' : 'below';
-				const progress = isScene
-					? Math.max(-1, Math.min(1, (window.innerHeight - top * 2 - rect.height) / (window.innerHeight + rect.height)))
-					: undefined;
-				return { target, state, progress };
-			});
-
-			for (const { target, state, progress } of states) {
-				if (!state) {
-					delete target.dataset.motionState;
-					continue;
-				}
-				if (state === 'visible') revealed.add(target);
-				if (immediate && state === 'visible') target.dataset.motionImmediate = '';
-				if (target.dataset.motionState !== state) target.dataset.motionState = state;
-				if (progress !== undefined) target.style.setProperty('--motion-progress', progress.toFixed(4));
+		const reveal = (trigger: Element, immediate = false) => {
+			for (const target of groups.get(trigger) ?? []) {
+				if (immediate) target.dataset.motionImmediate = '';
+				target.dataset.motionState = 'visible';
 			}
-		} catch {
-			// Content remains usable if this enhancement cannot initialize or update.
-			enabled = false;
-			showAll();
+			entrances.unobserve(trigger);
+			groups.delete(trigger);
+		};
+		const entrances = new IntersectionObserver((entries) => {
+			for (const entry of entries) {
+				if (entry.isIntersecting) reveal(entry.target);
+			}
+		}, { rootMargin: '0px 0px -24px 0px' });
+
+		// Measure once before hiding anything, including content above a deep link.
+		const initial = [...groups.keys()].map((trigger) => ({ trigger, rect: trigger.getBoundingClientRect() }));
+		for (const { trigger, rect } of initial) {
+			if (rect.width && rect.height && rect.top < window.innerHeight - 24) {
+				reveal(trigger, true);
+			} else {
+				for (const target of groups.get(trigger) ?? []) target.dataset.motionState = 'below';
+				entrances.observe(trigger);
+			}
 		}
-	};
 
-	const schedule = () => {
-		if (!enabled || frame) return;
-		frame = requestAnimationFrame(() => {
+		// A restored position or a large anchor jump may skip an observer boundary.
+		// Check remaining entrances after navigation settles, never on every frame.
+		const revealPassed = () => {
+			const positions = [...groups.keys()].map((trigger) => ({ trigger, rect: trigger.getBoundingClientRect() }));
+			for (const { trigger, rect } of positions) {
+				if (rect.width && rect.height && rect.bottom <= 0) reveal(trigger, true);
+			}
+		};
+		let passedTimer: ReturnType<typeof setTimeout>;
+		const settle = () => {
+			clearTimeout(passedTimer);
+			passedTimer = setTimeout(revealPassed, 120);
+		};
+		window.addEventListener('pageshow', revealPassed);
+		window.addEventListener('hashchange', revealPassed);
+		window.addEventListener('scrollend', settle);
+
+		// The only continuous effect is the Heritage image drift. Keep its geometry
+		// cached and listen to scroll only while the scene is actually on screen.
+		const scene = document.querySelector<HTMLElement>('[data-motion-scene="heritage"]');
+		let active = false;
+		let frame = 0;
+		let sceneTop = 0;
+		let sceneHeight = 0;
+		let viewportHeight = window.innerHeight;
+		let lastProgress = '';
+
+		const updateDrift = () => {
 			frame = 0;
-			for (const target of targets) delete target.dataset.motionImmediate;
-			update();
+			if (!scene || !active) return;
+			const progress = Math.max(-1, Math.min(1,
+				(viewportHeight - (sceneTop - window.scrollY) * 2 - sceneHeight) / (viewportHeight + sceneHeight),
+			)).toFixed(4);
+			if (progress !== lastProgress) {
+				scene.style.setProperty('--motion-progress', progress);
+				lastProgress = progress;
+			}
+		};
+		const scheduleDrift = () => {
+			if (!frame && active) frame = requestAnimationFrame(updateDrift);
+		};
+		const measureScene = () => {
+			if (!scene || !active) return;
+			const rect = scene.getBoundingClientRect();
+			sceneTop = rect.top + window.scrollY;
+			sceneHeight = rect.height;
+			viewportHeight = window.innerHeight;
+			scheduleDrift();
+		};
+		const scenes = new IntersectionObserver(([entry]) => {
+			active = entry.isIntersecting;
+			if (active) {
+				measureScene();
+				window.addEventListener('scroll', scheduleDrift, { passive: true });
+			} else {
+				window.removeEventListener('scroll', scheduleDrift);
+				cancelAnimationFrame(frame);
+				frame = 0;
+			}
 		});
-	};
+		if (scene) scenes.observe(scene);
+		const layout = 'ResizeObserver' in window ? new ResizeObserver(measureScene) : undefined;
+		layout?.observe(document.body);
+		window.addEventListener('resize', measureScene, { passive: true });
+		document.fonts.ready.then(measureScene);
 
-	// A single frame per scroll event; CSS does the interpolation between states.
-	// Cards share their vertical reveal, so horizontal swipes stay fully readable.
-	window.addEventListener('scroll', schedule, { passive: true });
-	window.addEventListener('resize', schedule, { passive: true });
-	document.addEventListener('focusin', schedule);
-	document.addEventListener('focusout', schedule);
-	window.addEventListener('pageshow', () => update(true));
-	preference.addEventListener('change', () => {
-		enabled = !preference.matches;
-		if (enabled) update(true);
-		else showAll();
-	});
+		const revealFocus = () => {
+			for (const trigger of groups.keys()) {
+				if (trigger.contains(document.activeElement)) reveal(trigger, true);
+			}
+			for (const target of targets) {
+				if (!target.contains(document.activeElement)) continue;
+				const trigger = target.closest('[data-motion-group]') ?? target;
+				reveal(trigger, true);
+				// A focus arriving during an entrance finishes that transition at once.
+				target.dataset.motionImmediate = '';
+				target.dataset.motionState = 'visible';
+			}
+		};
+		document.addEventListener('focusin', revealFocus);
 
-	update(true);
-	document.fonts.ready.then(schedule);
+		const finish = () => {
+			active = false;
+			cancelAnimationFrame(frame);
+			clearTimeout(passedTimer);
+			entrances.disconnect();
+			scenes.disconnect();
+			layout?.disconnect();
+			groups.clear();
+			window.removeEventListener('scroll', scheduleDrift);
+			window.removeEventListener('resize', measureScene);
+			window.removeEventListener('pageshow', revealPassed);
+			window.removeEventListener('hashchange', revealPassed);
+			window.removeEventListener('scrollend', settle);
+			document.removeEventListener('focusin', revealFocus);
+			preference.removeEventListener('change', finish);
+			for (const target of targets) {
+				delete target.dataset.motionState;
+				delete target.dataset.motionImmediate;
+			}
+			scene?.style.removeProperty('--motion-progress');
+		};
+		// Once motion is disabled, do not hide or replay content later in the visit.
+		preference.addEventListener('change', finish, { once: true });
+	}
 </script>

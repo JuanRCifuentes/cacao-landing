@@ -1,18 +1,12 @@
 ---
-import { getEntry } from 'astro:content';
+import { getLandingSection } from '../../lib/content';
 
-const section = await getEntry('landingSections', 'newsletter');
-
-if (!section || section.data.type !== 'newsletter') {
-	throw new Error('Missing landing section content: newsletter');
-}
-
-const { heading, description, background, fields, submitLabel } = section.data;
+const { heading, description, background, fields, submitLabel } = await getLandingSection('newsletter', 'newsletter');
 ---
 
 <section id="newsletter" aria-labelledby="newsletter-heading" class="relative isolate flex min-h-svh items-center overflow-hidden py-24 text-white md:min-h-[120vh] md:py-36">
 	<div class="absolute inset-0 -z-20">
-		<img src={background.src} alt={background.alt} loading="lazy" class="h-full w-full object-cover object-center" />
+		<img src={background.src} alt={background.alt} loading="lazy" decoding="async" class="h-full w-full object-cover object-center" />
 	</div>
 	<div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.46)_52%,rgba(0,0,0,0.28)_100%)] md:bg-[linear-gradient(270deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.1)_48%,rgba(0,0,0,0.68)_100%)]"></div>
 

@@ -1,14 +1,14 @@
 ---
 import { getEntry } from 'astro:content';
+import { getLandingSection } from '../../lib/content';
 
-const section = await getEntry('landingSections', 'hero');
+const { eyebrow, cta, scrollLabel, scrollHref, image } = await getLandingSection('hero', 'hero');
 const footer = await getEntry('footer', 'main');
 
-if (!section || section.data.type !== 'hero' || !footer) {
-	throw new Error('Missing hero or brand content');
+if (!footer) {
+	throw new Error('Missing brand content');
 }
 
-const { eyebrow, cta, scrollLabel, scrollHref, image } = section.data;
 const { brand } = footer.data;
 ---
 
@@ -23,6 +23,7 @@ const { brand } = footer.data;
 			alt={image.alt}
 			fetchpriority="high"
 			loading="eager"
+			decoding="async"
 		/>
 	</div>
 	<div class="hero__shade" aria-hidden="true"></div>
@@ -50,15 +51,20 @@ const { brand } = footer.data;
 
 <style>
 	.hero {
-		--hero-tail: clamp(64px, 10svh, 112px);
+		--hero-tail: clamp(64px, 10vh, 112px);
 		position: relative;
 		isolation: isolate;
 		display: grid;
 		place-items: center;
+		min-height: calc(max(660px, 100vh) + var(--hero-tail));
 		min-height: calc(max(660px, 100svh) + var(--hero-tail));
 		padding: 160px 24px calc(120px + var(--hero-tail));
 		background: #16100b;
 		color: #f4f0e8;
+	}
+
+	@supports (height: 100svh) {
+		.hero { --hero-tail: clamp(64px, 10svh, 112px); }
 	}
 
 	.hero__media,
@@ -79,7 +85,7 @@ const { brand } = footer.data;
 		height: 100%;
 		object-fit: cover;
 		object-position: 55% center;
-		animation: hero-image-arrive 2.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation: hero-image-arrive 2.2s cubic-bezier(0.22, 1, 0.36, 1) backwards;
 	}
 
 	.hero__shade {
@@ -99,7 +105,7 @@ const { brand } = footer.data;
 		letter-spacing: 0.18em;
 		text-transform: uppercase;
 		text-shadow: 0 1px 3px rgb(22 16 11 / 90%), 0 2px 14px rgb(22 16 11 / 65%);
-		animation: hero-fade 0.9s ease-out 0.15s both;
+		animation: hero-fade 0.9s ease-out 0.15s backwards;
 	}
 
 	.hero__heading {
@@ -132,7 +138,7 @@ const { brand } = footer.data;
 		letter-spacing: 0.1em;
 		text-transform: uppercase;
 		transition: background-color 200ms, border-color 200ms;
-		animation: hero-fade 0.9s ease-out 0.65s both;
+		animation: hero-fade 0.9s ease-out 0.65s backwards;
 	}
 
 	.hero__cta:hover { background: rgb(234 214 174 / 12%); border-color: #ead6ae; }
@@ -167,7 +173,9 @@ const { brand } = footer.data;
 	@media (max-width: 600px) {
 		.hero { padding: 150px 24px calc(115px + var(--hero-tail)); }
 		.hero__media img {
-			translate: 0 32px;
+			position: relative;
+			top: 32px;
+			-webkit-mask-image: linear-gradient(to bottom, transparent, #000 32px);
 			mask-image: linear-gradient(to bottom, transparent, #000 32px);
 		}
 		.hero__eyebrow { margin-bottom: 22px; font-size: 11px; }
