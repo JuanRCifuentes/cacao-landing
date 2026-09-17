@@ -1,0 +1,103 @@
+---
+interface Props {
+	class?: string;
+	animated?: boolean;
+	title?: string;
+}
+
+const { class: className, animated = false, title = 'Cocoa' } = Astro.props;
+const titleId = `cocoa-logo-${Math.random().toString(36).slice(2)}`;
+---
+
+<svg
+	viewBox="0 0 120 160"
+	fill="none"
+	role="img"
+	aria-labelledby={titleId}
+	data-cocoa-logo-reveal={animated ? '' : undefined}
+	class:list={['cocoa-logo overflow-visible', animated && 'cocoa-logo--reveal', className]}
+>
+	<title id={titleId}>{title}</title>
+	<g stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke">
+		<path class="cocoa-logo__stroke cocoa-logo__shell" pathLength="1" d="M60 7C37 14 20 34 15 60C9 90 22 124 57 152C85 131 104 99 106 66C108 38 91 16 60 7Z" />
+		<path class="cocoa-logo__stroke cocoa-logo__ridge cocoa-logo__ridge--1" pathLength="1" d="M56 14C36 32 23 59 23 87C23 113 38 136 56 149" />
+		<path class="cocoa-logo__stroke cocoa-logo__ridge cocoa-logo__ridge--2" pathLength="1" d="M59 11C45 34 36 61 36 88C36 113 46 134 57 149" />
+		<path class="cocoa-logo__stroke cocoa-logo__ridge cocoa-logo__ridge--3" pathLength="1" d="M62 10C59 44 58 82 58 150" />
+		<path class="cocoa-logo__stroke cocoa-logo__ridge cocoa-logo__ridge--4" pathLength="1" d="M65 12C78 35 83 61 78 89C74 116 66 136 59 150" />
+		<path class="cocoa-logo__stroke cocoa-logo__ridge cocoa-logo__ridge--5" pathLength="1" d="M70 16C93 40 99 68 90 97C83 121 70 139 60 151" />
+	</g>
+</svg>
+
+<style>
+	.cocoa-logo--reveal {
+		opacity: 0;
+		transform: translateY(8px) scale(0.98);
+		transform-origin: 50% 50%;
+	}
+
+	.cocoa-logo--reveal.is-visible {
+		animation: cocoa-logo-arrive 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+	}
+
+	.cocoa-logo--reveal .cocoa-logo__stroke {
+		stroke-dasharray: 1;
+		stroke-dashoffset: 1;
+	}
+
+	.cocoa-logo--reveal.is-visible .cocoa-logo__stroke {
+		animation: cocoa-logo-draw 1s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+	}
+
+	.cocoa-logo--reveal.is-visible .cocoa-logo__shell {
+		animation-duration: 1.25s;
+		animation-delay: 0.08s;
+	}
+
+	.cocoa-logo--reveal.is-visible .cocoa-logo__ridge--1 { animation-delay: 0.42s; }
+	.cocoa-logo--reveal.is-visible .cocoa-logo__ridge--2 { animation-delay: 0.5s; }
+	.cocoa-logo--reveal.is-visible .cocoa-logo__ridge--3 { animation-delay: 0.58s; }
+	.cocoa-logo--reveal.is-visible .cocoa-logo__ridge--4 { animation-delay: 0.66s; }
+	.cocoa-logo--reveal.is-visible .cocoa-logo__ridge--5 { animation-delay: 0.74s; }
+
+	@keyframes cocoa-logo-draw {
+		to { stroke-dashoffset: 0; }
+	}
+
+	@keyframes cocoa-logo-arrive {
+		0% { opacity: 0; transform: translateY(8px) scale(0.98); }
+		35% { opacity: 1; }
+		100% { opacity: 1; transform: translateY(0) scale(1); }
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.cocoa-logo--reveal,
+		.cocoa-logo--reveal .cocoa-logo__stroke {
+			animation: none;
+			opacity: 1;
+			transform: none;
+			stroke-dashoffset: 0;
+		}
+	}
+</style>
+
+<script>
+	const logos = document.querySelectorAll<SVGElement>('[data-cocoa-logo-reveal]:not(.is-visible)');
+
+	if ('IntersectionObserver' in window) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+
+					entry.target.classList.add('is-visible');
+					observer.unobserve(entry.target);
+				}
+			},
+			{ threshold: 0.35 },
+		);
+
+		for (const logo of logos) observer.observe(logo);
+	} else {
+		for (const logo of logos) logo.classList.add('is-visible');
+	}
+</script>
