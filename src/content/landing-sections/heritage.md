@@ -1,10 +1,10 @@
 ---
 type: heritage
-eyebrow: From origin to craft
-heading: The Cocoa story
-description: From the hands that nurture every pod to the makers who reveal its character, Cocoa is shaped by origin, craft, and the people behind every bar.
+eyebrow: San Sebastián de Mariquita, Tolima
+heading: Nuestro origen
+description: En el corazón de nuestra cordillera, en San Sebastián de Mariquita, nace Origen Tolima. Cada grano es el resultado de un cuidado paciente y una tradición que honra la tierra, preserva el agua y protege los bosques nativos.
 cta:
-  label: Discover our story
+  label: Conoce nuestra historia
   href: "#"
 images:
   team: https://images.unsplash.com/photo-1763272594094-946e5be3ccbe?auto=format&fit=crop&w=1600&q=85

@@ -8,13 +8,13 @@ if (!footer) {
 	throw new Error('Missing site content: footer');
 }
 
-const { brand, tagline, navigation, policies, newsletter, socials, contact, trade, location, copyright } =
+const { brand, tagline, labels, navigation, policies, newsletter, socials, contact, trade, location, copyright } =
 	footer.data;
 ---
 
 <footer id="site-footer" class="relative z-30 bg-[#f4f0e8] pt-20 text-[#17140f] md:pt-40">
 	<div class="mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-10 lg:flex-row lg:gap-16 lg:px-10 lg:pt-20 lg:pb-10 xl:gap-28 xl:px-16">
-		<a href="#hero" aria-label={`${brand}, back to top`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
+		<a href="#hero" aria-label={`${brand}, ${labels.backToTop}`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
 			<span class="block w-full transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transform-none">
 				<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 			</span>
@@ -22,7 +22,7 @@ const { brand, tagline, navigation, policies, newsletter, socials, contact, trad
 
 		<div class="flex min-w-0 flex-1 flex-col justify-between gap-12 lg:pb-10">
 			<div class="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-10">
-				<nav aria-label="Footer navigation" class="min-w-0 flex-1">
+				<nav aria-label={labels.navigation} class="min-w-0 flex-1">
 					<ul class="flex flex-col gap-2">
 						{navigation.map((item) => (
 							<li>
@@ -48,7 +48,7 @@ const { brand, tagline, navigation, policies, newsletter, socials, contact, trad
 				</div>
 			</div>
 
-			<nav aria-label="Social media" class="flex flex-wrap gap-x-7 gap-y-3 text-xs font-medium uppercase tracking-[0.12em] lg:pt-14">
+			<nav aria-label={labels.socialMedia} class="flex flex-wrap gap-x-7 gap-y-3 text-xs font-medium uppercase tracking-[0.12em] lg:pt-14">
 				{socials.map((item) => (
 					<a href={item.href} class="transition-opacity hover:opacity-50">{item.label}</a>
 				))}
@@ -60,7 +60,8 @@ const { brand, tagline, navigation, policies, newsletter, socials, contact, trad
 
 	<div class="mx-auto grid w-full max-w-[1440px] gap-6 px-4 py-10 text-xs leading-[1.6] tracking-[-0.01em] sm:grid-cols-2 lg:grid-cols-5 lg:px-10 xl:px-16">
 		<div>
-			<a href={`mailto:${contact.email}`} class="border-b border-current pb-0.5">{contact.label}</a>
+			<p>{contact.label}</p>
+			<a href={contact.phone.href} class="border-b border-current pb-0.5">{contact.phone.label}</a>
 		</div>
 		<div>
 			<a href={`mailto:${contact.email}`} class="border-b border-transparent transition-colors hover:border-current">{contact.email}</a>
@@ -78,7 +79,7 @@ const { brand, tagline, navigation, policies, newsletter, socials, contact, trad
 	</div>
 
 	<div class="flex justify-center px-4 pb-10 lg:hidden">
-		<a href="#hero" aria-label={`${brand}, back to top`} class="block w-full max-w-[320px]">
+		<a href="#hero" aria-label={`${brand}, ${labels.backToTop}`} class="block w-full max-w-[320px]">
 			<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 		</a>
 	</div>

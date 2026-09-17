@@ -2,28 +2,28 @@
 type: hero
 eyebrow: Cacao de autor
 cta:
-  label: Discover our cacao
+  label: Descubre nuestro cacao
   href: "#products"
-scrollLabel: Scroll to discover
+scrollLabel: Desliza para descubrir
 scrollHref: "#products"
-contactLabel: Stay in touch
+contactLabel: Conectemos
 navigation:
-  - label: Home
+  - label: Inicio
     href: "#hero"
-  - label: Products
+  - label: Productos
     href: "#products"
-  - label: Our cacao
+  - label: Nuestro cacao
     href: "#pure-passion"
-  - label: Our story
+  - label: Nuestro origen
     href: "#heritage"
-  - label: Journal
+  - label: Novedades
     href: "#partnerships-news"
-  - label: Stay in touch
+  - label: Conectemos
     href: "#newsletter"
 image:
   src: /images/hero-cacao.webp
   smallSrc: /images/hero-cacao-960.webp
-  alt: Cacao pods and beans on a dark surface in warm light
+  alt: Mazorcas y granos de cacao sobre una superficie oscura bajo una luz cálida
   width: 1672
   height: 941
 ---

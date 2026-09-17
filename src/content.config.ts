@@ -26,6 +26,7 @@ const site = defineCollection({
 			closeLabel: z.string(),
 			dialogLabel: z.string(),
 			navigationLabel: z.string(),
+			homeLabel: z.string(),
 		}),
 	}),
 });
@@ -142,11 +143,16 @@ const footer = defineCollection({
 	schema: z.object({
 		brand: z.string(),
 		tagline: z.string(),
+		labels: z.object({
+			backToTop: z.string(),
+			navigation: z.string(),
+			socialMedia: z.string(),
+		}),
 		navigation: z.array(link),
 		policies: z.array(link),
 		newsletter: link,
 		socials: z.array(link),
-		contact: z.object({ label: z.string(), email: z.email() }),
+		contact: z.object({ label: z.string(), email: z.email(), phone: link }),
 		trade: z.object({ label: z.string(), email: z.email() }),
 		location: z.array(z.string()),
 		copyright: z.string(),
