@@ -38,8 +38,6 @@ const landingSections = defineCollection({
 			type: z.literal('hero'),
 			eyebrow: z.string(),
 			cta: link,
-			scrollLabel: z.string(),
-			scrollHref: z.string(),
 			contactLabel: z.string(),
 			navigation: z.array(link),
 			image: z.object({
