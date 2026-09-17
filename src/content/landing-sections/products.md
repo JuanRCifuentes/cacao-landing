@@ -2,7 +2,7 @@
 type: products
 eyebrow: Nuestros productos
 heading: Cacao a tu manera.
-description: Dos formas de disfrutar el cacao y hacer de cada taza un momento propio.
+description: Tres formas de disfrutar el cacao y hacer de cada taza un momento propio.
 products:
   - id: cacao-100
     name: 100% cacao
@@ -16,8 +16,8 @@ products:
     cta:
       label: Adquirir este cacao
       message: Hola, me gustaría hacer un pedido de cacao 100% de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios y las opciones de envío?
-  - id: cacao-80-panela
-    name: 80% cacao
+  - id: cacao-75-panela
+    name: 75% cacao
     subtitle: Con panela
     description: La intensidad del cacao se encuentra con el dulzor de la panela. El calor de una tradición que reconecta.
     image:
@@ -27,5 +27,17 @@ products:
       height: 800
     cta:
       label: Adquirir este cacao
-      message: Hola, me gustaría hacer un pedido de cacao 80% con panela de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios y las opciones de envío?
+      message: Hola, me gustaría hacer un pedido de cacao 75% con panela de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios y las opciones de envío?
+  - id: cacao-75-stevia
+    name: 75% cacao
+    subtitle: Con stevia
+    description: El carácter del cacao acompañado por el dulzor de la stevia. Una invitación a disfrutar cada sorbo con calma.
+    image:
+      src: https://pub-d09057114081496392499a9aa11104a3.r2.dev/03-rugged-weathered-wood.webp
+      alt: Piezas de cacao sobre una mesa de madera rústica
+      width: 1200
+      height: 800
+    cta:
+      label: Adquirir este cacao
+      message: Hola, me gustaría hacer un pedido de cacao 75% con stevia de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios y las opciones de envío?
 ---
