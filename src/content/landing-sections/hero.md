@@ -1,6 +1,6 @@
 ---
 type: hero
-eyebrow: Cacao de autor
+eyebrow: Un ritual propio
 cta:
   label: Descubre nuestro cacao
   href: "#products"
