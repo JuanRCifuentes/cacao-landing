@@ -1,13 +1,7 @@
 ---
-import { getEntry } from 'astro:content';
+import { getLandingSection } from '../../lib/content';
 
-const section = await getEntry('landingSections', 'pure-passion');
-
-if (!section || section.data.type !== 'purePassion') {
-	throw new Error('Missing landing section content: pure-passion');
-}
-
-const { eyebrow, heading, description, images } = section.data;
+const { eyebrow, heading, description, images } = await getLandingSection('pure-passion', 'purePassion');
 ---
 
 <section
@@ -27,38 +21,37 @@ const { eyebrow, heading, description, images } = section.data;
 			<p class="mt-8 text-sm leading-[1.65] tracking-[-0.01em] text-black/70">{description}</p>
 		</header>
 
-		<div class="mt-16 flex flex-col gap-16 lg:hidden">
+		<div class="passion__gallery mt-16 flex flex-col gap-16 lg:relative lg:mt-10 lg:block lg:h-[1500px] xl:h-[1650px]">
 			{images.map((image) => (
-				<figure class="mx-auto flex w-full max-w-[540px] flex-col" data-motion="image">
-					<div class="aspect-[3/4] overflow-hidden rounded-[2px] bg-black/5">
-						<img src={image.src} alt={image.alt} loading="lazy" class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]" />
+				<figure class="passion__figure mx-auto flex w-full max-w-[540px] flex-col lg:absolute lg:mx-0 lg:max-w-none" data-motion="image">
+					<div class="passion__frame aspect-[3/4] overflow-hidden rounded-[2px] bg-black/5">
+						<img
+							src={image.src}
+							alt={image.alt}
+							loading="lazy"
+							decoding="async"
+							class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+						/>
 					</div>
 					<figcaption class="mt-3 text-xs leading-[1.6] text-black/50">{image.caption}</figcaption>
 				</figure>
 			))}
 		</div>
-
-		<div class="relative mt-10 hidden h-[1500px] lg:block xl:h-[1650px]">
-			<figure class="absolute top-0 left-[58.333%] w-1/4" data-motion="image">
-				<div class="aspect-[161/215] overflow-hidden rounded-[2px] bg-black/5">
-					<img src={images[0].src} alt={images[0].alt} loading="lazy" class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]" />
-				</div>
-				<figcaption class="mt-3 text-xs leading-[1.6] text-black/50">{images[0].caption}</figcaption>
-			</figure>
-
-			<figure class="absolute top-[360px] left-[8.333%] w-1/3 xl:top-[390px]" data-motion="image">
-				<div class="aspect-[147/179] overflow-hidden rounded-[2px] bg-black/5">
-					<img src={images[1].src} alt={images[1].alt} loading="lazy" class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]" />
-				</div>
-				<figcaption class="mt-3 text-xs leading-[1.6] text-black/50">{images[1].caption}</figcaption>
-			</figure>
-
-			<figure class="absolute top-[760px] right-[4.166%] w-[41.666%] xl:top-[790px]" data-motion="image">
-				<div class="aspect-[551/735] overflow-hidden rounded-[2px] bg-black/5">
-					<img src={images[2].src} alt={images[2].alt} loading="lazy" class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]" />
-				</div>
-				<figcaption class="mt-3 text-xs leading-[1.6] text-black/50">{images[2].caption}</figcaption>
-			</figure>
-		</div>
 	</div>
 </section>
+
+<style>
+	@media (min-width: 1024px) {
+		.passion__figure:nth-child(1) { top: 0; left: 58.333%; width: 25%; }
+		.passion__figure:nth-child(1) .passion__frame { aspect-ratio: 161 / 215; }
+		.passion__figure:nth-child(2) { top: 360px; left: 8.333%; width: 33.333%; }
+		.passion__figure:nth-child(2) .passion__frame { aspect-ratio: 147 / 179; }
+		.passion__figure:nth-child(3) { top: 760px; right: 4.166%; width: 41.666%; }
+		.passion__figure:nth-child(3) .passion__frame { aspect-ratio: 551 / 735; }
+	}
+
+	@media (min-width: 1280px) {
+		.passion__figure:nth-child(2) { top: 390px; }
+		.passion__figure:nth-child(3) { top: 790px; }
+	}
+</style>

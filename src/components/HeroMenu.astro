@@ -1,12 +1,15 @@
 ---
+import type { CollectionEntry } from 'astro:content';
+
 interface Props {
 	navigation: Array<{ label: string; href: string }>;
 	brand: string;
 	tagline: string;
 	contactEmail: string;
+	labels: CollectionEntry<'site'>['data']['menu'];
 }
 
-const { navigation, brand, tagline, contactEmail } = Astro.props;
+const { navigation, brand, tagline, contactEmail, labels } = Astro.props;
 ---
 
 <div class="hero-menu" data-hero-menu>
@@ -20,18 +23,18 @@ const { navigation, brand, tagline, contactEmail } = Astro.props;
 		hidden
 	>
 		<span class="hero-menu__bars" aria-hidden="true"><span></span><span></span></span>
-		<span>Menu</span>
+		<span>{labels.openLabel}</span>
 	</button>
-	<noscript><a class="hero-menu__fallback" href="#site-footer">Menu</a></noscript>
+	<a class="hero-menu__fallback" data-menu-fallback href="#site-footer">{labels.openLabel}</a>
 
-	<dialog id="hero-navigation" class="hero-menu__dialog" aria-label="Main navigation">
+	<dialog id="hero-navigation" class="hero-menu__dialog" aria-label={labels.dialogLabel}>
 		<div class="hero-menu__top">
 			<span class="hero-menu__brand">{brand}</span>
 			<button class="hero-menu__close" type="button" data-menu-close autofocus>
-				<span>Close</span><span class="hero-menu__cross" aria-hidden="true"></span>
+				<span>{labels.closeLabel}</span><span class="hero-menu__cross" aria-hidden="true"></span>
 			</button>
 		</div>
-		<nav class="hero-menu__nav" aria-label="Main">
+		<nav class="hero-menu__nav" aria-label={labels.navigationLabel}>
 			<ul>
 				{navigation.map((link, index) => (
 					<li>
@@ -71,11 +74,12 @@ const { navigation, brand, tagline, contactEmail } = Astro.props;
 		text-decoration: none;
 		cursor: pointer;
 	}
-	.hero-menu__trigger[hidden] { display: none; }
+	.hero-menu__trigger[hidden],
+	.hero-menu__fallback[hidden] { display: none; }
 	.hero-menu__bars { display: grid; gap: 6px; width: 22px; }
 	.hero-menu__bars span { display: block; height: 1px; background: currentColor; }
-	.hero-menu__bars span:last-child { width: 16px; transition: width 180ms ease; }
-	.hero-menu__trigger:hover .hero-menu__bars span:last-child { width: 22px; }
+	.hero-menu__bars span:last-child { transform: scaleX(0.7273); transform-origin: left; transition: transform 180ms ease; }
+	.hero-menu__trigger:hover .hero-menu__bars span:last-child { transform: scaleX(1); }
 	.hero-menu__dialog {
 		position: fixed;
 		inset: 0;
@@ -92,6 +96,7 @@ const { navigation, brand, tagline, contactEmail } = Astro.props;
 		overflow-y: auto;
 		overscroll-behavior: contain;
 	}
+	.hero-menu__dialog:not([open]) { display: none; }
 	.hero-menu__dialog[open] { display: flex; flex-direction: column; animation: hero-menu-enter 220ms ease-out; }
 	.hero-menu__dialog::backdrop { background: #261c17; }
 	.hero-menu__top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
@@ -126,6 +131,7 @@ const { navigation, brand, tagline, contactEmail } = Astro.props;
 			const trigger = menu.querySelector<HTMLButtonElement>('[data-menu-open]');
 			const dialog = menu.querySelector<HTMLDialogElement>('dialog');
 			const closeButton = menu.querySelector<HTMLButtonElement>('[data-menu-close]');
+			const fallback = menu.querySelector<HTMLAnchorElement>('[data-menu-fallback]');
 			if (!trigger || !dialog || !closeButton || typeof dialog.showModal !== 'function') continue;
 
 			let previousRootOverflow = '';
@@ -146,14 +152,14 @@ const { navigation, brand, tagline, contactEmail } = Astro.props;
 				trigger.setAttribute('aria-expanded', 'false');
 				trigger.focus({ preventScroll: true });
 			});
-			dialog.querySelectorAll('a').forEach((link) => {
-				link.addEventListener('click', () => dialog.close());
+			dialog.addEventListener('click', (event) => {
+				if (event.target instanceof Element && event.target.closest('a')) dialog.close();
 			});
 			menu.dataset.ready = 'true';
+			if (fallback) fallback.hidden = true;
 			trigger.hidden = false;
 		}
 	}
 
 	initializeHeroMenus();
-	document.addEventListener('astro:page-load', initializeHeroMenus);
 </script>

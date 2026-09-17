@@ -1,21 +1,22 @@
 ---
 import { getEntry } from 'astro:content';
+import { getLandingSection } from '../lib/content';
 import CocoaLogo from './CocoaLogo.astro';
 import HeroMenu from './HeroMenu.astro';
 
-const section = await getEntry('landingSections', 'hero');
+const { contactLabel, navigation } = await getLandingSection('hero', 'hero');
 const footer = await getEntry('footer', 'main');
-if (!section || section.data.type !== 'hero' || !footer) {
+const site = await getEntry('site', 'main');
+if (!footer || !site) {
 	throw new Error('Missing navigation or brand content');
 }
 
-const { contactLabel, navigation } = section.data;
 const { brand, tagline, contact } = footer.data;
 ---
 
 <header class="site-header" data-site-header data-scrolled>
 	<div class="site-header__inner">
-		<HeroMenu navigation={navigation} brand={brand} tagline={tagline} contactEmail={contact.email} />
+		<HeroMenu navigation={navigation} brand={brand} tagline={tagline} contactEmail={contact.email} labels={site.data.menu} />
 		<a class="site-header__brand" data-hero-brand href="#hero" aria-label={`${brand}, home`}>
 			<CocoaLogo showWordmark={false} class="w-full" />
 		</a>
@@ -98,16 +99,32 @@ const { brand, tagline, contact } = footer.data;
 <script>
 	const header = document.querySelector<HTMLElement>('[data-site-header]');
 	if (header) {
-		const updateScroll = () => header.toggleAttribute('data-scrolled', window.scrollY > 0);
-		const updateHeight = () => {
-			document.documentElement.style.setProperty('--site-header-height', `${header.getBoundingClientRect().height}px`);
+		let scrolled = header.hasAttribute('data-scrolled');
+		let height = 0;
+		const updateScroll = () => {
+			const next = window.scrollY > 0;
+			if (next === scrolled) return;
+			scrolled = next;
+			header.toggleAttribute('data-scrolled', next);
+		};
+		const updateHeight = (next: number) => {
+			if (next === height) return;
+			height = next;
+			document.documentElement.style.setProperty('--site-header-height', `${height}px`);
 		};
 
 		updateScroll();
-		updateHeight();
+		updateHeight(header.getBoundingClientRect().height);
 		window.addEventListener('scroll', updateScroll, { passive: true });
 		window.addEventListener('pageshow', updateScroll);
-		const observer = new ResizeObserver(updateHeight);
-		observer.observe(header);
+		if (typeof ResizeObserver !== 'undefined') {
+			const observer = new ResizeObserver(([entry]) => {
+				// Use the size already measured by the browser instead of forcing layout.
+				updateHeight(entry.borderBoxSize?.[0]?.blockSize ?? header.getBoundingClientRect().height);
+			});
+			observer.observe(header);
+		} else {
+			window.addEventListener('resize', () => updateHeight(header.getBoundingClientRect().height));
+		}
 	}
 </script>

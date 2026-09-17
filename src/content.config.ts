@@ -2,17 +2,34 @@ import { defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
+const link = z.object({ label: z.string(), href: z.string() });
+
+const site = defineCollection({
+	loader: glob({ pattern: '*.json', base: './src/content/site' }),
+	schema: z.object({
+		language: z.string().min(2),
+		title: z.string().min(1),
+		description: z.string().min(1),
+		menu: z.object({
+			openLabel: z.string(),
+			closeLabel: z.string(),
+			dialogLabel: z.string(),
+			navigationLabel: z.string(),
+		}),
+	}),
+});
+
 const landingSections = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/landing-sections' }),
 	schema: z.discriminatedUnion('type', [
 		z.object({
 			type: z.literal('hero'),
 			eyebrow: z.string(),
-			cta: z.object({ label: z.string(), href: z.string() }),
+			cta: link,
 			scrollLabel: z.string(),
 			scrollHref: z.string(),
 			contactLabel: z.string(),
-			navigation: z.array(z.object({ label: z.string(), href: z.string() })),
+			navigation: z.array(link),
 			image: z.object({
 				src: z.string(),
 				smallSrc: z.string(),
@@ -37,7 +54,7 @@ const landingSections = defineCollection({
 					width: z.number().positive(),
 					height: z.number().positive(),
 				}),
-				cta: z.object({ label: z.string(), href: z.string() }),
+				cta: link,
 			})).min(1),
 		}),
 		z.object({
@@ -45,10 +62,7 @@ const landingSections = defineCollection({
 			eyebrow: z.string(),
 			heading: z.string(),
 			description: z.string(),
-			cta: z.object({
-				label: z.string(),
-				href: z.string(),
-			}),
+			cta: link,
 			images: z.object({
 				team: z.url(),
 				coffee: z.url(),
@@ -85,7 +99,7 @@ const landingSections = defineCollection({
 		z.object({
 			type: z.literal('partnershipsNews'),
 			heading: z.string(),
-			cta: z.object({ label: z.string(), href: z.string() }),
+			cta: link,
 			articles: z.array(
 				z.object({
 					date: z.string(),
@@ -117,15 +131,15 @@ const footer = defineCollection({
 	schema: z.object({
 		brand: z.string(),
 		tagline: z.string(),
-		navigation: z.array(z.object({ label: z.string(), href: z.string() })),
-		policies: z.array(z.object({ label: z.string(), href: z.string() })),
-		newsletter: z.object({ label: z.string(), href: z.string() }),
-		socials: z.array(z.object({ label: z.string(), href: z.string() })),
-		contact: z.object({ label: z.string(), email: z.string().email() }),
-		trade: z.object({ label: z.string(), email: z.string().email() }),
+		navigation: z.array(link),
+		policies: z.array(link),
+		newsletter: link,
+		socials: z.array(link),
+		contact: z.object({ label: z.string(), email: z.email() }),
+		trade: z.object({ label: z.string(), email: z.email() }),
 		location: z.array(z.string()),
 		copyright: z.string(),
 	}),
 });
 
-export const collections = { landingSections, footer };
+export const collections = { site, landingSections, footer };

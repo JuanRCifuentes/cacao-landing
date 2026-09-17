@@ -1,0 +1,11 @@
+{
+	"language": "en",
+	"title": "Origen Tolima — Cacao de autor",
+	"description": "A moment to savour. Discover Origen Tolima and the world of cacao.",
+	"menu": {
+		"openLabel": "Menu",
+		"closeLabel": "Close",
+		"dialogLabel": "Main navigation",
+		"navigationLabel": "Main"
+	}
+}
