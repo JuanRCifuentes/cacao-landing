@@ -6,6 +6,22 @@ const landingSections = defineCollection({
 	loader: glob({ pattern: '**/*.md', base: './src/content/landing-sections' }),
 	schema: z.discriminatedUnion('type', [
 		z.object({
+			type: z.literal('hero'),
+			eyebrow: z.string(),
+			heading: z.array(z.string()).length(2),
+			cta: z.object({ label: z.string(), href: z.string() }),
+			scrollLabel: z.string(),
+			contactLabel: z.string(),
+			navigation: z.array(z.object({ label: z.string(), href: z.string() })),
+			image: z.object({
+				src: z.string(),
+				smallSrc: z.string(),
+				alt: z.string(),
+				width: z.number().positive(),
+				height: z.number().positive(),
+			}),
+		}),
+		z.object({
 			type: z.literal('heritage'),
 			eyebrow: z.string(),
 			heading: z.string(),

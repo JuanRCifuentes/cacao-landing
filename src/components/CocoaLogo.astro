@@ -6,6 +6,8 @@ interface Props {
 	animated?: boolean;
 	brand?: string;
 	tagline?: string;
+	showTagline?: boolean;
+	revealOnLoad?: boolean;
 }
 
 const {
@@ -13,16 +15,18 @@ const {
 	animated = false,
 	brand = 'Origen Tolima',
 	tagline = 'Cacao de autor un legado de bienestar',
+	showTagline = true,
+	revealOnLoad = false,
 } = Astro.props;
 ---
 
 <span
-	data-cocoa-logo-reveal={animated ? '' : undefined}
-	class:list={['cocoa-logo', className]}
+	data-cocoa-logo-reveal={animated && !revealOnLoad ? '' : undefined}
+	class:list={['cocoa-logo', animated && revealOnLoad && 'is-pending is-visible', className]}
 >
 	<CacaoPod aria-hidden="true" focusable="false" class="cocoa-logo__mark" />
 	<span class="cocoa-logo__wordmark">{brand}</span>
-	<span class="cocoa-logo__tagline">{tagline}</span>
+	{showTagline && <span class="cocoa-logo__tagline">{tagline}</span>}
 </span>
 
 <style>

@@ -1,5 +1,6 @@
 ---
 import Hero from '../components/sections/Hero.astro';
+import SiteIntro from '../components/SiteIntro.astro';
 import PurePassion from '../components/sections/PurePassion.astro';
 import Video from '../components/sections/Video.astro';
 import Heritage from '../components/sections/Heritage.astro';
@@ -15,18 +16,34 @@ import '../styles/global.css';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
+		<script is:inline>
+			// Opt in before first paint; without JS the page remains immediately usable.
+			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && !location.hash &&
+				performance.getEntriesByType('navigation')[0]?.type !== 'back_forward') {
+				document.documentElement.dataset.intro = 'showing';
+				// Independent fallback if the main script or an asset fails to load.
+				window.setTimeout(() => {
+					delete document.documentElement.dataset.intro;
+				}, 4500);
+			}
+		</script>
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
+		<meta name="description" content="A moment to savour. Discover Origen Tolima and the world of cacao." />
+		<link rel="preload" href="/fonts/abril-fatface-latin.woff2" as="font" type="font/woff2" crossorigin />
+		<title>Origen Tolima — Cacao de autor</title>
 	</head>
 	<body>
-		<main>
-			<Hero />
-			<PurePassion />
-			<Video />
-			<Heritage />
-			<PartnershipsNews />
-			<ExclusiveUpdates />
-		</main>
-		<Footer />
+		<SiteIntro />
+		<div data-site-content>
+			<main>
+				<Hero />
+				<PurePassion />
+				<Video />
+				<Heritage />
+				<PartnershipsNews />
+				<ExclusiveUpdates />
+			</main>
+			<Footer />
+		</div>
 	</body>
 </html>

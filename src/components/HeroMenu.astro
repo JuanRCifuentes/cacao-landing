@@ -1,0 +1,159 @@
+---
+interface Props {
+	navigation: Array<{ label: string; href: string }>;
+	brand: string;
+	tagline: string;
+	contactEmail: string;
+}
+
+const { navigation, brand, tagline, contactEmail } = Astro.props;
+---
+
+<div class="hero-menu" data-hero-menu>
+	<button
+		class="hero-menu__trigger"
+		type="button"
+		aria-haspopup="dialog"
+		aria-controls="hero-navigation"
+		aria-expanded="false"
+		data-menu-open
+		hidden
+	>
+		<span class="hero-menu__bars" aria-hidden="true"><span></span><span></span></span>
+		<span>Menu</span>
+	</button>
+	<noscript><a class="hero-menu__fallback" href="#site-footer">Menu</a></noscript>
+
+	<dialog id="hero-navigation" class="hero-menu__dialog" aria-label="Main navigation">
+		<div class="hero-menu__top">
+			<span class="hero-menu__brand">{brand}</span>
+			<button class="hero-menu__close" type="button" data-menu-close autofocus>
+				<span>Close</span><span class="hero-menu__cross" aria-hidden="true"></span>
+			</button>
+		</div>
+		<nav class="hero-menu__nav" aria-label="Main">
+			<ul>
+				{navigation.map((link, index) => (
+					<li>
+						<a href={link.href}>
+							<span class="hero-menu__index" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+							<span>{link.label}</span>
+						</a>
+					</li>
+				))}
+			</ul>
+		</nav>
+		<div class="hero-menu__bottom">
+			<span>{tagline}</span>
+			<a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+		</div>
+	</dialog>
+</div>
+
+<style>
+	.hero-menu { justify-self: start; color: inherit; }
+	.hero-menu__trigger,
+	.hero-menu__close,
+	.hero-menu__fallback {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.8rem;
+		min-height: 44px;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		color: inherit;
+		font: inherit;
+		font-size: 0.7rem;
+		font-weight: 500;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		text-decoration: none;
+		cursor: pointer;
+	}
+	.hero-menu__trigger[hidden] { display: none; }
+	.hero-menu__bars { display: grid; gap: 6px; width: 22px; }
+	.hero-menu__bars span { display: block; height: 1px; background: currentColor; }
+	.hero-menu__bars span:last-child { width: 16px; transition: width 180ms ease; }
+	.hero-menu__trigger:hover .hero-menu__bars span:last-child { width: 22px; }
+	.hero-menu__dialog {
+		position: fixed;
+		inset: 0;
+		width: 100%;
+		height: 100vh;
+		height: 100dvh;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		padding: clamp(1.3rem, 3.5vw, 3.5rem) clamp(1.4rem, 5vw, 5rem);
+		border: 0;
+		background: #261c17;
+		color: #f4f0e8;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+	}
+	.hero-menu__dialog[open] { display: flex; flex-direction: column; animation: hero-menu-enter 220ms ease-out; }
+	.hero-menu__dialog::backdrop { background: #261c17; }
+	.hero-menu__top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+	.hero-menu__brand { font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(1.25rem, 2vw, 1.7rem); letter-spacing: -0.035em; }
+	.hero-menu__close { gap: 1rem; }
+	.hero-menu__cross { position: relative; width: 19px; height: 19px; }
+	.hero-menu__cross::before,
+	.hero-menu__cross::after { content: ''; position: absolute; top: 9px; left: 0; width: 19px; height: 1px; background: currentColor; transform: rotate(45deg); }
+	.hero-menu__cross::after { transform: rotate(-45deg); }
+	.hero-menu__nav { display: flex; flex: 1; align-items: center; padding: 3rem 0; }
+	.hero-menu__nav ul { display: grid; gap: 0.65rem; margin: 0; padding: 0; list-style: none; }
+	.hero-menu__nav a { display: flex; align-items: baseline; gap: clamp(1.2rem, 3vw, 3rem); width: fit-content; color: inherit; font-family: Georgia, serif; font-size: clamp(2.3rem, 5.6vw, 5.75rem); line-height: 1.12; letter-spacing: -0.045em; text-decoration: none; transition: color 180ms ease; }
+	.hero-menu__nav a:hover { color: #c8a378; }
+	.hero-menu__index { min-width: 1.2rem; color: #b79d88; font-family: Arial, sans-serif; font-size: 0.65rem; letter-spacing: 0.08em; }
+	.hero-menu__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem; padding-top: 1.4rem; border-top: 1px solid rgb(244 240 232 / 20%); font-size: 0.75rem; letter-spacing: 0.03em; }
+	.hero-menu__bottom > span { color: #c1b4a7; }
+	.hero-menu__bottom a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 0.3em; }
+	.hero-menu button:focus-visible,
+	.hero-menu a:focus-visible { outline: 1px solid currentColor; outline-offset: 6px; }
+	@keyframes hero-menu-enter { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+	@media (prefers-reduced-motion: reduce) {
+		.hero-menu__dialog[open] { animation: none; }
+		.hero-menu__nav a,
+		.hero-menu__bars span:last-child { transition: none; }
+	}
+</style>
+
+<script>
+	function initializeHeroMenus() {
+		for (const menu of document.querySelectorAll<HTMLElement>('[data-hero-menu]')) {
+			if (menu.dataset.ready) continue;
+			const trigger = menu.querySelector<HTMLButtonElement>('[data-menu-open]');
+			const dialog = menu.querySelector<HTMLDialogElement>('dialog');
+			const closeButton = menu.querySelector<HTMLButtonElement>('[data-menu-close]');
+			if (!trigger || !dialog || !closeButton || typeof dialog.showModal !== 'function') continue;
+
+			let previousRootOverflow = '';
+			let previousBodyOverflow = '';
+			trigger.addEventListener('click', () => {
+				if (dialog.open) return;
+				previousRootOverflow = document.documentElement.style.overflow;
+				previousBodyOverflow = document.body.style.overflow;
+				dialog.showModal();
+				document.documentElement.style.overflow = 'hidden';
+				document.body.style.overflow = 'hidden';
+				trigger.setAttribute('aria-expanded', 'true');
+			});
+			closeButton.addEventListener('click', () => dialog.close());
+			dialog.addEventListener('close', () => {
+				document.documentElement.style.overflow = previousRootOverflow;
+				document.body.style.overflow = previousBodyOverflow;
+				trigger.setAttribute('aria-expanded', 'false');
+				trigger.focus({ preventScroll: true });
+			});
+			dialog.querySelectorAll('a').forEach((link) => {
+				link.addEventListener('click', () => dialog.close());
+			});
+			menu.dataset.ready = 'true';
+			trigger.hidden = false;
+		}
+	}
+
+	initializeHeroMenus();
+	document.addEventListener('astro:page-load', initializeHeroMenus);
+</script>
