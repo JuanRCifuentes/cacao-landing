@@ -1,10 +1,11 @@
 ---
 import { getLandingSection } from '../../lib/content';
+import PackagingPattern from '../PackagingPattern.astro';
 
 const { eyebrow, heading, description, products } = await getLandingSection('products', 'products');
 ---
 
-<section id="products" class="products" aria-labelledby="products-heading">
+<section id="products" class="products relative" aria-labelledby="products-heading">
 	<div class="products__inner">
 		<header class="products__header" data-motion="rise">
 			<div>
@@ -46,6 +47,7 @@ const { eyebrow, heading, description, products } = await getLandingSection('pro
 			</ul>
 		</div>
 	</div>
+	<PackagingPattern class="absolute inset-x-0 bottom-0 h-8 border-t border-[#c6ab86]/10 text-[#c6ab86]/40 md:h-11 md:[--pattern-size:480px]" />
 </section>
 
 <style>

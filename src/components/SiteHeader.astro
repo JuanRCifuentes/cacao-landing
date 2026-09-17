@@ -3,6 +3,7 @@ import { getEntry } from 'astro:content';
 import { getLandingSection } from '../lib/content';
 import CocoaLogo from './CocoaLogo.astro';
 import HeroMenu from './HeroMenu.astro';
+import PackagingPattern from './PackagingPattern.astro';
 
 const { contactLabel, navigation } = await getLandingSection('hero', 'hero');
 const footer = await getEntry('footer', 'main');
@@ -27,10 +28,15 @@ const { brand, tagline, contact } = footer.data;
 			</svg>
 		</a>
 	</div>
+	<div class="site-header__trim pointer-events-none" aria-hidden="true">
+		<PackagingPattern class="h-full w-full text-[#c6ab86]/35 [--pattern-size:192px] md:[--pattern-size:240px]" />
+	</div>
 </header>
 
 <style>
 	.site-header {
+		--header-padding-y: 24px;
+		--header-trim-height: 12px;
 		position: fixed;
 		z-index: 50;
 		inset: 0 0 auto;
@@ -53,13 +59,20 @@ const { brand, tagline, contact } = footer.data;
 	}
 
 	.site-header[data-scrolled]::before { opacity: 1; }
+	.site-header__trim {
+		height: var(--header-trim-height);
+		opacity: 0;
+		transition: opacity 240ms ease;
+	}
+	.site-header[data-scrolled] .site-header__trim { opacity: 1; }
 	.site-header__inner {
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
 		align-items: center;
 		max-width: 1536px;
 		margin-inline: auto;
-		padding: 24px clamp(24px, 4vw, 64px);
+		/* Center navigation in its own row and reserve space for the patterned edge. */
+		padding: calc(var(--header-padding-y) - var(--header-trim-height) / 2) clamp(24px, 4vw, 64px);
 	}
 
 	.site-header__brand { display: grid; place-items: center; width: 44px; min-height: 44px; }
@@ -79,7 +92,8 @@ const { brand, tagline, contact } = footer.data;
 	.site-header a:focus-visible { outline: 2px solid currentColor; outline-offset: 6px; }
 
 	@media (max-width: 600px) {
-		.site-header__inner { padding: 20px 24px; }
+		.site-header { --header-padding-y: 20px; }
+		.site-header__inner { padding-inline: 24px; }
 		.site-header__contact { justify-content: center; width: 44px; }
 		.site-header__contact span {
 			position: absolute;
@@ -91,8 +105,13 @@ const { brand, tagline, contact } = footer.data;
 		}
 	}
 
+	@media (min-width: 768px) {
+		.site-header { --header-trim-height: 14px; }
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.site-header::before { transition: none; }
+		.site-header::before,
+		.site-header__trim { transition: none; }
 	}
 </style>
 

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="240" viewBox="0 0 480 240" fill="none">
+  <defs>
+    <clipPath id="cell"><path d="M0 0h120v120H0z"/></clipPath>
+    <g id="rings" clip-path="url(#cell)">
+      <circle cx="60" cy="60" r="8"/>
+      <circle cx="60" cy="60" r="18"/>
+      <circle cx="60" cy="60" r="28"/>
+      <circle cx="60" cy="60" r="38"/>
+      <circle cx="60" cy="60" r="48"/>
+      <circle cx="60" cy="60" r="58"/>
+      <circle cx="60" cy="60" r="68"/>
+      <circle cx="60" cy="60" r="78"/>
+    </g>
+    <g id="squares" clip-path="url(#cell)">
+      <path d="M52 52h16v16H52z M42 42h36v36H42z M32 32h56v56H32z M22 22h76v76H22z M12 12h96v96H12z M2 2h116v116H2z"/>
+    </g>
+    <g id="diamonds" clip-path="url(#cell)">
+      <path d="m60 49 11 11-11 11-11-11z m0-14 25 25-25 25-25-25z m0-14 39 39-39 39-39-39z m0-14 53 53-53 53L7 60z m0-14 67 67-67 67L-7 60z m0-14 81 81-81 81-81-81z m0-14 95 95-95 95-95-95z m0-14 109 109L60 169-49 60z"/>
+    </g>
+  </defs>
+  <!-- Offset rows form a continuous repeat, including the half motifs at the edges. -->
+  <g stroke="#000" stroke-width="2.4" stroke-linecap="butt" stroke-linejoin="miter">
+    <use href="#rings" x="0" y="60"/>
+    <use href="#squares" x="120" y="60"/>
+    <use href="#diamonds" x="240" y="60"/>
+    <use href="#squares" x="360" y="60"/>
+    <use href="#rings" x="-60" y="-60"/>
+    <use href="#diamonds" x="60" y="-60"/>
+    <use href="#rings" x="180" y="-60"/>
+    <use href="#squares" x="300" y="-60"/>
+    <use href="#rings" x="420" y="-60"/>
+    <use href="#rings" x="-60" y="180"/>
+    <use href="#diamonds" x="60" y="180"/>
+    <use href="#rings" x="180" y="180"/>
+    <use href="#squares" x="300" y="180"/>
+    <use href="#rings" x="420" y="180"/>
+  </g>
+</svg>

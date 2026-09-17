@@ -1,0 +1,28 @@
+---
+interface Props {
+	class?: string;
+	fade?: boolean;
+}
+
+const { class: className, fade = false } = Astro.props;
+---
+
+<div
+	aria-hidden="true"
+	class:list={['packaging-pattern pointer-events-none overflow-hidden select-none', fade && 'packaging-pattern--fade', className]}
+>
+	<span class="packaging-pattern__ink block h-full w-full bg-current"></span>
+</div>
+
+<style>
+	/* A single cached vector tile; Tailwind controls placement, height and ink color. */
+	.packaging-pattern__ink {
+		-webkit-mask: url('/packaging-pattern.svg') center / var(--pattern-size, 360px) auto repeat;
+		mask: url('/packaging-pattern.svg') center / var(--pattern-size, 360px) auto repeat;
+	}
+
+	.packaging-pattern--fade {
+		-webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+		mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+	}
+</style>
