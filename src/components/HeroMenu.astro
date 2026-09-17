@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import PackagingPattern from './PackagingPattern.astro';
 
 interface Props {
 	navigation: Array<{ label: string; href: string }>;
@@ -28,6 +29,9 @@ const { navigation, brand, tagline, contactEmail, labels } = Astro.props;
 	<a class="hero-menu__fallback" data-menu-fallback href="#site-footer">{labels.openLabel}</a>
 
 	<dialog id="hero-navigation" class="hero-menu__dialog" aria-label={labels.dialogLabel}>
+		<div class="hero-menu__pattern" aria-hidden="true">
+			<PackagingPattern class="h-full w-full text-[#c6ab86]/15 [--pattern-size:640px]" />
+		</div>
 		<div class="hero-menu__top">
 			<span class="hero-menu__brand">{brand}</span>
 			<button class="hero-menu__close" type="button" data-menu-close autofocus>
@@ -105,6 +109,7 @@ const { navigation, brand, tagline, contactEmail, labels } = Astro.props;
 	.hero-menu__dialog::backdrop { background: #261c17; }
 	.hero-menu__dialog[open]::backdrop { animation: hero-menu-surface 260ms ease-out backwards; }
 	.hero-menu__top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
+	.hero-menu__pattern { display: none; }
 	.hero-menu__brand { font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(1.25rem, 2vw, 1.7rem); letter-spacing: -0.035em; }
 	.hero-menu__close { gap: 1rem; }
 	.hero-menu__cross { position: relative; width: 19px; height: 19px; }
@@ -131,6 +136,26 @@ const { navigation, brand, tagline, contactEmail, labels } = Astro.props;
 	.hero-menu__dialog[open] .hero-menu__bottom { animation-delay: 320ms; }
 	.hero-menu__dialog[open] .hero-menu__nav li:focus-within,
 	.hero-menu__dialog[open] .hero-menu__bottom:focus-within { animation: none; }
+
+	@media (max-width: 767px) {
+		.hero-menu__dialog {
+			background: radial-gradient(ellipse at 100% 45%, rgb(198 171 134 / 5%), transparent 70%), #261c17;
+		}
+		.hero-menu__pattern {
+			display: block;
+			position: absolute;
+			inset: 0;
+			pointer-events: none;
+			/* Let the large motifs emerge at the edge, keeping the text area quiet. */
+			-webkit-mask-image: radial-gradient(ellipse 90% 70% at 110% 45%, #000 5%, rgb(0 0 0 / 45%) 50%, transparent 85%);
+			mask-image: radial-gradient(ellipse 90% 70% at 110% 45%, #000 5%, rgb(0 0 0 / 45%) 50%, transparent 85%);
+		}
+		.hero-menu__top,
+		.hero-menu__nav,
+		.hero-menu__bottom {
+			position: relative;
+		}
+	}
 
 	@keyframes hero-menu-surface {
 		from { opacity: 0; }
