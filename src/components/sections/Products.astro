@@ -1,8 +1,16 @@
 ---
+import { getEntry } from 'astro:content';
 import { getLandingSection } from '../../lib/content';
 import PackagingPattern from '../PackagingPattern.astro';
 
 const { eyebrow, heading, description, products } = await getLandingSection('products', 'products');
+const footer = await getEntry('footer', 'main');
+if (!footer) throw new Error('Missing product contact content');
+const orderUrl = (message: string) => {
+	const url = new URL(footer.data.contact.phone.href);
+	url.searchParams.set('text', message);
+	return url.href;
+};
 ---
 
 <section id="products" class="products relative" aria-labelledby="products-heading">
@@ -34,7 +42,7 @@ const { eyebrow, heading, description, products } = await getLandingSection('pro
 								<p class="product__subtitle">{product.subtitle}</p>
 								<h3 id={`product-${product.id}`}>{product.name}</h3>
 								<p class="product__description">{product.description}</p>
-								<a class="product__cta" href={product.cta.href} aria-label={`${product.cta.label}: ${product.name}`}>
+								<a class="product__cta" href={orderUrl(product.cta.message)} aria-label={`${product.cta.label}: ${product.name}, ${product.subtitle} · WhatsApp`}>
 									<span>{product.cta.label}</span>
 									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 										<path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.25" />
@@ -113,20 +121,23 @@ const { eyebrow, heading, description, products } = await getLandingSection('pro
 		display: inline-flex;
 		align-items: center;
 		justify-content: space-between;
-		gap: 24px;
+		gap: 20px;
 		min-height: 44px;
 		margin-top: auto;
-		border-bottom: 1px solid rgb(244 240 232 / 30%);
-		font-size: 10px;
+		padding: 12px 16px;
+		border: 1px solid rgb(198 171 134 / 60%);
+		border-radius: 2px;
+		color: #ead6ae;
+		font-size: 11px;
 		font-weight: 500;
 		line-height: 1.4;
-		letter-spacing: 0.12em;
+		letter-spacing: 0.08em;
 		text-transform: uppercase;
-		transition: color 180ms, border-color 180ms;
+		transition: color 180ms ease, border-color 180ms ease, background-color 180ms ease;
 	}
 
 	.product__cta svg { width: 18px; height: 18px; flex-shrink: 0; }
-	.product__cta:hover { color: #e7c681; border-color: #e7c681; }
+	.product__cta:hover { color: #f4f0e8; border-color: #ead6ae; background-color: rgb(198 171 134 / 8%); }
 	.product__cta:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
 
 	@media (max-width: 767px) {

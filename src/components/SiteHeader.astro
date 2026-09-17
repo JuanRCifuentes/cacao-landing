@@ -21,7 +21,7 @@ const { brand, tagline, contact } = footer.data;
 		<a class="site-header__brand" data-hero-brand href="#hero" aria-label={`${brand}, ${site.data.menu.homeLabel}`}>
 			<CocoaLogo showWordmark={false} class="w-full" />
 		</a>
-		<a class="site-header__contact" href="#newsletter">
+		<a class="site-header__contact" href={contact.phone.href} aria-label={`${contactLabel} por WhatsApp`}>
 			<span>{contactLabel}</span>
 			<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 				<path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.25" />

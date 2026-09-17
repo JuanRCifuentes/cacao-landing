@@ -66,7 +66,10 @@ const landingSections = defineCollection({
 					width: z.number().positive(),
 					height: z.number().positive(),
 				}),
-				cta: link,
+				cta: z.object({
+					label: z.string().min(1),
+					message: z.string().min(1),
+				}),
 			})).min(1),
 		}),
 		z.object({

@@ -19,7 +19,7 @@ navigation:
   - label: Novedades
     href: "#partnerships-news"
   - label: Conectemos
-    href: "#newsletter"
+    href: "https://wa.me/573195048115"
 image:
   src: /images/hero-cacao.webp
   smallSrc: /images/hero-cacao-960.webp

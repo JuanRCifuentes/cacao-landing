@@ -14,8 +14,8 @@ products:
       width: 1200
       height: 800
     cta:
-      label: Recibir novedades
-      href: "#newsletter"
+      label: Adquirir este cacao
+      message: Hola, me gustaría hacer un pedido de cacao 100% de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios y las opciones de envío?
   - id: cacao-80-panela
     name: 80% cacao
     subtitle: Con panela
@@ -26,6 +26,6 @@ products:
       width: 1200
       height: 800
     cta:
-      label: Recibir novedades
-      href: "#newsletter"
+      label: Adquirir este cacao
+      message: Hola, me gustaría hacer un pedido de cacao 80% con panela de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios y las opciones de envío?
 ---
