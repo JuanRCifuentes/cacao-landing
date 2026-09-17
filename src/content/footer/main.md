@@ -17,7 +17,7 @@ navigation:
   - label: Novedades
     href: "#partnerships-news"
   - label: Contacto
-    href: "mailto:energysunflower@gmail.com"
+    href: "https://wa.me/573195048115"
 policies:
   - label: Política de privacidad
     href: "#"
@@ -36,11 +36,11 @@ socials:
   - label: YouTube
     href: "#"
 contact:
-  label: Hablemos
+  label: Hablemos por WhatsApp
   email: energysunflower@gmail.com
   phone:
     label: +57 319 504 8115
-    href: "tel:+573195048115"
+    href: "https://wa.me/573195048115"
 trade:
   label: Consultas comerciales
   email: energysunflower@gmail.com
