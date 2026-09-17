@@ -1,3 +1,45 @@
-<section id="newsletter" aria-labelledby="newsletter-heading" class="min-h-80 border-b border-neutral-200 p-6 sm:p-10">
-	<h2 id="newsletter-heading" class="text-sm text-neutral-500">6. Register for exclusive updates</h2>
+---
+import { getEntry } from 'astro:content';
+
+const section = await getEntry('landingSections', 'newsletter');
+
+if (!section || section.data.type !== 'newsletter') {
+	throw new Error('Missing landing section content: newsletter');
+}
+
+const { heading, description, background, fields, submitLabel } = section.data;
+---
+
+<section id="newsletter" aria-labelledby="newsletter-heading" class="relative isolate flex min-h-svh items-center overflow-hidden py-24 text-white md:min-h-[120vh] md:py-36">
+	<div class="absolute inset-0 -z-20">
+		<img src={background.src} alt={background.alt} loading="lazy" class="h-full w-full object-cover object-center" />
+	</div>
+	<div class="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(0,0,0,0.78)_0%,rgba(0,0,0,0.46)_52%,rgba(0,0,0,0.28)_100%)] md:bg-[linear-gradient(270deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.1)_48%,rgba(0,0,0,0.68)_100%)]"></div>
+
+	<div class="mx-auto w-full max-w-[1440px] px-4 sm:px-8 md:px-[77px]">
+		<div class="w-full max-w-[400px]">
+			<div class="flex flex-col gap-10 md:gap-14">
+				<h2 id="newsletter-heading" class="text-[38px] leading-[1.1] tracking-[-0.03em]">{heading}</h2>
+				<p class="text-sm leading-[1.6] text-white/85">{description}</p>
+
+				<form class="w-full" action="#newsletter" method="post">
+					<div class="flex flex-col gap-4">
+						<div class="border-b border-white/45 pb-2 transition-colors focus-within:border-white">
+							<label for="newsletter-first-name" class="sr-only">{fields.firstName}</label>
+							<input id="newsletter-first-name" name="firstName" type="text" autocomplete="given-name" required placeholder={fields.firstName} class="w-full appearance-none border-0 bg-transparent py-1 text-sm uppercase tracking-[0.04em] text-white outline-none placeholder:text-white/55" />
+						</div>
+						<div class="border-b border-white/45 pb-2 transition-colors focus-within:border-white">
+							<label for="newsletter-last-name" class="sr-only">{fields.lastName}</label>
+							<input id="newsletter-last-name" name="lastName" type="text" autocomplete="family-name" required placeholder={fields.lastName} class="w-full appearance-none border-0 bg-transparent py-1 text-sm uppercase tracking-[0.04em] text-white outline-none placeholder:text-white/55" />
+						</div>
+						<div class="flex items-center gap-4 border-b border-white/45 pb-2 transition-colors focus-within:border-white">
+							<label for="newsletter-email" class="sr-only">{fields.email}</label>
+							<input id="newsletter-email" name="email" type="email" autocomplete="email" required placeholder={fields.email} class="min-w-0 flex-1 appearance-none border-0 bg-transparent py-1 text-sm uppercase tracking-[0.04em] text-white outline-none placeholder:text-white/55" />
+							<button type="submit" class="shrink-0 cursor-pointer text-xs uppercase tracking-[0.08em] transition-opacity hover:opacity-65">{submitLabel}</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </section>

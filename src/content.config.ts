@@ -47,6 +47,33 @@ const landingSections = defineCollection({
 				label: z.string(),
 			}),
 		}),
+		z.object({
+			type: z.literal('partnershipsNews'),
+			heading: z.string(),
+			cta: z.object({ label: z.string(), href: z.string() }),
+			articles: z.array(
+				z.object({
+					date: z.string(),
+					category: z.string(),
+					heading: z.string(),
+					excerpt: z.string(),
+					href: z.string(),
+					image: z.object({ src: z.url(), alt: z.string() }),
+				}),
+			).length(3),
+		}),
+		z.object({
+			type: z.literal('newsletter'),
+			heading: z.string(),
+			description: z.string(),
+			background: z.object({ src: z.url(), alt: z.string() }),
+			fields: z.object({
+				firstName: z.string(),
+				lastName: z.string(),
+				email: z.string(),
+			}),
+			submitLabel: z.string(),
+		}),
 	]),
 });
 
