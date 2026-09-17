@@ -37,6 +37,16 @@ const landingSections = defineCollection({
 				}),
 			).length(3),
 		}),
+		z.object({
+			type: z.literal('video'),
+			heading: z.array(z.string()).length(2),
+			description: z.string(),
+			video: z.object({
+				src: z.url(),
+				poster: z.url(),
+				label: z.string(),
+			}),
+		}),
 	]),
 });
 

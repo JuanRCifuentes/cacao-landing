@@ -1,3 +1,72 @@
-<section id="video" aria-labelledby="video-heading" class="min-h-80 border-b border-neutral-200 p-6 sm:p-10">
-	<h2 id="video-heading" class="text-sm text-neutral-500">3. Video</h2>
+---
+import { getEntry } from 'astro:content';
+
+const section = await getEntry('landingSections', 'video');
+
+if (!section || section.data.type !== 'video') {
+	throw new Error('Missing landing section content: video');
+}
+
+const { heading, description, video } = section.data;
+---
+
+<section id="video" aria-labelledby="video-heading" class="bg-black text-white">
+	<header class="mx-auto flex w-full max-w-[1440px] flex-col items-center px-4 pt-24 pb-4 text-center sm:px-8 md:pt-32 md:pb-10 lg:px-10 xl:px-16">
+		<h2
+			id="video-heading"
+			class="text-[44px] font-medium uppercase leading-[0.88] tracking-[0.04em] sm:text-[64px] md:text-[88px] lg:text-[108px]"
+		>
+			{heading.map((line) => <span class="block">{line}</span>)}
+		</h2>
+		<p class="mt-8 text-sm leading-[1.6] text-white/70 md:text-base">{description}</p>
+	</header>
+
+	<div class="relative aspect-[3/4] w-full overflow-hidden md:aspect-video" data-video-player>
+		<video
+			class="h-full w-full object-cover"
+			poster={video.poster}
+			preload="metadata"
+			playsinline
+			data-video-element
+		>
+			<source src={video.src} type="video/mp4" />
+		</video>
+		<div class="pointer-events-none absolute inset-0 bg-black/15 transition-opacity duration-300" data-video-shade></div>
+		<button
+			type="button"
+			aria-label={video.label}
+			class="absolute top-1/2 left-1/2 flex h-20 w-[120px] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[2px] bg-white text-black transition-[background-color,opacity] duration-300 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+			data-video-button
+		>
+			<svg viewBox="0 0 13 17" class="h-[17px] w-[13px] fill-current" aria-hidden="true">
+				<path d="M0 0L12.5 8.5L0 17V0Z"></path>
+			</svg>
+		</button>
+	</div>
 </section>
+
+<script>
+	document.querySelectorAll('[data-video-player]').forEach((player) => {
+		const video = player.querySelector('[data-video-element]');
+		const button = player.querySelector('[data-video-button]');
+		const shade = player.querySelector('[data-video-shade]');
+
+		if (!(video instanceof HTMLVideoElement) || !(button instanceof HTMLButtonElement)) return;
+
+		const showButton = () => {
+			button.classList.remove('pointer-events-none', 'opacity-0');
+			shade?.classList.remove('opacity-0');
+		};
+
+		const hideButton = () => {
+			button.classList.add('pointer-events-none', 'opacity-0');
+			shade?.classList.add('opacity-0');
+		};
+
+		button.addEventListener('click', () => video.play());
+		video.addEventListener('play', hideButton);
+		video.addEventListener('pause', showButton);
+		video.addEventListener('ended', showButton);
+		video.addEventListener('click', () => (video.paused ? video.play() : video.pause()));
+	});
+</script>
