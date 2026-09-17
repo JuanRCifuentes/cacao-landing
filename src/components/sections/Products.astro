@@ -142,7 +142,7 @@ const { eyebrow, heading, description, products } = section.data;
 		.products h2 { font-size: clamp(32px, 9vw, 38px); }
 		.product__image {
 			/* Leave room for the heading, details and link with Safari's bars expanded. */
-			height: clamp(160px, min(34svh, calc(100svh - 400px)), 272px);
+			height: clamp(160px, min(34svh, calc(100svh - var(--site-header-height) - 400px)), 272px);
 			aspect-ratio: auto;
 		}
 	}

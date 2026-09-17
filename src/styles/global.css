@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+html {
+	--site-header-height: 94px;
+	scroll-padding-top: var(--site-header-height);
+}
+
+@media (max-width: 600px) {
+	html { --site-header-height: 86px; }
+}
+
 html,
 body {
 	background-color: #16100b;
