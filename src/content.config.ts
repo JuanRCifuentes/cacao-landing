@@ -24,4 +24,20 @@ const landingSections = defineCollection({
 	}),
 });
 
-export const collections = { landingSections };
+const footer = defineCollection({
+	loader: glob({ pattern: '**/*.md', base: './src/content/footer' }),
+	schema: z.object({
+		brand: z.string(),
+		tagline: z.string(),
+		navigation: z.array(z.object({ label: z.string(), href: z.string() })),
+		policies: z.array(z.object({ label: z.string(), href: z.string() })),
+		newsletter: z.object({ label: z.string(), href: z.string() }),
+		socials: z.array(z.object({ label: z.string(), href: z.string() })),
+		contact: z.object({ label: z.string(), email: z.string().email() }),
+		trade: z.object({ label: z.string(), email: z.string().email() }),
+		location: z.array(z.string()),
+		copyright: z.string(),
+	}),
+});
+
+export const collections = { landingSections, footer };
