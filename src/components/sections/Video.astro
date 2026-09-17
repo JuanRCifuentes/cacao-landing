@@ -10,18 +10,15 @@ if (!section || section.data.type !== 'video') {
 const { heading, description, video } = section.data;
 ---
 
-<section id="video" aria-labelledby="video-heading" class="bg-black text-white">
-	<header class="mx-auto flex w-full max-w-[1440px] flex-col items-center px-4 pt-24 pb-4 text-center sm:px-8 md:pt-32 md:pb-10 lg:px-10 xl:px-16">
-		<h2
-			id="video-heading"
-			class="text-[44px] font-medium uppercase leading-[0.88] tracking-[0.04em] sm:text-[64px] md:text-[88px] lg:text-[108px]"
-		>
+<section id="video" aria-labelledby="video-heading" class="film">
+	<header class="film__header">
+		<h2 id="video-heading" class="film__heading">
 			{heading.map((line) => <span class="block">{line}</span>)}
 		</h2>
-		<p class="mt-8 text-sm leading-[1.6] text-white/70 md:text-base">{description}</p>
+		<p class="film__description">{description}</p>
 	</header>
 
-	<div class="relative aspect-[3/4] w-full overflow-hidden md:aspect-video" data-video-player>
+	<div class="relative aspect-[4/3] w-full overflow-hidden md:aspect-video" data-video-player>
 		<video
 			class="h-full w-full object-cover"
 			poster={video.poster}
@@ -35,7 +32,7 @@ const { heading, description, video } = section.data;
 		<button
 			type="button"
 			aria-label={video.label}
-			class="absolute top-1/2 left-1/2 flex h-20 w-[120px] -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[2px] bg-white text-black transition-[background-color,opacity] duration-300 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+			class="absolute top-1/2 left-1/2 flex h-16 w-24 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[2px] bg-[#f4f0e8] text-[#16100b] transition-[background-color,opacity] duration-300 hover:bg-[#e7c681] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f4f0e8] md:h-20 md:w-[120px]"
 			data-video-button
 		>
 			<svg viewBox="0 0 13 17" class="h-[17px] w-[13px] fill-current" aria-hidden="true">
@@ -44,6 +41,36 @@ const { heading, description, video } = section.data;
 		</button>
 	</div>
 </section>
+
+<style>
+	.film {
+		background: #16100b;
+		color: #f4f0e8;
+	}
+
+	.film__header {
+		max-width: 1200px;
+		margin-inline: auto;
+		padding: clamp(48px, 7vw, 104px) 24px clamp(40px, 5vw, 72px);
+		text-align: center;
+	}
+
+	.film__heading {
+		font-family: 'Abril Fatface', Georgia, serif;
+		font-size: clamp(2rem, 6.2vw, 5.5rem);
+		font-weight: 400;
+		line-height: 1.13;
+		letter-spacing: -0.025em;
+	}
+
+	.film__description {
+		max-width: 36ch;
+		margin: 24px auto 0;
+		color: rgb(244 240 232 / 70%);
+		font-size: 14px;
+		line-height: 1.7;
+	}
+</style>
 
 <script>
 	document.querySelectorAll('[data-video-player]').forEach((player) => {

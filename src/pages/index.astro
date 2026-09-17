@@ -16,15 +16,18 @@ import '../styles/global.css';
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="theme-color" content="#16100b" />
 		<script is:inline>
 			// Opt in before first paint; without JS the page remains immediately usable.
-			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && !location.hash &&
+			// The Home link uses #hero, which should still replay the opening on reload.
+			const isHome = !location.hash || location.hash === '#hero';
+			if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && isHome &&
 				performance.getEntriesByType('navigation')[0]?.type !== 'back_forward') {
 				document.documentElement.dataset.intro = 'showing';
 				// Independent fallback if the main script or an asset fails to load.
 				window.setTimeout(() => {
 					delete document.documentElement.dataset.intro;
-				}, 4500);
+				}, 5500);
 			}
 		</script>
 		<meta name="generator" content={Astro.generator} />

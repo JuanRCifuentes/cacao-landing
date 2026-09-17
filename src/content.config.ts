@@ -11,6 +11,7 @@ const landingSections = defineCollection({
 			heading: z.array(z.string()).length(2),
 			cta: z.object({ label: z.string(), href: z.string() }),
 			scrollLabel: z.string(),
+			scrollHref: z.string(),
 			contactLabel: z.string(),
 			navigation: z.array(z.object({ label: z.string(), href: z.string() })),
 			image: z.object({

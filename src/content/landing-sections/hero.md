@@ -8,6 +8,7 @@ cta:
   label: Discover our cacao
   href: "#pure-passion"
 scrollLabel: Scroll to discover
+scrollHref: "#pure-passion"
 contactLabel: Stay in touch
 navigation:
   - label: Home
