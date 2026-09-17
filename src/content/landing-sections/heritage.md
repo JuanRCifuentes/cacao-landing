@@ -1,4 +1,5 @@
 ---
+type: heritage
 eyebrow: From origin to craft
 heading: The Cocoa story
 description: From the hands that nurture every pod to the makers who reveal its character, Cocoa is shaped by origin, craft, and the people behind every bar.
