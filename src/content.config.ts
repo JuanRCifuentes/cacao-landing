@@ -8,7 +8,6 @@ const landingSections = defineCollection({
 		z.object({
 			type: z.literal('hero'),
 			eyebrow: z.string(),
-			heading: z.array(z.string()).length(2),
 			cta: z.object({ label: z.string(), href: z.string() }),
 			scrollLabel: z.string(),
 			scrollHref: z.string(),

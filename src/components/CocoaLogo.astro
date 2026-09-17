@@ -7,6 +7,7 @@ interface Props {
 	brand?: string;
 	tagline?: string;
 	showTagline?: boolean;
+	showWordmark?: boolean;
 	revealOnLoad?: boolean;
 }
 
@@ -16,17 +17,18 @@ const {
 	brand = 'Origen Tolima',
 	tagline = 'Cacao de autor un legado de bienestar',
 	showTagline = true,
+	showWordmark = true,
 	revealOnLoad = false,
 } = Astro.props;
 ---
 
 <span
 	data-cocoa-logo-reveal={animated && !revealOnLoad ? '' : undefined}
-	class:list={['cocoa-logo', animated && revealOnLoad && 'is-pending is-visible', className]}
+	class:list={['cocoa-logo', !showWordmark && 'cocoa-logo--mark-only', animated && revealOnLoad && 'is-pending is-visible', className]}
 >
 	<CacaoPod aria-hidden="true" focusable="false" class="cocoa-logo__mark" />
-	<span class="cocoa-logo__wordmark">{brand}</span>
-	{showTagline && <span class="cocoa-logo__tagline">{tagline}</span>}
+	{showWordmark && <span class="cocoa-logo__wordmark">{brand}</span>}
+	{showWordmark && showTagline && <span class="cocoa-logo__tagline">{tagline}</span>}
 </span>
 
 <style>
@@ -59,6 +61,11 @@ const {
 		-webkit-mask-repeat: repeat;
 		mask-repeat: repeat;
 		mask-mode: alpha;
+	}
+
+	.cocoa-logo--mark-only :global(.cocoa-logo__mark) {
+		width: 100%;
+		margin-bottom: 0;
 	}
 
 	.cocoa-logo__wordmark {
