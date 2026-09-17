@@ -15,10 +15,8 @@ const { brand, tagline, navigation, policies, newsletter, socials, contact, trad
 <footer id="site-footer" class="relative z-30 bg-[#f4f0e8] pt-20 text-[#17140f] md:pt-40">
 	<div class="mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-10 lg:flex-row lg:gap-16 lg:px-10 lg:pt-20 lg:pb-10 xl:gap-28 xl:px-16">
 		<a href="#hero" aria-label={`${brand}, back to top`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
-			<span class="flex w-44 flex-col items-center transition-transform duration-500 group-hover:-translate-y-1 xl:w-56">
-				<CocoaLogo animated class="h-40 w-auto xl:h-48" />
-				<span class="mt-5 text-xl font-medium uppercase leading-none tracking-[0.28em]">{brand}</span>
-				<span class="mt-2 text-[9px] uppercase tracking-[0.2em] text-black/55">{tagline}</span>
+			<span class="block w-full transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transform-none">
+				<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 			</span>
 		</a>
 
@@ -80,10 +78,8 @@ const { brand, tagline, navigation, policies, newsletter, socials, contact, trad
 	</div>
 
 	<div class="flex justify-center px-4 pb-10 lg:hidden">
-		<a href="#hero" aria-label={`${brand}, back to top`} class="flex w-40 flex-col items-center">
-			<CocoaLogo animated class="h-32 w-auto" />
-			<span class="mt-4 text-lg font-medium uppercase leading-none tracking-[0.24em]">{brand}</span>
-			<span class="mt-2 text-[9px] uppercase tracking-[0.2em] text-black/55">{tagline}</span>
+		<a href="#hero" aria-label={`${brand}, back to top`} class="block w-full max-w-[320px]">
+			<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 		</a>
 	</div>
 </footer>

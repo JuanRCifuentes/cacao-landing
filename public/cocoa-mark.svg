@@ -1,10 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 160" fill="none">
-  <g stroke="#17140f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M60 7C37 14 20 34 15 60C9 90 22 124 57 152C85 131 104 99 106 66C108 38 91 16 60 7Z"/>
-    <path d="M56 14C36 32 23 59 23 87C23 113 38 136 56 149"/>
-    <path d="M59 11C45 34 36 61 36 88C36 113 46 134 57 149"/>
-    <path d="M62 10C59 44 58 82 58 150"/>
-    <path d="M65 12C78 35 83 61 78 89C74 116 66 136 59 150"/>
-    <path d="M70 16C93 40 99 68 90 97C83 121 70 139 60 151"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290" fill="none">
+  <title>Origen Tolima cacao pod</title>
+  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+    <path class="cocoa-logo__stroke cocoa-logo__shell" pathLength="1" stroke-width="4.1" style="--draw-delay:0.08s" d="M29 272C20 273 15 264 20 250L24 230C16 207 21 175 34 146C47 112 64 91 86 73C108 54 129 44 154 37C178 31 191 20 207 22C220 20 228 28 235 37C255 45 267 61 262 88C260 109 251 126 247 147C242 172 229 189 213 207C194 230 174 241 145 252C122 262 98 266 74 268C55 269 42 275 29 272Z"/>
+    <path class="cocoa-logo__stroke cocoa-logo__stem" pathLength="1" stroke-width="3.8" style="--draw-delay:0.26s" d="M235 37C239 29 245 24 250 20L259 27C254 33 248 37 246 45"/>
+    <path class="cocoa-logo__stroke cocoa-logo__ridge" pathLength="1" stroke-width="3.1" style="--draw-delay:0.42s" d="M25 258C26 239 34 222 45 205C53 191 58 173 70 158C84 143 98 132 110 119C125 103 144 97 158 81C178 60 207 56 233 38"/>
+    <path class="cocoa-logo__stroke cocoa-logo__ridge" pathLength="1" stroke-width="3.3" style="--draw-delay:0.5s" d="M27 264C41 245 52 232 69 220C87 207 98 190 116 178C138 164 152 148 168 132C184 116 193 96 207 81C219 67 230 56 241 43"/>
+    <path class="cocoa-logo__stroke cocoa-logo__ridge" pathLength="1" stroke-width="3.5" style="--draw-delay:0.58s" d="M31 267C53 253 67 240 85 226C106 211 125 198 144 178C161 161 179 149 193 129C208 107 222 88 231 69C236 59 241 51 245 46"/>
+    <path class="cocoa-logo__stroke cocoa-logo__ridge" pathLength="1" stroke-width="3.1" style="--draw-delay:0.66s" d="M35 269C58 262 75 250 95 244C117 236 130 221 150 211C170 201 181 184 197 171C217 154 222 133 234 112C245 91 252 68 249 49"/>
+    <path class="cocoa-logo__stroke cocoa-logo__ridge" pathLength="1" stroke-width="2.8" style="--draw-delay:0.74s" d="M45 269C67 264 81 262 104 255C128 249 148 238 164 226C180 213 199 205 211 189C223 173 237 158 241 139C246 120 256 104 257 83C258 68 254 57 251 54"/>
+    <path class="cocoa-logo__stroke cocoa-logo__detail" pathLength="1" stroke-width="1.6" style="--draw-delay:0.54s" d="M27 231C27 207 35 182 46 158C60 128 75 108 98 92C118 79 131 65 153 57C174 49 191 42 205 31"/>
+    <path class="cocoa-logo__stroke cocoa-logo__detail" pathLength="1" stroke-width="1.6" style="--draw-delay:0.62s" d="M34 218C37 191 55 154 74 134C92 115 107 107 123 92C140 77 158 69 177 62"/>
+    <path class="cocoa-logo__stroke cocoa-logo__detail" pathLength="1" stroke-width="1.4" style="--draw-delay:0.7s" d="M42 241C60 227 69 208 88 193C103 181 113 167 128 157C142 147 155 132 165 118"/>
+    <path class="cocoa-logo__stroke cocoa-logo__detail" pathLength="1" stroke-width="1.4" style="--draw-delay:0.78s" d="M75 235C96 221 112 207 129 195C147 182 158 167 172 155"/>
+    <path class="cocoa-logo__stroke cocoa-logo__detail" pathLength="1" stroke-width="1.4" style="--draw-delay:0.86s" d="M70 256C92 245 108 244 129 232C144 223 157 212 169 202"/>
+    <path class="cocoa-logo__stroke cocoa-logo__detail" pathLength="1" stroke-width="1.4" style="--draw-delay:0.94s" d="M150 238C168 231 184 217 197 204C213 188 225 169 229 155"/>
   </g>
 </svg>
