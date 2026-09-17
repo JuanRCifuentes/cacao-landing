@@ -47,6 +47,14 @@ const {
 		width: 27%;
 		height: auto;
 		margin-bottom: 7cqw;
+		/* A faint variation in ink density, with the original linework underneath. */
+		-webkit-mask-image: url('/cocoa-ink-texture.svg');
+		mask-image: url('/cocoa-ink-texture.svg');
+		-webkit-mask-size: 64px 64px;
+		mask-size: 64px 64px;
+		-webkit-mask-repeat: repeat;
+		mask-repeat: repeat;
+		mask-mode: alpha;
 	}
 
 	.cocoa-logo__wordmark {
