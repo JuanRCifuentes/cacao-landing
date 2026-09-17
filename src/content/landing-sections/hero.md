@@ -4,8 +4,6 @@ eyebrow: Un ritual propio
 cta:
   label: Descubre nuestro cacao
   href: "#products"
-scrollLabel: Desliza para descubrir
-scrollHref: "#products"
 contactLabel: Conectemos
 navigation:
   - label: Inicio
