@@ -2,8 +2,10 @@
 import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
+import sitemap from '@astrojs/sitemap';
 
-const site = process.env.SITE_URL ?? process.env.CF_PAGES_URL;
+// Preview deployments also point canonical URLs at production.
+const site = process.env.SITE_URL ?? 'https://origentolima.com';
 
 // https://astro.build/config
 export default defineConfig({
@@ -14,4 +16,6 @@ export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  integrations: [sitemap()],
 });

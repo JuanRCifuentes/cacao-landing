@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://origentolima.com/sitemap-index.xml

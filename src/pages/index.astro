@@ -1,5 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
+import { getLandingSection } from '../lib/content';
 import Hero from '../components/sections/Hero.astro';
 import Products from '../components/sections/Products.astro';
 import SiteIntro from '../components/SiteIntro.astro';
@@ -17,6 +18,51 @@ const site = await getEntry('site', 'main');
 if (!site) throw new Error('Missing site metadata content');
 const { language, title, description, social } = site.data;
 const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+
+const footer = await getEntry('footer', 'main');
+if (!footer) throw new Error('Missing footer content');
+const { products } = await getLandingSection('products', 'products');
+const siteUrl = Astro.site?.href;
+const organizationId = siteUrl && `${siteUrl}#organization`;
+const sameAs = footer.data.socials.map(({ href }) => href).filter((href) => href.startsWith('http'));
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': organizationId,
+			name: social.siteName,
+			url: siteUrl,
+			logo: siteUrl && new URL('/icon-512.png', siteUrl).href,
+			image: social.image.src,
+			description,
+			email: footer.data.contact.email,
+			telephone: footer.data.contact.phone.label.replaceAll(' ', ''),
+			address: {
+				'@type': 'PostalAddress',
+				addressLocality: 'San Sebastián de Mariquita',
+				addressRegion: 'Tolima',
+				addressCountry: 'CO',
+			},
+			...(sameAs.length && { sameAs }),
+		},
+		{
+			'@type': 'WebSite',
+			name: social.siteName,
+			url: siteUrl,
+			inLanguage: language,
+			publisher: { '@id': organizationId },
+		},
+		...products.map((product) => ({
+			'@type': 'Product',
+			name: `${product.name} — ${product.subtitle}`,
+			description: product.description,
+			image: product.image.src,
+			brand: { '@type': 'Brand', name: social.siteName },
+			manufacturer: { '@id': organizationId },
+		})),
+	],
+};
 ---
 
 <html lang={language} prefix="og: https://ogp.me/ns#">
@@ -41,7 +87,6 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : unde
 				}, 5500);
 			}
 		</script>
-		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
 
@@ -65,6 +110,7 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : unde
 		<meta name="twitter:image:alt" content={social.image.alt} />
 		<link rel="preload" href="/fonts/abril-fatface-latin.woff2" as="font" type="font/woff2" crossorigin />
 		<title>{title}</title>
+		<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
 	</head>
 	<body>
 		<SiteIntro />
