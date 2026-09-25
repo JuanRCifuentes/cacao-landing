@@ -37,13 +37,13 @@ socials:
     href: "#"
 contact:
   label: Hablemos por WhatsApp
-  email: energysunflower@gmail.com
+  email: contacto@origentolima.com
   phone:
     label: +57 319 504 8115
     href: "https://wa.me/573195048115"
 trade:
   label: Consultas comerciales
-  email: energysunflower@gmail.com
+  email: comercial@origentolima.com
 location:
   - San Sebastián de Mariquita
   - Tolima, Colombia
