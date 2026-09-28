@@ -9,8 +9,8 @@ products:
     subtitle: Cacao puro
     description: Todo el carácter del cacao puro. La fuerza de la montaña en una taza para saborear con calma.
     image:
-      src: https://pub-d09057114081496392499a9aa11104a3.r2.dev/03-rugged-weathered-wood.webp
-      alt: Piezas de cacao sobre una mesa de madera rústica
+      src: https://images.unsplash.com/photo-1623660053975-cf75a8be0908?fm=jpg&fit=crop&w=1200&h=800&q=85
+      alt: Tabletas de chocolate superpuestas sobre una superficie de piedra clara
       width: 1200
       height: 800
     cta:
@@ -21,8 +21,8 @@ products:
     subtitle: Con panela
     description: La intensidad del cacao se encuentra con el dulzor de la panela. El calor de una tradición que reconecta.
     image:
-      src: https://pub-d09057114081496392499a9aa11104a3.r2.dev/paired-03-rugged-oak.webp
-      alt: Empaque de Origen Tolima con panela junto a piezas de cacao sobre madera rústica
+      src: https://images.unsplash.com/photo-1610450949065-1f2841536c88?fm=jpg&fit=crop&w=1200&h=800&q=85
+      alt: Trozos de chocolate apilados con migas sobre una superficie clara
       width: 1200
       height: 800
     cta:
@@ -33,10 +33,10 @@ products:
     subtitle: Con stevia
     description: El carácter del cacao acompañado por el dulzor de la stevia. Una invitación a disfrutar cada sorbo con calma.
     image:
-      src: https://pub-d09057114081496392499a9aa11104a3.r2.dev/stevia-refined.webp
-      alt: Empaques de Origen Tolima con stevia de 25 g y 250 g sobre una superficie de piedra
+      src: https://images.unsplash.com/photo-1785517607397-546d935d509f?fm=jpg&fit=crop&w=1200&h=800&q=85
+      alt: Selección de bombones de chocolate artesanales de distintos colores
       width: 1200
-      height: 1187
+      height: 800
     cta:
       label: Adquirir este cacao
       message: Hola, me gustaría hacer un pedido de cacao 75% con stevia de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios, los métodos de pago y las opciones de envío?
