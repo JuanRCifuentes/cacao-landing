@@ -82,5 +82,27 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : unde
 			<Footer />
 		</div>
 		<SectionMotion />
+		<script>
+			// In-app browsers (e.g. opened from a QR scan) can resize the viewport right after
+			// jumping to a #fragment. The svh-based hero then changes height and the target
+			// slides under the header, so keep it aligned until the visitor starts scrolling.
+			const id = decodeURIComponent(location.hash.slice(1));
+			const target = id && id !== 'hero' ? document.getElementById(id) : null;
+			if (target) {
+				const realign = () => target.scrollIntoView({ block: 'start', behavior: 'instant' });
+				const interactions = ['pointerdown', 'touchstart', 'wheel', 'keydown'];
+				const stop = () => {
+					window.removeEventListener('resize', realign);
+					window.visualViewport?.removeEventListener('resize', realign);
+					window.removeEventListener('load', realign);
+					for (const type of interactions) window.removeEventListener(type, stop, true);
+				};
+				window.addEventListener('resize', realign);
+				window.visualViewport?.addEventListener('resize', realign);
+				window.addEventListener('load', realign);
+				for (const type of interactions) window.addEventListener(type, stop, { capture: true, passive: true });
+				window.setTimeout(stop, 5000);
+			}
+		</script>
 	</body>
 </html>
