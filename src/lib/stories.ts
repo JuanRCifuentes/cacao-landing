@@ -23,13 +23,22 @@ const storyContent = [
 		],
 	},
 ];
+const storyContentByHref = new Map(storyContent.map((story) => [`/historias/${story.slug}/`, story]));
 
 /** Article metadata comes from the landing cards so both entry points stay in sync. */
 export async function getStories() {
 	const news = await getLandingSection('partnerships-news', 'partnershipsNews');
-	return news.articles.map((article, index) => {
-		const content = storyContent[index];
+	const seenHrefs = new Set<string>();
+	const stories = news.articles.map((article) => {
+		const content = storyContentByHref.get(article.href);
+		if (!content) throw new Error(`Missing story content for landing article "${article.href}".`);
+		if (seenHrefs.has(article.href)) throw new Error(`Duplicate landing article "${article.href}".`);
+		seenHrefs.add(article.href);
 		const [day, month, year] = article.date.split('.');
 		return { ...article, ...content, dateIso: `20${year}-${month}-${day}`, image: { ...article.image, width: 1200, height: 900 } };
 	});
+	for (const href of storyContentByHref.keys()) {
+		if (!seenHrefs.has(href)) throw new Error(`Missing landing article for story "${href}".`);
+	}
+	return stories;
 }
