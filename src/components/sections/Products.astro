@@ -1,15 +1,14 @@
 ---
-import { getEntry } from 'astro:content';
 import { getLandingSection } from '../../lib/content';
+import { getProducts } from '../../lib/products';
 import PackagingPattern from '../PackagingPattern.astro';
 
 const { eyebrow, heading, description, products } = await getLandingSection('products', 'products');
-const footer = await getEntry('footer', 'main');
-if (!footer) throw new Error('Missing product contact content');
-const orderUrl = (message: string) => {
-	const url = new URL(footer.data.contact.phone.href);
-	url.searchParams.set('text', message);
-	return url.href;
+const detailPages = new Map((await getProducts()).map((product) => [product.landingId, product.href]));
+const productHref = (id: string) => {
+	const href = detailPages.get(id);
+	if (!href) throw new Error(`Missing product detail page: ${id}`);
+	return href;
 };
 ---
 
@@ -28,7 +27,7 @@ const orderUrl = (message: string) => {
 				{products.map((product, index) => (
 					<li class="products__item">
 						<article class="product" aria-labelledby={`product-${product.id}`} data-motion="card" style={`--motion-delay: ${Math.min(index, 2) * 70}ms`}>
-							<div class="product__image">
+							<a class="product__image" href={productHref(product.id)} aria-label={`Descubrir ${product.name}, ${product.subtitle}`}>
 								<img
 									src={product.image.src}
 									alt={product.image.alt}
@@ -37,13 +36,13 @@ const orderUrl = (message: string) => {
 									loading="lazy"
 									decoding="async"
 								/>
-							</div>
+							</a>
 							<div class="product__body">
 								<p class="product__subtitle">{product.subtitle}</p>
-								<h3 id={`product-${product.id}`}>{product.name}</h3>
+								<h3 id={`product-${product.id}`}><a href={productHref(product.id)}>{product.name}</a></h3>
 								<p class="product__description">{product.description}</p>
-								<a class="product__cta" href={orderUrl(product.cta.message)} aria-label={`${product.cta.label}: ${product.name}, ${product.subtitle} · WhatsApp`}>
-									<span>{product.cta.label}</span>
+								<a class="product__cta" href={productHref(product.id)} aria-label={`Descubrir ${product.name}, ${product.subtitle}`}>
+									<span>Descubrir este cacao</span>
 									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
 										<path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.25" />
 									</svg>
@@ -111,7 +110,7 @@ const orderUrl = (message: string) => {
 
 	.products__item { width: min(82vw, 460px); flex-shrink: 0; scroll-snap-align: start; }
 	.product { display: flex; flex-direction: column; height: 100%; }
-	.product__image { aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid rgb(244 240 232 / 8%); background: #241b15; }
+	.product__image { display: block; aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid rgb(244 240 232 / 8%); background: #241b15; }
 	.product__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
 	.product__body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding-top: 18px; }
 	.product__subtitle { margin-bottom: 6px; color: #c6ab86; }
@@ -139,6 +138,7 @@ const orderUrl = (message: string) => {
 	.product__cta svg { width: 18px; height: 18px; flex-shrink: 0; }
 	.product__cta:hover { color: #f4f0e8; border-color: #ead6ae; background-color: rgb(198 171 134 / 8%); }
 	.product__cta:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
+	.product__image:focus-visible, .product h3 a:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
 
 	@media (max-width: 767px) {
 		.products {

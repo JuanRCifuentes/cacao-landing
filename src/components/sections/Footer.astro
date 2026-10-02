@@ -11,11 +11,14 @@ if (!footer) {
 
 const { brand, tagline, labels, navigation, policies, newsletter, socials, contact, trade, location, copyright } =
 	footer.data;
+const isProductPage = Astro.url.pathname.startsWith('/productos/');
+const homeHref = isProductPage ? '/' : '#hero';
+const pageHref = (href: string) => isProductPage && href.startsWith('#') ? `/${href}` : href;
 ---
 
 <footer id="site-footer" class="relative z-30 bg-[#f4f0e8] pt-20 text-[#17140f] md:pt-40">
 	<div class="mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-10 lg:flex-row lg:gap-16 lg:px-10 lg:pt-20 lg:pb-10 xl:gap-28 xl:px-16">
-		<a href="#hero" aria-label={`${brand}, ${labels.backToTop}`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
+		<a href={homeHref} aria-label={`${brand}, ${isProductPage ? 'Ir al inicio' : labels.backToTop}`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
 			<span class="block w-full transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transform-none">
 				<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 			</span>
@@ -28,7 +31,7 @@ const { brand, tagline, labels, navigation, policies, newsletter, socials, conta
 						{navigation.map((item) => (
 							<li>
 								<a
-									href={item.href}
+									href={pageHref(item.href)}
 									class="group inline-flex items-baseline gap-3 text-[32px] leading-[1.12] tracking-[-0.04em] sm:text-[38px] xl:text-[44px]"
 								>
 									<span>{item.label}</span>
@@ -42,16 +45,16 @@ const { brand, tagline, labels, navigation, policies, newsletter, socials, conta
 				<div class="flex w-full flex-col gap-8 text-sm leading-[1.6] tracking-[-0.01em] lg:w-60 lg:shrink-0 lg:items-end lg:text-right">
 					<div class="flex flex-col gap-1 lg:items-end">
 						{policies.map((item) => (
-							<a href={item.href} class="w-fit border-b border-transparent transition-colors hover:border-current">{item.label}</a>
+							<a href={pageHref(item.href)} class="w-fit border-b border-transparent transition-colors hover:border-current">{item.label}</a>
 						))}
 					</div>
-					<a href={newsletter.href} class="w-fit border-b border-current pb-0.5">{newsletter.label}</a>
+					<a href={pageHref(newsletter.href)} class="w-fit border-b border-current pb-0.5">{newsletter.label}</a>
 				</div>
 			</div>
 
 			<nav aria-label={labels.socialMedia} class="flex flex-wrap gap-x-7 gap-y-3 text-xs font-medium uppercase tracking-[0.12em] lg:pt-14">
 				{socials.map((item) => (
-					<a href={item.href} class="transition-opacity hover:opacity-50">{item.label}</a>
+					<a href={pageHref(item.href)} class="transition-opacity hover:opacity-50">{item.label}</a>
 				))}
 			</nav>
 		</div>
@@ -80,7 +83,7 @@ const { brand, tagline, labels, navigation, policies, newsletter, socials, conta
 	</div>
 
 	<div class="flex justify-center px-4 pb-10 lg:hidden">
-		<a href="#hero" aria-label={`${brand}, ${labels.backToTop}`} class="block w-full max-w-[320px]">
+		<a href={homeHref} aria-label={`${brand}, ${isProductPage ? 'Ir al inicio' : labels.backToTop}`} class="block w-full max-w-[320px]">
 			<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 		</a>
 	</div>
