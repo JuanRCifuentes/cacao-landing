@@ -1,0 +1,34 @@
+{
+	"landingId": "cacao-75-stevia",
+	"slug": "cacao-75-stevia",
+	"order": 3,
+	"name": "Cacao 75% con stevia",
+	"title": "Cacao 75% con stevia de Tolima | Origen Tolima",
+	"metaDescription": "Conoce el cacao 75% con stevia de Origen Tolima, de San Sebastián de Mariquita. Descubre esta variedad, cómo disfrutarla y consulta presentaciones y pedidos.",
+	"percentage": "75%",
+	"variety": "con stevia",
+	"eyebrow": "Otra forma de hacer una pausa",
+	"intro": "El carácter del cacao acompañado por el dulzor de la stevia. Una forma distinta de hacer tuya cada taza, sin perder el gusto por la pausa.",
+	"profile": "Intenso, con dulzor de stevia",
+	"sweetener": "Stevia",
+	"story": {
+		"heading": "Tu cacao. Tu forma de disfrutarlo.",
+		"description": "Nuestra variedad 75% con stevia ofrece otra forma de disfrutar el cacao de Origen Tolima. La stevia acompaña su carácter en una bebida que puedes preparar con la base que prefieras. Una elección para quienes buscan esta alternativa de endulzante y quieren llevar el ritual del cacao a sus propios momentos."
+	},
+	"notes": [
+		{ "heading": "El carácter del cacao", "description": "El 75% cacao es el punto de partida de esta variedad: una taza donde el cacao conserva su protagonismo." },
+		{ "heading": "Dulzor de stevia", "description": "La stevia distingue esta variedad del cacao con panela. Elige el endulzante que prefieras para tu ritual cotidiano." },
+		{ "heading": "Dos presentaciones", "description": "Nuestros empaques de esta variedad se presentan en 25 g y 250 g. Consulta con nosotros la disponibilidad y el precio de cada presentación." }
+	],
+	"preparation": [
+		{ "heading": "Elige tu base", "description": "Agua, leche o una bebida vegetal: elige la base con la que más disfrutas tu chocolate caliente." },
+		{ "heading": "Mezcla con calma", "description": "Calienta la base y mezcla el cacao hasta integrarlo. Consulta las indicaciones del empaque y ajusta la intensidad a tu gusto." },
+		{ "heading": "Encuentra tu equilibrio", "description": "Esta variedad está acompañada por stevia. Prueba primero la bebida y disfruta el dulzor en combinación con la base que elegiste." }
+	],
+	"faqs": [
+		{ "question": "¿Cuál es la diferencia con el cacao con panela?", "answer": "Ambas variedades son 75% cacao. Esta está acompañada por stevia y la otra por panela. El cacao puro 100% ofrece una tercera opción para quienes prefieren elegir el dulzor durante la preparación." },
+		{ "question": "¿En qué presentaciones viene el cacao con stevia?", "answer": "La fotografía muestra nuestros empaques de 25 g y 250 g. Escríbenos para confirmar la disponibilidad actual, el precio y la presentación que prefieras." },
+		{ "question": "¿Cómo consulto su información nutricional e ingredientes?", "answer": "Consulta la etiqueta de la presentación que elijas o escríbenos para solicitar la información de ingredientes, alérgenos y composición nutricional antes de comprar." },
+		{ "question": "¿Cómo hago un pedido y consulto el envío?", "answer": "Selecciona «Consultar y pedir» para conversar con nosotros por WhatsApp sobre el cacao 75% con stevia. Te confirmaremos precios, disponibilidad, métodos de pago y opciones de envío para tu destino." }
+	]
+}
