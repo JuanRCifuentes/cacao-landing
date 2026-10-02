@@ -7,6 +7,7 @@ Page copy is loaded through Astro's build-time Content Layer. Changes are valida
 | `src/content/site/main.json` | Page title, description, language, social preview metadata, and menu control labels |
 | `src/content/landing-sections/hero.md` | Hero copy, image, and header navigation links |
 | `src/content/landing-sections/products.md` | Product sample cards, descriptions, images, and links |
+| `src/content/products/*.json` | Product detail page titles, SEO descriptions, flavor notes, preparation suggestions, and FAQs |
 | `src/content/landing-sections/pure-passion.md` | Editorial copy, photos, and captions |
 | `src/content/landing-sections/video.md` | Film copy, accessible play label, poster, and video sources |
 | `src/content/landing-sections/heritage.md` | Heritage copy, collage photos, and link |
@@ -21,3 +22,13 @@ The page is written in Colombian Spanish (`es-CO`, with Open Graph locale `es_CO
 The section order and visual behavior remain in the Astro components. See [product images](./product-images.md), [hero image](./hero-image.md), and [heritage images](./heritage-images.md) for asset notes.
 
 Run `pnpm build` after editing to check schemas and regenerate the static page.
+
+## Product pages
+
+The three detail pages are generated at `/productos/cacao-puro-100/`, `/productos/cacao-75-panela/`, and `/productos/cacao-75-stevia/`. Each JSON entry is joined to the existing landing card by `landingId`, so imagery and WhatsApp order messages have one source. Homepage cards and related product cards link to the generated pages.
+
+Customers arriving at `/#products` can also order directly: each homepage card places a filled «Pedir mi cacao» WhatsApp button below «Descubrir este cacao». The order label and product-specific message are editable in `src/content/landing-sections/products.md`; the destination phone number comes from the shared footer contact.
+
+`src/components/SEOHead.astro` provides canonical URLs, unique metadata, and social previews. Product pages include Product, Organization, and BreadcrumbList JSON-LD. Prices, stock, reviews, delivery promises, certifications, and unverified dietary claims are intentionally omitted. Without verified offer or review data, Product markup alone does not establish eligibility for Google's product rich results. Preparation copy is general serving guidance, with the package instructions taking precedence.
+
+The sitemap and robots.txt are generated during the static build. The production origin defaults to `https://origentolima.com`; `SITE_URL` can explicitly override it. Preview deployment URLs are not used as canonical origins. Routes use trailing slashes consistently.
