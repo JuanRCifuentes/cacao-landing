@@ -74,6 +74,8 @@ if (!site) throw new Error('Missing editorial page site content');
 	.editorial-content :global(p), .editorial-content :global(li) { color: #675b4e; font-size: 15px; line-height: 1.9; overflow-wrap: anywhere; }
 	.editorial-content :global(p + p) { margin-top: 20px; }
 	.editorial-content :global(ul), .editorial-content :global(ol) { margin-block: 20px; padding-left: 22px; }
+	.editorial-content :global(.policy-content ul) { list-style: disc; }
+	.editorial-content :global(.policy-content ol) { list-style: decimal; }
 	.editorial-content :global(li + li) { margin-top: 10px; }
 	.editorial-content :global(a) { color: #60472c; text-underline-offset: 5px; text-decoration: underline; }
 	.editorial-content :global(a:hover) { color: #241b15; }
