@@ -47,5 +47,8 @@ export async function getFeaturedStories() {
 		seenIds.add(reference.id);
 	}
 	const entries = await getEntries(news.articles);
-	return entries.filter((entry) => !entry.data.draft).map(toStory);
+	return entries.flatMap((entry, index) => {
+		if (!entry) throw new Error(`Missing featured article "${news.articles[index].id}".`);
+		return entry.data.draft ? [] : [toStory(entry)];
+	});
 }
