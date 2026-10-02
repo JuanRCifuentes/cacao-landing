@@ -1,0 +1,34 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { getStories } from '../../lib/stories';
+
+export async function getStaticPaths() {
+	const stories = await getStories();
+	return stories.map((story) => ({ params: { slug: story.slug }, props: { story, related: stories.filter((other) => other.slug !== story.slug) } }));
+}
+
+type Story = Awaited<ReturnType<typeof getStories>>[number];
+interface Props { story: Story; related: Story[] }
+const { story, related } = Astro.props;
+const canonical = new URL(story.href, Astro.site ?? 'https://origentolima.com').href;
+const structuredData = { '@context': 'https://schema.org', '@type': 'Article', headline: story.heading, description: story.excerpt, image: story.image.src, datePublished: story.dateIso, inLanguage: 'es-CO', mainEntityOfPage: canonical, author: { '@type': 'Organization', name: 'Origen Tolima', url: new URL('/', canonical).href } };
+---
+
+<EditorialLayout title={`${story.heading} — Origen Tolima`} description={story.excerpt} eyebrow={story.category} image={story.image} breadcrumbs={[{ label: 'Historias', href: '/historias/' }]} structuredData={structuredData}>
+	<p slot="hero-meta" class="article-date">Publicado el <time datetime={story.dateIso}>{story.date}</time></p>
+	<article class="editorial-prose">
+		{story.sections.map((section, index) => <section aria-labelledby={`story-section-${index}`}><h2 id={`story-section-${index}`}>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</section>)}
+		<p class="article-origin"><a href="/historia/">Conoce nuestra historia</a> o <a href="/#products">encuentra tu cacao</a>.</p>
+		<aside class="related-stories" aria-labelledby="related-stories-title"><h2 id="related-stories-title">Sigue leyendo.</h2><ul>{related.map((other) => <li><a href={other.href}>{other.heading} <span aria-hidden="true">↗</span></a></li>)}</ul><a class="back-link" href="/historias/">Ver todas las historias <span aria-hidden="true">↗</span></a></aside>
+	</article>
+</EditorialLayout>
+
+<style>
+	.article-date { margin-top: 24px; color: #b6a58f; font-size: 11px; letter-spacing: .04em; }
+	.article-origin { margin-top: 36px; padding-top: 28px; border-top: 1px solid #d4cbbf; }
+	.related-stories { margin-top: 48px; padding-top: 10px; border-top: 1px solid #d4cbbf; }
+	.related-stories ul { list-style: none; padding: 0; }
+	.related-stories li { padding-block: 12px; }
+	.related-stories a { display: inline-flex; align-items: baseline; gap: 20px; }
+	.back-link { padding-block: 12px; font-size: 12px; }
+</style>

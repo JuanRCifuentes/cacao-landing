@@ -1,0 +1,31 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { getLandingSection } from '../../lib/content';
+
+const heritage = await getLandingSection('heritage', 'heritage');
+const passion = await getLandingSection('pure-passion', 'purePassion');
+---
+
+<EditorialLayout title="Nuestra historia — Origen Tolima" eyebrow={heritage.eyebrow} description={heritage.description} image={{ src: heritage.images.pods, alt: 'Mazorcas de cacao que acompañan la historia de nuestro origen', width: 1000, height: 750 }}>
+	<div class="history-grid">
+		<div class="history-intro"><p class="history-eyebrow">Nuestro origen</p><h2>La tierra.<br />Las manos.<br /><em>El cacao.</em></h2><p>Una historia que se comparte en cada taza.</p></div>
+		<article class="editorial-prose">
+			<section aria-labelledby="history-land"><h2 id="history-land">Todo comienza en la tierra</h2><p>{passion.images[0].caption}</p><p>San Sebastián de Mariquita, Tolima, es el lugar donde nace Origen Tolima. Nuestro nombre conserva ese vínculo con la tierra que da sentido a nuestro cacao.</p></section>
+			<section aria-labelledby="history-craft"><h2 id="history-craft">La paciencia de un proceso artesanal</h2><p>{passion.images[1].caption}</p><p>{passion.description}</p></section>
+			<section aria-labelledby="history-legacy"><h2 id="history-legacy">Un legado que compartimos</h2><p>{passion.images[2].caption}</p><p>En cada taza, el cacao invita a hacer una pausa y a encontrarnos con una tradición que honra su origen.</p></section>
+			<nav class="history-links" aria-label="Sigue descubriendo Origen Tolima"><a href="/historias/">Explora nuestras historias <span aria-hidden="true">↗</span></a><a href="/#products">Conoce nuestros cacaos <span aria-hidden="true">↗</span></a></nav>
+		</article>
+	</div>
+</EditorialLayout>
+
+<style>
+	.history-grid { display: grid; grid-template-columns: .7fr 1.3fr; gap: 90px; }
+	.history-intro .history-eyebrow { color: #785b37; font-size: 10px; letter-spacing: .17em; text-transform: uppercase; }
+	.history-intro h2 { margin-top: 20px; font-size: clamp(36px, 4vw, 58px); line-height: 1.14; }
+	.history-intro h2 em { font-family: Georgia, serif; }
+	.history-intro > p:last-child { max-width: 24ch; margin-top: 24px; }
+	.history-links { display: flex; flex-wrap: wrap; gap: 18px 32px; margin-top: 40px; padding-top: 26px; border-top: 1px solid #d4cbbf; }
+	.history-links a { display: inline-flex; align-items: center; gap: 16px; padding-block: 8px; font-size: 12px; }
+	@media (max-width: 1000px) { .history-grid { gap: 48px; } }
+	@media (max-width: 700px) { .history-grid { grid-template-columns: 1fr; gap: 38px; } }
+</style>
