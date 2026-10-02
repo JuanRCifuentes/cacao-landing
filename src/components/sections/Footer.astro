@@ -11,14 +11,14 @@ if (!footer) {
 
 const { brand, tagline, labels, navigation, policies, newsletter, socials, contact, trade, location, copyright } =
 	footer.data;
-const isProductPage = Astro.url.pathname.startsWith('/productos/');
-const homeHref = isProductPage ? '/' : '#hero';
-const pageHref = (href: string) => isProductPage && href.startsWith('#') ? `/${href}` : href;
+const isInteriorPage = Astro.url.pathname !== '/';
+const homeHref = isInteriorPage ? '/' : '#hero';
+const pageHref = (href: string) => isInteriorPage && href.startsWith('#') ? `/${href}` : href;
 ---
 
 <footer id="site-footer" class="relative z-30 bg-[#f4f0e8] pt-20 text-[#17140f] md:pt-40">
 	<div class="mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-10 lg:flex-row lg:gap-16 lg:px-10 lg:pt-20 lg:pb-10 xl:gap-28 xl:px-16">
-		<a href={homeHref} aria-label={`${brand}, ${isProductPage ? 'Ir al inicio' : labels.backToTop}`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
+		<a href={homeHref} aria-label={`${brand}, ${isInteriorPage ? 'Ir al inicio' : labels.backToTop}`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
 			<span class="block w-full transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transform-none">
 				<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 			</span>
@@ -53,7 +53,7 @@ const pageHref = (href: string) => isProductPage && href.startsWith('#') ? `/${h
 			</div>
 
 			<nav aria-label={labels.socialMedia} class="flex flex-wrap gap-x-7 gap-y-3 text-xs font-medium uppercase tracking-[0.12em] lg:pt-14">
-				{socials.map((item) => (
+				{socials.filter((item) => item.href !== '#').map((item) => (
 					<a href={pageHref(item.href)} class="transition-opacity hover:opacity-50">{item.label}</a>
 				))}
 			</nav>
@@ -83,7 +83,7 @@ const pageHref = (href: string) => isProductPage && href.startsWith('#') ? `/${h
 	</div>
 
 	<div class="flex justify-center px-4 pb-10 lg:hidden">
-		<a href={homeHref} aria-label={`${brand}, ${isProductPage ? 'Ir al inicio' : labels.backToTop}`} class="block w-full max-w-[320px]">
+		<a href={homeHref} aria-label={`${brand}, ${isInteriorPage ? 'Ir al inicio' : labels.backToTop}`} class="block w-full max-w-[320px]">
 			<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
 		</a>
 	</div>

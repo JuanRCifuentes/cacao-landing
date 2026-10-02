@@ -13,15 +13,15 @@ if (!footer || !site) {
 }
 
 const { brand, tagline, contact } = footer.data;
-const isProductPage = Astro.url.pathname.startsWith('/productos/');
-const homeHref = isProductPage ? '/' : '#hero';
+const isInteriorPage = Astro.url.pathname !== '/';
+const homeHref = isInteriorPage ? '/' : '#hero';
 const pageNavigation = navigation.map((link) => ({
 	...link,
-	href: isProductPage && link.href.startsWith('#') ? `/${link.href}` : link.href,
+	href: isInteriorPage && link.href.startsWith('#') ? `/${link.href}` : link.href,
 }));
 ---
 
-<header class="site-header" data-site-header data-scrolled data-solid={isProductPage ? '' : undefined}>
+<header class="site-header" data-site-header data-scrolled data-solid={isInteriorPage ? '' : undefined}>
 	<div class="site-header__inner">
 		<HeroMenu navigation={pageNavigation} brand={brand} tagline={tagline} contactEmail={contact.email} labels={site.data.menu} />
 		<a class="site-header__brand" data-hero-brand href={homeHref} aria-label={`${brand}, ${site.data.menu.homeLabel}`}>
