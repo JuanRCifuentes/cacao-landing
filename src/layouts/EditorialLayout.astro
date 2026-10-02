@@ -11,18 +11,23 @@ interface Props {
 	description: string;
 	eyebrow: string;
 	heading?: string;
-	image?: { src: string; alt: string; width: number; height: number };
+	intro?: string;
+	ogType?: 'website' | 'article';
+	publishedTime?: string;
+	modifiedTime?: string;
+	section?: string;
+	image?: { src: string; alt: string; width: number; height: number; type?: string };
 	breadcrumbs?: { label: string; href?: string }[];
 	structuredData?: Record<string, unknown>;
 }
 
-const { title, description, eyebrow, heading = title.split(' — ')[0], image, breadcrumbs = [], structuredData } = Astro.props;
+const { title, description, intro = description, ogType, publishedTime, modifiedTime, section, eyebrow, heading = title.split(' — ')[0], image, breadcrumbs = [], structuredData } = Astro.props;
 const site = await getEntry('site', 'main');
 if (!site) throw new Error('Missing editorial page site content');
 ---
 
 <html lang={site.data.language} prefix="og: https://ogp.me/ns#">
-	<head><SEOHead title={title} description={description} image={image} structuredData={structuredData} /></head>
+	<head><SEOHead title={title} description={description} image={image} structuredData={structuredData} ogType={ogType} publishedTime={publishedTime} modifiedTime={modifiedTime} section={section} /></head>
 	<body class="editorial-page">
 		<a class="skip-link" href="#page-main">Saltar al contenido</a>
 		<SiteHeader />
@@ -33,7 +38,7 @@ if (!site) throw new Error('Missing editorial page site content');
 						<ol><li><a href="/">Inicio</a></li>{breadcrumbs.map((crumb) => <li><a href={crumb.href}>{crumb.label}</a></li>)}<li aria-current="page">{heading}</li></ol>
 					</nav>
 					<div class:list={['editorial-hero__grid', image && 'editorial-hero__grid--image']}>
-						<div class="editorial-hero__copy"><p class="editorial-eyebrow">{eyebrow}</p><h1>{heading}</h1><p class="editorial-hero__intro">{description}</p><slot name="hero-meta" /></div>
+						<div class="editorial-hero__copy"><p class="editorial-eyebrow">{eyebrow}</p><h1>{heading}</h1><p class="editorial-hero__intro">{intro}</p><slot name="hero-meta" /></div>
 						{image && <div class="editorial-hero__image"><img src={image.src} alt={image.alt} width={image.width} height={image.height} loading="eager" fetchpriority="high" decoding="async" /></div>}
 					</div>
 				</div>
