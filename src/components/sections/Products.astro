@@ -1,12 +1,19 @@
 ---
 import { getEntry } from 'astro:content';
 import { getLandingSection } from '../../lib/content';
+import { getProducts } from '../../lib/products';
 import PackagingPattern from '../PackagingPattern.astro';
 
 const { eyebrow, heading, description, products } = await getLandingSection('products', 'products');
+const detailPages = new Map((await getProducts()).map((product) => [product.landingId, product.href]));
+const productHref = (id: string) => {
+	const href = detailPages.get(id);
+	if (!href) throw new Error(`Missing product detail page: ${id}`);
+	return href;
+};
 const footer = await getEntry('footer', 'main');
 if (!footer) throw new Error('Missing product contact content');
-const orderUrl = (message: string) => {
+const orderHref = (message: string) => {
 	const url = new URL(footer.data.contact.phone.href);
 	url.searchParams.set('text', message);
 	return url.href;
@@ -28,7 +35,7 @@ const orderUrl = (message: string) => {
 				{products.map((product, index) => (
 					<li class="products__item">
 						<article class="product" aria-labelledby={`product-${product.id}`} data-motion="card" style={`--motion-delay: ${Math.min(index, 2) * 70}ms`}>
-							<div class="product__image">
+							<a class="product__image" href={productHref(product.id)} aria-label={`Descubrir ${product.name}, ${product.subtitle}`}>
 								<img
 									src={product.image.src}
 									alt={product.image.alt}
@@ -37,17 +44,27 @@ const orderUrl = (message: string) => {
 									loading="lazy"
 									decoding="async"
 								/>
-							</div>
+							</a>
 							<div class="product__body">
 								<p class="product__subtitle">{product.subtitle}</p>
-								<h3 id={`product-${product.id}`}>{product.name}</h3>
+								<h3 id={`product-${product.id}`}><a href={productHref(product.id)}>{product.name}</a></h3>
 								<p class="product__description">{product.description}</p>
-								<a class="product__cta" href={orderUrl(product.cta.message)} aria-label={`${product.cta.label}: ${product.name}, ${product.subtitle} · WhatsApp`}>
-									<span>{product.cta.label}</span>
-									<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-										<path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.25" />
-									</svg>
-								</a>
+								<div class="product__actions">
+									<a class="product__cta" href={productHref(product.id)} aria-label={`Descubrir ${product.name}, ${product.subtitle}`}>
+										<span>Descubrir este cacao</span>
+										<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+											<path d="M4 12h15m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.25" />
+										</svg>
+									</a>
+									<a class="product__cta product__cta--order" href={orderHref(product.cta.message)} aria-label={`${product.cta.label}: ${product.name}, ${product.subtitle} por WhatsApp`}>
+										<span>{product.cta.label}</span>
+										<span class="product__order-channel">WhatsApp
+											<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+												<path d="M5 19 19 5M5 5h14v14" stroke="currentColor" stroke-width="1.25" />
+											</svg>
+										</span>
+									</a>
+								</div>
 							</div>
 						</article>
 					</li>
@@ -111,19 +128,19 @@ const orderUrl = (message: string) => {
 
 	.products__item { width: min(82vw, 460px); flex-shrink: 0; scroll-snap-align: start; }
 	.product { display: flex; flex-direction: column; height: 100%; }
-	.product__image { aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid rgb(244 240 232 / 8%); background: #241b15; }
+	.product__image { display: block; aspect-ratio: 3 / 2; overflow: hidden; border: 1px solid rgb(244 240 232 / 8%); background: #241b15; }
 	.product__image img { display: block; width: 100%; height: 100%; object-fit: cover; }
 	.product__body { display: flex; flex: 1; flex-direction: column; align-items: flex-start; padding-top: 18px; }
 	.product__subtitle { margin-bottom: 6px; color: #c6ab86; }
 	.product h3 { font-size: clamp(26px, 2.4vw, 32px); line-height: 1.2; }
 	.product__description { max-width: 34ch; margin-top: 8px; margin-bottom: 14px; }
+	.product__actions { display: grid; gap: 10px; width: 100%; margin-top: auto; }
 	.product__cta {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: 20px;
 		min-height: 44px;
-		margin-top: auto;
 		padding: 12px 16px;
 		border: 1px solid rgb(198 171 134 / 60%);
 		border-radius: 2px;
@@ -138,7 +155,11 @@ const orderUrl = (message: string) => {
 
 	.product__cta svg { width: 18px; height: 18px; flex-shrink: 0; }
 	.product__cta:hover { color: #f4f0e8; border-color: #ead6ae; background-color: rgb(198 171 134 / 8%); }
+	.product__cta--order { background-color: #ead6ae; color: #16100b; border-color: #ead6ae; font-weight: 600; }
+	.product__cta--order:hover { background-color: #f4f0e8; color: #16100b; border-color: #f4f0e8; }
+	.product__order-channel { display: inline-flex; align-items: center; gap: 8px; font-size: 9px; font-weight: 500; letter-spacing: 0.04em; }
 	.product__cta:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
+	.product__image:focus-visible, .product h3 a:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
 
 	@media (max-width: 767px) {
 		.products {
@@ -149,9 +170,9 @@ const orderUrl = (message: string) => {
 		}
 		.products h2 { font-size: clamp(32px, 9vw, 38px); }
 		.product__image {
-			/* Leave room for the heading, details and link with Safari's bars expanded. */
-			height: clamp(160px, min(34vh, calc(100vh - var(--site-header-height) - 400px)), 272px);
-			height: clamp(160px, min(34svh, calc(100svh - var(--site-header-height) - 400px)), 272px);
+			/* Reserve room for both actions with Safari's bars expanded. */
+			height: clamp(136px, min(34vh, calc(100vh - var(--site-header-height) - 456px)), 272px);
+			height: clamp(136px, min(34svh, calc(100svh - var(--site-header-height) - 456px)), 272px);
 			aspect-ratio: auto;
 		}
 	}

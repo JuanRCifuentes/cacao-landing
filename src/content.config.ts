@@ -160,4 +160,26 @@ const footer = defineCollection({
 	}),
 });
 
-export const collections = { site, landingSections, footer };
+const products = defineCollection({
+	loader: glob({ pattern: '*.json', base: './src/content/products' }),
+	schema: z.object({
+		landingId: z.string().min(1),
+		slug: z.string().regex(/^[a-z0-9-]+$/),
+		order: z.number().int().positive(),
+		name: z.string().min(1),
+		title: z.string().min(1),
+		metaDescription: z.string().min(1),
+		percentage: z.string().min(1),
+		variety: z.string().min(1),
+		eyebrow: z.string().min(1),
+		intro: z.string().min(1),
+		profile: z.string().min(1),
+		sweetener: z.string().min(1),
+		story: z.object({ heading: z.string(), description: z.string() }),
+		notes: z.array(z.object({ heading: z.string(), description: z.string() })).length(3),
+		preparation: z.array(z.object({ heading: z.string(), description: z.string() })).length(3),
+		faqs: z.array(z.object({ question: z.string(), answer: z.string() })).min(3),
+	}),
+});
+
+export const collections = { site, landingSections, footer, products };

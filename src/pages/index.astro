@@ -11,23 +11,17 @@ import Heritage from '../components/sections/Heritage.astro';
 import PartnershipsNews from '../components/sections/PartnershipsNews.astro';
 import ExclusiveUpdates from '../components/sections/ExclusiveUpdates.astro';
 import Footer from '../components/sections/Footer.astro';
+import SEOHead from '../components/SEOHead.astro';
 import '../styles/global.css';
 
 const site = await getEntry('site', 'main');
 if (!site) throw new Error('Missing site metadata content');
-const { language, title, description, social } = site.data;
-const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const { language } = site.data;
 ---
 
 <html lang={language} prefix="og: https://ogp.me/ns#">
 	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<link rel="manifest" href="/site.webmanifest" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="theme-color" content="#16100b" />
+		<SEOHead />
 		<script is:inline>
 			// Opt in before first paint; without JS the page remains immediately usable.
 			// The Home link uses #hero, which should still replay the opening on reload.
@@ -41,30 +35,6 @@ const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : unde
 				}, 5500);
 			}
 		</script>
-		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		{canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-
-		<meta property="og:type" content="website" />
-		<meta property="og:site_name" content={social.siteName} />
-		<meta property="og:locale" content={social.locale} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		{canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
-		<meta property="og:image" content={social.image.src} />
-		<meta property="og:image:secure_url" content={social.image.src} />
-		<meta property="og:image:type" content={social.image.type} />
-		<meta property="og:image:width" content={String(social.image.width)} />
-		<meta property="og:image:height" content={String(social.image.height)} />
-		<meta property="og:image:alt" content={social.image.alt} />
-
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={social.image.src} />
-		<meta name="twitter:image:alt" content={social.image.alt} />
-		<link rel="preload" href="/fonts/abril-fatface-latin.woff2" as="font" type="font/woff2" crossorigin />
-		<title>{title}</title>
 	</head>
 	<body>
 		<SiteIntro />
