@@ -11,11 +11,12 @@ Page copy is loaded through Astro's build-time Content Layer. Changes are valida
 | `src/content/landing-sections/pure-passion.md` | Editorial copy, photos, and captions |
 | `src/content/landing-sections/video.md` | Film copy, accessible play label, poster, and video sources |
 | `src/content/landing-sections/heritage.md` | Heritage copy, collage photos, and link |
-| `src/content/landing-sections/partnerships-news.md` | News cards and section link |
+| `src/content/landing-sections/partnerships-news.md` | Featured article references and section link |
+| `src/content/articles/*.md` | Article frontmatter, SEO metadata, and Markdown bodies |
 | `src/content/landing-sections/newsletter.md` | Registration copy, field labels, and background |
 | `src/content/footer/main.md` | Shared brand name and tagline, accessible footer labels, links, email, phone, and location |
 
-The Markdown entries use YAML frontmatter between `---` markers; their bodies are unused. Keep each section's `type` unchanged. Components use `getLandingSection()` to validate the expected section type before reading its fields.
+The landing-section and footer Markdown entries use YAML frontmatter between `---` markers; their bodies are unused. Keep each section's `type` unchanged. Components use `getLandingSection()` to validate the expected section type before reading its fields. Article Markdown bodies are rendered at build time using Astro's `render()` API.
 
 The page is written in Colombian Spanish (`es-CO`, with Open Graph locale `es_CO`). Brand copy is adapted from the Origen Tolima packaging: its roots in San Sebastián de Mariquita, patient craft, care for water and native forests, and the invitation to pause with each cup. Contact details also come from the packaging. Keep UI labels, image descriptions, and social preview copy in Spanish when editing content.
 
@@ -37,10 +38,62 @@ The sitemap and robots.txt are generated during the static build. The production
 
 The remaining landing-page destinations share `src/layouts/EditorialLayout.astro`,
 which provides the site header/footer, SEO metadata, breadcrumbs, skip link, and
-responsive typography. History lives at `/historia/`; `/historias/` lists the three
-articles linked from the landing page. Their headlines, images, dates, and excerpts
-come from `src/content/landing-sections/partnerships-news.md`; article bodies live
-in `src/lib/stories.ts`.
+responsive typography. History lives at `/historia/`; `/historias/` lists all
+published articles, newest first. Each article lives in `src/content/articles/`
+as one Markdown file containing its frontmatter and body. Its filename defines
+the URL: `cuidar-el-origen.md` generates `/historias/cuidar-el-origen/`. Use lowercase
+letters, numbers, and hyphens; keep existing filenames stable to preserve URLs.
+
+To add an article, create a file with this shape:
+
+```md
+---
+title: Una nueva historia de nuestro cacao
+description: Una descripción breve para la introducción, las tarjetas y los buscadores.
+publishedDate: "2026-10-02"
+category: Origen
+image:
+  src: /images/historias/nueva-historia.jpg
+  alt: Una descripción de la fotografía en español
+  width: 1200
+  height: 900
+  type: image/jpeg
+draft: true
+---
+
+## Un primer capítulo
+
+Escribe aquí el artículo usando párrafos, enlaces, listas y encabezados Markdown.
+```
+
+Use quoted ISO dates (`YYYY-MM-DD`) for `publishedDate` and optional `modifiedDate`.
+The schema rejects impossible dates and modification dates before publication.
+Add `modifiedDate` when the article changes; it supplies article metadata and the
+sitemap's last modification date. The image requires a source (an absolute HTTP(S)
+URL or path starting with `/`), Spanish alt text, and positive integer dimensions.
+Its optional `type` is the known MIME type; omit it for images with automatic
+format negotiation. Optional `seo.title` and `seo.description` override search
+and social metadata while the visible heading and introduction keep using `title`
+and `description`.
+
+The page supplies its own main heading from `title`; start body headings at `##`.
+Published articles must have a nonempty body and cannot contain an `h1`. Set
+`draft: true` while writing. Drafts are omitted from public routes, the article
+index, related links, homepage features, and sitemap; omit `draft` or set it to
+`false` to publish on the next build.
+
+The homepage's three featured articles are Astro collection references in
+`src/content/landing-sections/partnerships-news.md`, for example
+`articles: [en-el-corazon-de-nuestra-cordillera, un-legado-que-se-comparte-en-cada-taza, cuidar-el-origen]`.
+Their order controls the homepage cards. Headings, excerpts, dates, categories,
+and images come directly from the referenced Markdown entries. Missing or duplicate
+references fail the build; a referenced draft is hidden. New published articles
+appear in `/historias/` and receive their own route without being featured.
+
+Article pages include Article and BreadcrumbList JSON-LD, canonical URLs, article
+Open Graph metadata, and social image dimensions. Markdown renders into the
+static HTML, so the complete article is available to readers and search crawlers
+without browser JavaScript.
 
 Privacy, terms, and shipping/returns content lives in the three corresponding
 Astro page files. The copy describes the existing WhatsApp/email ordering flow.

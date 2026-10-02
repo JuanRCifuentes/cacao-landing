@@ -1,7 +1,9 @@
 ---
 import { getLandingSection } from '../../lib/content';
+import { getFeaturedStories } from '../../lib/stories';
 
-const { heading, cta, articles } = await getLandingSection('partnerships-news', 'partnershipsNews');
+const { heading, cta } = await getLandingSection('partnerships-news', 'partnershipsNews');
+const articles = await getFeaturedStories();
 ---
 
 <section id="partnerships-news" aria-labelledby="partnerships-news-heading" class="bg-white py-24 text-[#17140f] lg:py-40">
@@ -17,6 +19,8 @@ const { heading, cta, articles } = await getLandingSection('partnerships-news', 
 							<img
 								src={article.image.src}
 								alt={article.image.alt}
+								width={article.image.width}
+								height={article.image.height}
 								loading="lazy"
 								decoding="async"
 								class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-[1.03]"
@@ -24,7 +28,7 @@ const { heading, cta, articles } = await getLandingSection('partnerships-news', 
 						</div>
 						<div class="flex flex-col gap-2">
 							<div class="flex items-center gap-2 text-sm uppercase tracking-[0.06em]">
-								<time class="normal-case tracking-normal text-black/45">{article.date}</time>
+								<time datetime={article.dateIso} class="normal-case tracking-normal text-black/45">{article.date}</time>
 								<span>{article.category}</span>
 							</div>
 							<h3 class="text-xl leading-[1.35] tracking-[-0.02em]">{article.heading}</h3>

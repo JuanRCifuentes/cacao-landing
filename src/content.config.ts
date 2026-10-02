@@ -1,8 +1,34 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 const link = z.object({ label: z.string(), href: z.string() });
+
+const articles = defineCollection({
+	loader: glob({ pattern: '*.md', base: './src/content/articles' }),
+	schema: z.object({
+		title: z.string().trim().min(1),
+		description: z.string().trim().min(1),
+		publishedDate: z.iso.date(),
+		modifiedDate: z.iso.date().optional(),
+		category: z.string().trim().min(1),
+		image: z.object({
+			src: z.union([z.url({ protocol: /^https?$/ }), z.string().regex(/^\/(?!\/)/)]),
+			alt: z.string().trim().min(1),
+			width: z.number().int().positive(),
+			height: z.number().int().positive(),
+			type: z.string().trim().min(1).optional(),
+		}),
+		seo: z.object({
+			title: z.string().trim().min(1).optional(),
+			description: z.string().trim().min(1).optional(),
+		}).optional(),
+		draft: z.boolean().default(false),
+	}).refine((article) => !article.modifiedDate || article.modifiedDate >= article.publishedDate, {
+		message: 'modifiedDate must be on or after publishedDate.',
+		path: ['modifiedDate'],
+	}),
+});
 
 const site = defineCollection({
 	loader: glob({ pattern: '*.json', base: './src/content/site' }),
@@ -113,16 +139,7 @@ const landingSections = defineCollection({
 			type: z.literal('partnershipsNews'),
 			heading: z.string(),
 			cta: link,
-			articles: z.array(
-				z.object({
-					date: z.string(),
-					category: z.string(),
-					heading: z.string(),
-					excerpt: z.string(),
-					href: z.string(),
-					image: z.object({ src: z.url(), alt: z.string() }),
-				}),
-			).length(3),
+			articles: z.array(reference('articles')).length(3),
 		}),
 		z.object({
 			type: z.literal('newsletter'),
@@ -182,4 +199,4 @@ const products = defineCollection({
 	}),
 });
 
-export const collections = { site, landingSections, footer, products };
+export const collections = { site, landingSections, footer, products, articles };

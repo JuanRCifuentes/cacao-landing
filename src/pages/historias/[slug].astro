@@ -1,4 +1,5 @@
 ---
+import { render } from 'astro:content';
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
 import { getStories } from '../../lib/stories';
 
@@ -10,20 +11,53 @@ export async function getStaticPaths() {
 type Story = Awaited<ReturnType<typeof getStories>>[number];
 interface Props { story: Story; related: Story[] }
 const { story, related } = Astro.props;
+const { Content } = await render(story.entry);
 const canonical = new URL(story.href, Astro.site ?? 'https://origentolima.com').href;
-const structuredData = { '@context': 'https://schema.org', '@type': 'Article', headline: story.heading, description: story.excerpt, image: story.image.src, datePublished: story.dateIso, inLanguage: 'es-CO', mainEntityOfPage: canonical, author: { '@type': 'Organization', name: 'Origen Tolima', url: new URL('/', canonical).href } };
+const homeUrl = new URL('/', canonical).href;
+const organization = { '@type': 'Organization', name: 'Origen Tolima', url: homeUrl };
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Article',
+			'@id': `${canonical}#article`,
+			headline: story.heading,
+			description: story.seoDescription,
+			image: { '@type': 'ImageObject', url: new URL(story.image.src, canonical).href, caption: story.image.alt, width: story.image.width, height: story.image.height },
+			datePublished: story.dateIso,
+			...(story.modifiedTime && { dateModified: story.modifiedTime }),
+			articleSection: story.category,
+			inLanguage: 'es-CO',
+			mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+			author: organization,
+			publisher: organization,
+		},
+		{
+			'@type': 'BreadcrumbList',
+			'@id': `${canonical}#breadcrumbs`,
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Inicio', item: homeUrl },
+				{ '@type': 'ListItem', position: 2, name: 'Historias', item: new URL('/historias/', canonical).href },
+				{ '@type': 'ListItem', position: 3, name: story.heading, item: canonical },
+			],
+		},
+	],
+};
 ---
 
-<EditorialLayout title={`${story.heading} — Origen Tolima`} description={story.excerpt} eyebrow={story.category} image={story.image} breadcrumbs={[{ label: 'Historias', href: '/historias/' }]} structuredData={structuredData}>
+<EditorialLayout title={story.seoTitle} description={story.seoDescription} heading={story.heading} intro={story.excerpt} eyebrow={story.category} image={story.image} breadcrumbs={[{ label: 'Historias', href: '/historias/' }]} structuredData={structuredData} ogType="article" publishedTime={story.dateIso} modifiedTime={story.modifiedTime} section={story.category}>
 	<p slot="hero-meta" class="article-date">Publicado el <time datetime={story.dateIso}>{story.date}</time></p>
 	<article class="editorial-prose">
-		{story.sections.map((section, index) => <section aria-labelledby={`story-section-${index}`}><h2 id={`story-section-${index}`}>{section.heading}</h2>{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}</section>)}
+		<div class="article-body"><Content /></div>
 		<p class="article-origin"><a href="/historia/">Conoce nuestra historia</a> o <a href="/#products">encuentra tu cacao</a>.</p>
 		<aside class="related-stories" aria-labelledby="related-stories-title"><h2 id="related-stories-title">Sigue leyendo.</h2><ul>{related.map((other) => <li><a href={other.href}>{other.heading} <span aria-hidden="true">↗</span></a></li>)}</ul><a class="back-link" href="/historias/">Ver todas las historias <span aria-hidden="true">↗</span></a></aside>
 	</article>
 </EditorialLayout>
 
 <style>
+	.article-body :global(h2:first-child) { margin-top: 0; }
+	.article-body :global(ul) { list-style: disc; }
+	.article-body :global(ol) { list-style: decimal; }
 	.article-date { margin-top: 24px; color: #b6a58f; font-size: 11px; letter-spacing: .04em; }
 	.article-origin { margin-top: 36px; padding-top: 28px; border-top: 1px solid #d4cbbf; }
 	.related-stories { margin-top: 48px; padding-top: 10px; border-top: 1px solid #d4cbbf; }
