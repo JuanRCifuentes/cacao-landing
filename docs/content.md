@@ -114,3 +114,9 @@ python3 scripts/check-built-links.py
 
 The check validates generated local destinations and fragments, metadata,
 unique IDs, one main heading per page, and complete sitemap coverage.
+
+To check the Markdown article workflow after changing its schema or routes, run
+`python3 scripts/check-article-content.py`. It builds temporary published and draft
+articles, checks their HTML and SEO metadata, and verifies invalid content fails
+the build. It restores the original content and baseline build afterward. Run it
+separately from other build commands.
