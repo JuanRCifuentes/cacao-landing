@@ -5,7 +5,7 @@ heading: Nuestro origen
 description: En el corazón de nuestra cordillera, en San Sebastián de Mariquita, nace Origen Tolima. Cada grano es el resultado de un cuidado paciente y una tradición que honra la tierra, preserva el agua y protege los bosques nativos.
 cta:
   label: Conoce nuestra historia
-  href: "#"
+  href: /historia/
 images:
   grower: https://images.unsplash.com/photo-1564491683755-fb07a55a5299?auto=format&fit=crop&w=1600&q=85
   pods: https://images.unsplash.com/photo-1781453641585-a7c854ce66e9?auto=format&fit=crop&w=1000&q=80

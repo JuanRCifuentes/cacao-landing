@@ -1,0 +1,32 @@
+---
+import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { getStories } from '../../lib/stories';
+const stories = await getStories();
+---
+
+<EditorialLayout title="Historias y novedades — Origen Tolima" eyebrow="Tierra, tradición y cacao" description="Historias de nuestro origen en San Sebastián de Mariquita, de un proceso artesanal y del cuidado que acompaña cada taza de cacao.">
+	<section aria-labelledby="stories-title"><h2 id="stories-title" class="stories-heading">Desde nuestro origen.</h2><div class="stories-grid">
+		{stories.map((story) => <article class="story-card"><a href={story.href}>
+			<div class="story-card__image"><img src={story.image.src} alt={story.image.alt} width={story.image.width} height={story.image.height} loading="lazy" decoding="async" /></div>
+			<div class="story-card__meta"><time datetime={story.dateIso}>{story.date}</time><span>{story.category}</span></div>
+			<h3>{story.heading}</h3><p>{story.excerpt}</p><span class="story-card__link">Leer historia <span aria-hidden="true">↗</span></span>
+		</a></article>)}
+	</div></section>
+</EditorialLayout>
+
+<style>
+	.stories-heading { margin-top: 0; }
+	.stories-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; margin-top: 36px; }
+	.story-card a { display: block; text-decoration: none; color: inherit; }
+	.story-card__image { overflow: hidden; aspect-ratio: 3 / 4; background: #e3dcd2; }
+	.story-card__image img { width: 100%; height: 100%; object-fit: cover; transition: transform 500ms ease; }
+	.story-card a:hover img { transform: scale(1.035); }
+	.story-card__meta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 25px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: #785b37; }
+	.story-card__meta time { color: #675b4e; letter-spacing: 0; }
+	.story-card h3 { margin-block: 15px 12px; font-size: clamp(24px, 2.3vw, 32px); }
+	.story-card p { font-size: 13px; }
+	.story-card__link { display: inline-flex; gap: 22px; margin-top: 18px; padding-block: 8px; border-bottom: 1px solid #785b37; font-size: 11px; }
+	@media (max-width: 1000px) { .stories-grid { gap: 24px; } }
+	@media (max-width: 700px) { .stories-grid { grid-template-columns: 1fr; gap: 38px; } .story-card__image { aspect-ratio: 4 / 3; } }
+	@media (prefers-reduced-motion: reduce) { .story-card__image img { transition: none; } .story-card a:hover img { transform: none; } }
+</style>
