@@ -15,13 +15,37 @@ import SEOHead from '../components/SEOHead.astro';
 import '../styles/global.css';
 
 const site = await getEntry('site', 'main');
-if (!site) throw new Error('Missing site metadata content');
+const footer = await getEntry('footer', 'main');
+if (!site || !footer) throw new Error('Missing site metadata content');
 const { language } = site.data;
+const root = new URL('/', Astro.site ?? 'https://origentolima.com').href;
+const [locality, region] = footer.data.location;
+// Placeholder social links ("#") are not real profiles, so only absolute URLs are listed.
+const sameAs = footer.data.socials.map((social) => social.href).filter((href) => /^https?:\/\//.test(href));
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization', '@id': `${root}#organization`,
+			name: footer.data.brand, url: root,
+			logo: new URL('/icon-512.png', root).href,
+			description: site.data.description,
+			email: footer.data.contact.email, telephone: footer.data.contact.phone.label,
+			address: { '@type': 'PostalAddress', addressLocality: locality, addressRegion: region.split(',')[0].trim(), addressCountry: 'CO' },
+			...(sameAs.length && { sameAs }),
+		},
+		{
+			'@type': 'WebSite', '@id': `${root}#website`,
+			name: site.data.social.siteName, url: root, inLanguage: language,
+			publisher: { '@id': `${root}#organization` },
+		},
+	],
+};
 ---
 
 <html lang={language} prefix="og: https://ogp.me/ns#">
 	<head>
-		<SEOHead />
+		<SEOHead structuredData={structuredData} />
 		<script is:inline>
 			// Opt in before first paint; without JS the page remains immediately usable.
 			// The Home link uses #hero, which should still replay the opening on reload.
