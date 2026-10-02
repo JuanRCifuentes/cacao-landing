@@ -32,3 +32,32 @@ Customers arriving at `/#products` can also order directly: each homepage card p
 `src/components/SEOHead.astro` provides canonical URLs, unique metadata, and social previews. Product pages include Product, Organization, and BreadcrumbList JSON-LD. Prices, stock, reviews, delivery promises, certifications, and unverified dietary claims are intentionally omitted. Without verified offer or review data, Product markup alone does not establish eligibility for Google's product rich results. Preparation copy is general serving guidance, with the package instructions taking precedence.
 
 The sitemap and robots.txt are generated during the static build. The production origin defaults to `https://origentolima.com`; `SITE_URL` can explicitly override it. Preview deployment URLs are not used as canonical origins. Routes use trailing slashes consistently.
+
+## History, stories, and policy pages
+
+The remaining landing-page destinations share `src/layouts/EditorialLayout.astro`,
+which provides the site header/footer, SEO metadata, breadcrumbs, skip link, and
+responsive typography. History lives at `/historia/`; `/historias/` lists the three
+articles linked from the landing page. Their headlines, images, dates, and excerpts
+come from `src/content/landing-sections/partnerships-news.md`; article bodies live
+in `src/lib/stories.ts`.
+
+Privacy, terms, and shipping/returns content lives in the three corresponding
+Astro page files. The copy describes the existing WhatsApp/email ordering flow.
+Before publishing business-specific policy commitments, confirm them with the
+business owner; the repository does not define delivery prices, service timelines,
+retention periods, or the operator's legal identity.
+
+The newsletter section opens an explicit email request instead of submitting to
+an unconfigured backend. Social entries with `href: "#"` are hidden until actual
+profile URLs are configured in footer content.
+
+After changing routes or links, run:
+
+```sh
+pnpm build
+python3 scripts/check-built-links.py
+```
+
+The check validates generated local destinations and fragments, metadata,
+unique IDs, one main heading per page, and complete sitemap coverage.
