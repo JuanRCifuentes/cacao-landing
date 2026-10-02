@@ -14,7 +14,7 @@ products:
       width: 1200
       height: 800
     cta:
-      label: Adquirir este cacao
+      label: Pedir mi cacao
       message: Hola, me gustaría hacer un pedido de cacao 100% de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios, los métodos de pago y las opciones de envío?
   - id: cacao-75-panela
     name: 75% cacao
@@ -26,7 +26,7 @@ products:
       width: 1200
       height: 800
     cta:
-      label: Adquirir este cacao
+      label: Pedir mi cacao
       message: Hola, me gustaría hacer un pedido de cacao 75% con panela de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios, los métodos de pago y las opciones de envío?
   - id: cacao-75-stevia
     name: 75% cacao
@@ -38,6 +38,6 @@ products:
       width: 1200
       height: 1187
     cta:
-      label: Adquirir este cacao
+      label: Pedir mi cacao
       message: Hola, me gustaría hacer un pedido de cacao 75% con stevia de Origen Tolima. ¿Podrían compartirme las presentaciones, los precios, los métodos de pago y las opciones de envío?
 ---
