@@ -20,11 +20,11 @@ navigation:
     href: "https://wa.me/573195048115"
 policies:
   - label: Política de privacidad
-    href: "#"
+    href: "/privacidad/"
   - label: Términos y condiciones
-    href: "#"
+    href: "/terminos-y-condiciones/"
   - label: Envíos y devoluciones
-    href: "#"
+    href: "/envios-y-devoluciones/"
 newsletter:
   label: Recibe nuestras novedades
   href: "#newsletter"
