@@ -1,44 +1,54 @@
+import { getCollection, getEntries, type CollectionEntry } from 'astro:content';
 import { getLandingSection } from './content';
 
-const storyContent = [
-	{
-		slug: 'en-el-corazon-de-nuestra-cordillera',
-		sections: [
-			{ heading: 'Un lugar que da sentido al cacao', paragraphs: ['En San Sebastián de Mariquita, Tolima, nace Origen Tolima. Nuestro cacao lleva en su nombre el vínculo con esa tierra y con una tradición que se expresa en cada grano.', 'Hablar de nuestro origen es hablar de cuidado paciente. La tierra, el agua y los bosques nativos acompañan una historia que compartimos a través del cacao.'] },
-			{ heading: 'De la tierra a una pausa', paragraphs: ['El respeto por la naturaleza y la suavidad de un proceso artesanal dan forma a nuestro cacao. Detrás de cada taza hay manos que cuidan y saberes que perduran.', 'Una taza es una manera de acercarse a ese origen: un momento para disfrutar el carácter del cacao y hacer una pausa.'] },
-		],
-	},
-	{
-		slug: 'un-legado-que-se-comparte-en-cada-taza',
-		sections: [
-			{ heading: 'La paciencia se siente en cada detalle', paragraphs: ['Nuestro cacao nace de un cuidado paciente y de una tradición que honra la tierra. La suavidad de un proceso artesanal transforma el cacao y conserva el carácter de esa tradición.', 'Detrás de cada taza hay manos que cuidan y saberes que perduran. Ese es el legado que compartimos a través del cacao.'] },
-			{ heading: 'Un ritual para compartir', paragraphs: ['El chocolate es una invitación a la pausa y al encuentro. Preparar una taza abre un espacio para disfrutar el cacao a tu manera, en un momento propio o en compañía.', 'Nuestra colección reúne cacao puro 100%, cacao 75% con panela orgánica y cacao 75% con stevia. Distintas formas de acercarse a un mismo origen.'] },
-		],
-	},
-	{
-		slug: 'cuidar-el-origen',
-		sections: [
-			{ heading: 'Todo comienza en la tierra', paragraphs: ['Cuidar el cacao es también cuidar el agua y los bosques nativos que acompañan su origen. En San Sebastián de Mariquita, Tolima, nuestro vínculo con la tierra forma parte de la historia de cada grano.', 'La tradición que compartimos honra la naturaleza. Reconocer el agua y los bosques como parte esencial del origen es una manera de contar lo que da sentido a nuestro cacao.'] },
-			{ heading: 'Una historia que continúa en cada taza', paragraphs: ['El respeto por la naturaleza y el cuidado paciente se encuentran con un proceso artesanal. Tierra, manos y saberes forman parte del recorrido que compartimos a través del cacao.', 'Cada taza invita a recordar ese origen y a disfrutar un momento de pausa.'] },
-		],
-	},
-];
-const storyContentByHref = new Map(storyContent.map((story) => [`/historias/${story.slug}/`, story]));
-
-/** Article metadata comes from the landing cards so both entry points stay in sync. */
-export async function getStories() {
-	const news = await getLandingSection('partnerships-news', 'partnershipsNews');
-	const seenHrefs = new Set<string>();
-	const stories = news.articles.map((article) => {
-		const content = storyContentByHref.get(article.href);
-		if (!content) throw new Error(`Missing story content for landing article "${article.href}".`);
-		if (seenHrefs.has(article.href)) throw new Error(`Duplicate landing article "${article.href}".`);
-		seenHrefs.add(article.href);
-		const [day, month, year] = article.date.split('.');
-		return { ...article, ...content, dateIso: `20${year}-${month}-${day}`, image: { ...article.image, width: 1200, height: 900 } };
-	});
-	for (const href of storyContentByHref.keys()) {
-		if (!seenHrefs.has(href)) throw new Error(`Missing landing article for story "${href}".`);
+function toStory(entry: CollectionEntry<'articles'>) {
+	if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(entry.id)) {
+		throw new Error(`Article "${entry.id}" must use a lowercase, hyphenated slug.`);
 	}
-	return stories;
+	const html = entry.rendered?.html ?? '';
+	if (!entry.body?.trim() || !html.replace(/<!--[\s\S]*?-->/g, '').trim()) {
+		throw new Error(`Published article "${entry.id}" must have a Markdown body.`);
+	}
+	if (/<h1(?:\s|>)/i.test(html)) {
+		throw new Error(`Article "${entry.id}" must start its body headings at level two; its title already provides the page h1.`);
+	}
+	const { title, description, publishedDate, modifiedDate, category, image, seo } = entry.data;
+	const [year, month, day] = publishedDate.split('-');
+	return {
+		slug: entry.id,
+		href: `/historias/${entry.id}/`,
+		heading: title,
+		excerpt: description,
+		date: `${day}.${month}.${year.slice(-2)}`,
+		dateIso: publishedDate,
+		modifiedTime: modifiedDate,
+		category,
+		image,
+		seoTitle: seo?.title ?? `${title} — Origen Tolima`,
+		seoDescription: seo?.description ?? description,
+		entry,
+	};
+}
+
+/** All published Markdown articles, newest first, independent of homepage features. */
+export async function getStories() {
+	const entries = await getCollection('articles', ({ data }) => !data.draft);
+	return entries
+		.sort((a, b) => b.data.publishedDate.localeCompare(a.data.publishedDate) || a.id.localeCompare(b.id))
+		.map(toStory);
+}
+
+/** Homepage references control feature order; draft entries never appear publicly. */
+export async function getFeaturedStories() {
+	const news = await getLandingSection('partnerships-news', 'partnershipsNews');
+	const seenIds = new Set<string>();
+	for (const reference of news.articles) {
+		if (seenIds.has(reference.id)) throw new Error(`Duplicate featured article "${reference.id}".`);
+		seenIds.add(reference.id);
+	}
+	const entries = await getEntries(news.articles);
+	return entries.flatMap((entry, index) => {
+		if (!entry) throw new Error(`Missing featured article "${news.articles[index].id}".`);
+		return entry.data.draft ? [] : [toStory(entry)];
+	});
 }
