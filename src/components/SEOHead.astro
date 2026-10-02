@@ -4,15 +4,22 @@ import { getEntry } from 'astro:content';
 interface Props {
 	title?: string;
 	description?: string;
-	image?: { src: string; alt: string; width: number; height: number };
+	image?: { src: string; alt: string; width: number; height: number; type?: string };
+	ogType?: 'website' | 'article';
+	publishedTime?: string;
+	modifiedTime?: string;
+	section?: string;
 	structuredData?: Record<string, unknown>;
 }
 
 const site = await getEntry('site', 'main');
 if (!site) throw new Error('Missing site metadata content');
-const { title = site.data.title, description = site.data.description, image = site.data.social.image, structuredData } = Astro.props;
+const { title = site.data.title, description = site.data.description, image = site.data.social.image, structuredData, ogType = 'website', publishedTime, modifiedTime, section } = Astro.props;
 const { social } = site.data;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site ?? 'https://origentolima.com');
+const imageUrl = new URL(image.src, canonicalUrl);
+// Dynamic image services negotiate formats; only declare a known MIME type.
+const imageType = image.type ?? ({ '.webp': 'image/webp', '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg' } as Record<string, string>)[imageUrl.pathname.match(/\.[a-z]+$/i)?.[0].toLowerCase() ?? ''];
 // Escape less-than signs so future editorial text cannot terminate the script element.
 const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\u003c') : undefined;
 ---
@@ -29,21 +36,26 @@ const jsonLd = structuredData ? JSON.stringify(structuredData).replace(/</g, '\\
 <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
 <link rel="preload" href="/fonts/abril-fatface-latin.woff2" as="font" type="font/woff2" crossorigin />
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
+{ogType === 'article' && <>
+	{publishedTime && <meta property="article:published_time" content={publishedTime} />}
+	{modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+	{section && <meta property="article:section" content={section} />}
+</>}
 <meta property="og:site_name" content={social.siteName} />
 <meta property="og:locale" content={social.locale} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={image.src} />
-<meta property="og:image:secure_url" content={image.src} />
-<meta property="og:image:type" content="image/webp" />
+<meta property="og:image" content={imageUrl.href} />
+<meta property="og:image:secure_url" content={imageUrl.href} />
+{imageType && <meta property="og:image:type" content={imageType} />}
 <meta property="og:image:width" content={String(image.width)} />
 <meta property="og:image:height" content={String(image.height)} />
 <meta property="og:image:alt" content={image.alt} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={image.src} />
+<meta name="twitter:image" content={imageUrl.href} />
 <meta name="twitter:image:alt" content={image.alt} />
 {jsonLd && <script type="application/ld+json" is:inline set:html={jsonLd} />}
