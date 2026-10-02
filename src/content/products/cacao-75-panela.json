@@ -1,0 +1,34 @@
+{
+	"landingId": "cacao-75-panela",
+	"slug": "cacao-75-panela",
+	"order": 2,
+	"name": "Cacao 75% con panela",
+	"title": "Cacao 75% con panela de Tolima | Origen Tolima",
+	"metaDescription": "Cacao 75% con panela de Origen Tolima, de San Sebastián de Mariquita. Descubre el sabor de esta variedad, cómo preparar tu taza y consulta precios y pedidos.",
+	"percentage": "75%",
+	"variety": "con panela",
+	"eyebrow": "El dulzor de nuestra tradición",
+	"intro": "La intensidad del cacao se encuentra con el dulzor de la panela. Una taza cálida que sabe a tradición y a momentos compartidos.",
+	"profile": "Intenso, con dulzor de panela",
+	"sweetener": "Panela",
+	"story": {
+		"heading": "Una tradición que se siente en cada taza.",
+		"description": "El cacao 75% con panela reúne el carácter del cacao y un dulzor familiar en nuestra mesa. Es una invitación a disfrutar el chocolate caliente como parte de tus momentos cotidianos: un desayuno tranquilo, una conversación o una pausa al final de la tarde. Nuestro origen está en San Sebastián de Mariquita, Tolima."
+	},
+	"notes": [
+		{ "heading": "Cacao protagonista", "description": "Una variedad con 75% cacao que conserva su carácter mientras se encuentra con el dulzor de la panela." },
+		{ "heading": "Dulzor con tradición", "description": "La panela acompaña esta variedad y le da una identidad distinta frente al cacao puro y al cacao con stevia." },
+		{ "heading": "Para compartir", "description": "Una taza de chocolate caliente para acompañar el desayuno, la conversación y esas pausas que se disfrutan en compañía." }
+	],
+	"preparation": [
+		{ "heading": "Elige tu base", "description": "Prepara tu taza con agua, leche o la bebida vegetal que más te guste. Elige la base que acompañe tu ritual." },
+		{ "heading": "Mezcla con calma", "description": "Calienta la base y mezcla el cacao hasta integrarlo. Sigue las indicaciones del empaque y ajusta la cantidad a tu gusto." },
+		{ "heading": "Disfruta su dulzor", "description": "Esta variedad ya incorpora panela. Prueba tu bebida antes de añadir más dulzor y encuentra el equilibrio que prefieras." }
+	],
+	"faqs": [
+		{ "question": "¿Qué distingue al cacao 75% con panela?", "answer": "Esta variedad combina 75% cacao con el dulzor de la panela. La variedad 100% es cacao puro, mientras que la otra variedad 75% está acompañada por stevia." },
+		{ "question": "¿La panela ya viene incorporada?", "answer": "Sí, esta es nuestra variedad con panela. Prueba la bebida antes de añadir otro endulzante para ajustar el dulzor a tu gusto." },
+		{ "question": "¿Dónde consulto ingredientes y presentaciones?", "answer": "La etiqueta del producto contiene la información de su formulación. Escríbenos por WhatsApp para consultar las presentaciones disponibles, los ingredientes y cualquier información de alérgenos que necesites antes de comprar." },
+		{ "question": "¿Cómo consulto el precio y hago mi pedido?", "answer": "Selecciona «Consultar y pedir» para escribirnos por WhatsApp sobre el cacao 75% con panela. Te confirmaremos precios, disponibilidad, métodos de pago y las opciones de envío para tu destino." }
+	]
+}

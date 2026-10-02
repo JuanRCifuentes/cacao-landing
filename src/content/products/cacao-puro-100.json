@@ -1,0 +1,34 @@
+{
+	"landingId": "cacao-100",
+	"slug": "cacao-puro-100",
+	"order": 1,
+	"name": "Cacao puro 100%",
+	"title": "Cacao puro 100% de Tolima | Origen Tolima",
+	"metaDescription": "Descubre el cacao puro 100% de Origen Tolima, de San Sebastián de Mariquita. Conoce su perfil intenso, cómo disfrutarlo y consulta tu pedido por WhatsApp.",
+	"percentage": "100%",
+	"variety": "puro",
+	"eyebrow": "La esencia del cacao",
+	"intro": "Todo el carácter del cacao. Una taza intensa, un momento propio y la libertad de disfrutarlo a tu manera.",
+	"profile": "Intenso y puro",
+	"sweetener": "Sin endulzante añadido",
+	"story": {
+		"heading": "El cacao, en su expresión más pura.",
+		"description": "Nuestra variedad 100% pone al cacao en el centro de la experiencia. Su intensidad acompaña a quienes disfrutan el sabor del cacao puro y prefieren elegir el dulzor de cada taza. Desde San Sebastián de Mariquita, Tolima, compartimos un ritual que comienza en la tierra y se disfruta sin prisa."
+	},
+	"notes": [
+		{ "heading": "Carácter propio", "description": "El sabor del cacao puro es el protagonista: una elección para quienes buscan una taza de mayor intensidad." },
+		{ "heading": "A tu manera", "description": "Disfrútalo sin endulzar o añade el dulzor que prefieras durante la preparación. Tú eliges cómo hacer tuya cada taza." },
+		{ "heading": "Un origen cercano", "description": "Cacao de autor de San Sebastián de Mariquita, Tolima. Una tradición que invita a reconocer el origen de lo que compartimos." }
+	],
+	"preparation": [
+		{ "heading": "Elige tu base", "description": "Agua, leche o la bebida vegetal que prefieras. Cada base ofrece una forma distinta de disfrutar el cacao puro." },
+		{ "heading": "Mezcla con calma", "description": "Calienta tu base y mezcla el cacao hasta integrarlo. Ajusta la cantidad a la intensidad que más disfrutas y sigue las indicaciones del empaque." },
+		{ "heading": "Dale tu toque", "description": "Pruébalo antes de endulzar. Si lo deseas, añade tu endulzante favorito y comparte una taza a tu medida." }
+	],
+	"faqs": [
+		{ "question": "¿Qué significa que sea 100% cacao?", "answer": "Esta es nuestra variedad de cacao puro, sin endulzante añadido. A diferencia de las variedades 75% con panela o con stevia, puedes elegir el dulzor al preparar tu bebida." },
+		{ "question": "¿Cómo puedo disfrutar el cacao puro?", "answer": "Puedes preparar una bebida con agua, leche o una bebida vegetal. Ajusta la intensidad a tu gusto y consulta las indicaciones del empaque para la preparación de la presentación que elijas." },
+		{ "question": "¿Qué presentaciones y precios están disponibles?", "answer": "Escríbenos por WhatsApp para conocer las presentaciones, los precios y la disponibilidad actual del cacao 100%. También podemos ayudarte a elegir la opción para tu pedido." },
+		{ "question": "¿Cómo hago un pedido y consulto el envío?", "answer": "El botón «Consultar y pedir» abre una conversación con Origen Tolima sobre este producto. Nuestro equipo te confirma los métodos de pago y las opciones, costos y tiempos de envío para tu destino antes de que hagas el pedido." }
+	]
+}
