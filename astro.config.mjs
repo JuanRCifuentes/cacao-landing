@@ -3,11 +3,12 @@ import { defineConfig } from 'astro/config';
 
 import tailwindcss from '@tailwindcss/vite';
 
-const site = process.env.SITE_URL ?? process.env.CF_PAGES_URL;
+const site = process.env.SITE_URL ?? 'https://origentolima.com';
 
 // https://astro.build/config
 export default defineConfig({
   site,
+  trailingSlash: 'always',
 
   server: { port: 4387 },
 
