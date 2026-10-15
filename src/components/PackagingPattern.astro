@@ -9,14 +9,25 @@ const { class: className, fade = false } = Astro.props;
 
 <div
 	aria-hidden="true"
-	class:list={['packaging-pattern pointer-events-none overflow-hidden select-none', fade && 'packaging-pattern--fade', className]}
+	class:list={['packaging-pattern', fade && 'packaging-pattern--fade', className]}
 >
-	<span class="packaging-pattern__ink block h-full w-full bg-current"></span>
+	<span class="packaging-pattern__ink"></span>
 </div>
 
 <style>
-	/* A single cached vector tile; Tailwind controls placement, height and ink color. */
+	/* A single cached vector tile; the parent class controls placement, height and ink color. */
+	.packaging-pattern {
+		overflow: hidden;
+		pointer-events: none;
+		-webkit-user-select: none;
+		user-select: none;
+	}
+
 	.packaging-pattern__ink {
+		display: block;
+		width: 100%;
+		height: 100%;
+		background-color: currentColor;
 		-webkit-mask: url('/packaging-pattern.svg') center / var(--pattern-size, 360px) auto repeat;
 		mask: url('/packaging-pattern.svg') center / var(--pattern-size, 360px) auto repeat;
 	}

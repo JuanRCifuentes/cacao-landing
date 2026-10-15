@@ -7,33 +7,33 @@ const { eyebrow, heading, description, images } = await getLandingSection('pure-
 <section
 	id="pure-passion"
 	aria-labelledby="pure-passion-heading"
-	class="overflow-hidden bg-[#f7f5f0] px-4 py-24 text-[#17140f] sm:px-8 lg:px-10 lg:py-40 xl:px-16"
+	class="passion"
 >
-	<div class="mx-auto w-full max-w-[1440px]">
-		<header class="mx-auto flex max-w-[620px] flex-col items-center text-center lg:mx-0 lg:ml-[8.333%] lg:w-1/3 lg:items-start lg:text-left" data-motion="rise">
-			<p class="text-xs font-medium uppercase leading-none tracking-[0.12em]">{eyebrow}</p>
+	<div class="passion__inner">
+		<header class="passion__header" data-motion="rise">
+			<p class="passion__eyebrow">{eyebrow}</p>
 			<h2
 				id="pure-passion-heading"
-				class="mt-3 text-[44px] font-medium uppercase leading-[0.88] tracking-[0.04em] sm:text-[56px]"
+				class="passion__heading"
 			>
 				{heading}
 			</h2>
-			<p class="mt-8 text-sm leading-[1.65] tracking-[-0.01em] text-black/70">{description}</p>
+			<p class="passion__description">{description}</p>
 		</header>
 
-		<div class="passion__gallery mt-16 flex flex-col gap-16 lg:mt-10 lg:gap-0">
+		<div class="passion__gallery">
 			{images.map((image) => (
-				<figure class="passion__figure mx-auto flex w-full max-w-[540px] flex-col lg:mx-0 lg:w-1/3 lg:max-w-none" data-motion="image">
-					<div class="passion__frame aspect-[3/4] overflow-hidden rounded-[2px] bg-black/5">
+				<figure class="passion__figure" data-motion="image">
+					<div class="passion__frame">
 						<img
 							src={image.src}
 							alt={image.alt}
 							loading="lazy"
 							decoding="async"
-							class="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.02]"
+							class="passion__image"
 						/>
 					</div>
-					<figcaption class="mt-3 text-xs leading-[1.6] text-black/50">{image.caption}</figcaption>
+					<figcaption class="passion__caption">{image.caption}</figcaption>
 				</figure>
 			))}
 		</div>
@@ -41,10 +41,98 @@ const { eyebrow, heading, description, images } = await getLandingSection('pure-
 </section>
 
 <style>
+	.passion {
+		overflow: hidden;
+		padding: 6rem 1rem;
+		background-color: #f7f5f0;
+		color: #17140f;
+	}
+
+	.passion__inner { width: 100%; max-width: 1440px; margin-inline: auto; }
+
+	.passion__header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: 620px;
+		margin-inline: auto;
+		text-align: center;
+	}
+
+	.passion__eyebrow {
+		font-size: 0.75rem;
+		font-weight: 500;
+		line-height: 1;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.passion__heading {
+		margin-top: 0.75rem;
+		font-size: 44px;
+		font-weight: 500;
+		line-height: 0.88;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.passion__description {
+		margin-top: 2rem;
+		color: rgb(0 0 0 / 70%);
+		font-size: 0.875rem;
+		line-height: 1.65;
+		letter-spacing: -0.01em;
+	}
+
+	.passion__gallery { display: flex; flex-direction: column; gap: 4rem; margin-top: 4rem; }
+
+	.passion__figure {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		max-width: 540px;
+		margin-inline: auto;
+	}
+
+	.passion__frame {
+		aspect-ratio: 3 / 4;
+		overflow: hidden;
+		border-radius: 2px;
+		background-color: rgb(0 0 0 / 5%);
+	}
+
+	.passion__image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition-duration: 0.7s;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-property: transform, translate, scale, rotate;
+	}
+
+	.passion__caption { margin-top: 0.75rem; color: rgb(0 0 0 / 50%); font-size: 0.75rem; line-height: 1.6; }
+
+	@media (hover: hover) {
+		.passion__image:hover { scale: 1.02; }
+	}
+
+	@media (min-width: 640px) {
+		.passion { padding-inline: 2rem; }
+		.passion__heading { font-size: 56px; }
+	}
+
 	@media (min-width: 1024px) {
+		.passion { padding: 10rem 2.5rem; }
+		.passion__header { width: 33.3333%; margin-inline: 8.333% 0; align-items: flex-start; text-align: left; }
+		.passion__gallery { gap: 0; margin-top: 2.5rem; }
+		.passion__figure { width: 33.3333%; max-width: none; margin-inline: 0; }
 		.passion__figure:nth-child(odd) { margin-left: auto; margin-right: 8.333%; }
 		.passion__figure:nth-child(even) { margin-left: 8.333%; }
 		/* A gentle stagger, with gallery height determined by the images and captions. */
 		.passion__figure + .passion__figure { margin-top: clamp(-12rem, -13vw, -6rem); }
+	}
+
+	@media (min-width: 1280px) {
+		.passion { padding-inline: 4rem; }
 	}
 </style>

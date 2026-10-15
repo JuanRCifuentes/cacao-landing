@@ -7,16 +7,16 @@ const { heading, description, video } = await getLandingSection('video', 'video'
 
 <section id="video" aria-labelledby="video-heading" class="film">
 	<header class="film__header" data-motion="rise">
-		<PackagingPattern fade class="mx-auto mb-7 h-6 w-36 text-[#c6ab86]/45 [--pattern-size:240px] md:mb-9" />
+		<PackagingPattern fade class="film__pattern" />
 		<h2 id="video-heading" class="film__heading">
-			{heading.map((line) => <span class="block">{line}</span>)}
+			{heading.map((line) => <span class="film__line">{line}</span>)}
 		</h2>
 		<p class="film__description">{description}</p>
 	</header>
 
-	<div class="relative aspect-[4/3] w-full overflow-hidden md:aspect-video" data-video-player>
+	<div class="film__player" data-video-player>
 		<video
-			class="h-full w-full object-cover"
+			class="film__video"
 			poster={video.poster}
 			preload="none"
 			controls
@@ -26,15 +26,15 @@ const { heading, description, video } = await getLandingSection('video', 'video'
 		>
 			<source src={video.src} type="video/mp4" />
 		</video>
-		<div class="pointer-events-none absolute inset-0 bg-black/15 transition-opacity duration-300" data-video-shade></div>
+		<div class="film__shade" data-video-shade></div>
 		<button
 			type="button"
 			aria-label={video.label}
-			class="absolute top-1/2 left-1/2 flex h-16 w-24 -translate-x-1/2 -translate-y-1/2 cursor-pointer items-center justify-center rounded-[2px] bg-[#f4f0e8] text-[#16100b] transition-[background-color,opacity] duration-300 hover:bg-[#e7c681] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#f4f0e8] md:h-20 md:w-[120px]"
+			class="film__play"
 			data-video-button
 			hidden
 		>
-			<svg viewBox="0 0 13 17" class="h-[17px] w-[13px] fill-current" aria-hidden="true">
+			<svg viewBox="0 0 13 17" class="film__icon" aria-hidden="true">
 				<path d="M0 0L12.5 8.5L0 17V0Z"></path>
 			</svg>
 		</button>
@@ -69,6 +69,67 @@ const { heading, description, video } = await getLandingSection('video', 'video'
 		font-size: 14px;
 		line-height: 1.7;
 	}
+
+	.film__header :global(.film__pattern) {
+		--pattern-size: 240px;
+		width: 9rem;
+		height: 1.5rem;
+		margin: 0 auto 1.75rem;
+		color: rgb(198 171 134 / 45%);
+	}
+
+	.film__line { display: block; }
+
+	.film__player {
+		position: relative;
+		width: 100%;
+		aspect-ratio: 4 / 3;
+		overflow: hidden;
+	}
+
+	.film__video { width: 100%; height: 100%; object-fit: cover; }
+
+	.film__shade {
+		position: absolute;
+		inset: 0;
+		background-color: rgb(0 0 0 / 15%);
+		pointer-events: none;
+		transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+
+	.film__play {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 6rem;
+		height: 4rem;
+		translate: -50% -50%;
+		border-radius: 2px;
+		background-color: #f4f0e8;
+		color: #16100b;
+		cursor: pointer;
+		transition-duration: 0.3s;
+		transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+		transition-property: background-color, opacity;
+	}
+
+	.film__play:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 4px; }
+	.film__play--hidden { opacity: 0; pointer-events: none; }
+	.film__shade--hidden { opacity: 0; }
+	.film__icon { width: 13px; height: 17px; fill: currentColor; }
+
+	@media (hover: hover) {
+		.film__play:hover { background-color: #e7c681; }
+	}
+
+	@media (min-width: 768px) {
+		.film__header :global(.film__pattern) { margin-bottom: 2.25rem; }
+		.film__player { aspect-ratio: 16 / 9; }
+		.film__play { width: 120px; height: 5rem; }
+	}
 </style>
 
 <script>
@@ -83,13 +144,13 @@ const { heading, description, video } = await getLandingSection('video', 'video'
 
 		const showButton = () => {
 			button.tabIndex = 0;
-			button.classList.remove('pointer-events-none', 'opacity-0');
-			shade?.classList.remove('opacity-0');
+			button.classList.remove('film__play--hidden');
+			shade?.classList.remove('film__shade--hidden');
 		};
 
 		const hideButton = () => {
-			button.classList.add('pointer-events-none', 'opacity-0');
-			shade?.classList.add('opacity-0');
+			button.classList.add('film__play--hidden');
+			shade?.classList.add('film__shade--hidden');
 		};
 
 		button.addEventListener('click', () => {
