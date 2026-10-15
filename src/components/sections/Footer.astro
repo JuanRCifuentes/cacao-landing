@@ -16,78 +16,142 @@ const homeHref = isInteriorPage ? '/' : '#hero';
 const pageHref = (href: string) => isInteriorPage && href.startsWith('#') ? `/${href}` : href;
 ---
 
-<footer id="site-footer" class="relative z-30 bg-[#f4f0e8] pt-20 text-[#17140f] md:pt-40">
-	<div class="mx-auto flex w-full max-w-[1440px] flex-col px-4 pt-10 lg:flex-row lg:gap-16 lg:px-10 lg:pt-20 lg:pb-10 xl:gap-28 xl:px-16">
-		<a href={homeHref} aria-label={`${brand}, ${isInteriorPage ? 'Ir al inicio' : labels.backToTop}`} class="group hidden shrink-0 lg:block lg:w-[220px] xl:w-[320px]">
-			<span class="block w-full transition-transform duration-500 group-hover:-translate-y-1 motion-reduce:transform-none">
-				<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
+<footer id="site-footer" class="site-footer">
+	<div class="site-footer__main">
+		<a href={homeHref} aria-label={`${brand}, ${isInteriorPage ? 'Ir al inicio' : labels.backToTop}`} class="site-footer__brand">
+			<span class="site-footer__brand-lift">
+				<CocoaLogo animated brand={brand} tagline={tagline} class="site-footer__logo" />
 			</span>
 		</a>
 
-		<div class="flex min-w-0 flex-1 flex-col justify-between gap-12 lg:pb-10">
-			<div class="flex flex-col gap-12 lg:flex-row lg:justify-between lg:gap-10">
-				<nav aria-label={labels.navigation} class="min-w-0 flex-1">
-					<ul class="flex flex-col gap-2">
+		<div class="site-footer__body">
+			<div class="site-footer__top">
+				<nav aria-label={labels.navigation} class="site-footer__nav">
+					<ul class="site-footer__nav-list">
 						{navigation.map((item) => (
 							<li>
-								<a
-									href={pageHref(item.href)}
-									class="group inline-flex items-baseline gap-3 text-[32px] leading-[1.12] tracking-[-0.04em] sm:text-[38px] xl:text-[44px]"
-								>
+								<a href={pageHref(item.href)} class="site-footer__nav-link">
 									<span>{item.label}</span>
-									<span class="h-px w-0 bg-current transition-[width] duration-300 group-hover:w-8" aria-hidden="true"></span>
+									<span class="site-footer__nav-rule" aria-hidden="true"></span>
 								</a>
 							</li>
 						))}
 					</ul>
 				</nav>
 
-				<div class="flex w-full flex-col gap-8 text-sm leading-[1.6] tracking-[-0.01em] lg:w-60 lg:shrink-0 lg:items-end lg:text-right">
-					<div class="flex flex-col gap-1 lg:items-end">
+				<div class="site-footer__aside">
+					<div class="site-footer__policies">
 						{policies.map((item) => (
-							<a href={pageHref(item.href)} class="w-fit border-b border-transparent transition-colors hover:border-current">{item.label}</a>
+							<a href={pageHref(item.href)} class="site-footer__hover-line">{item.label}</a>
 						))}
 					</div>
-					<a href={pageHref(newsletter.href)} class="w-fit border-b border-current pb-0.5">{newsletter.label}</a>
+					<a href={pageHref(newsletter.href)} class="site-footer__underline">{newsletter.label}</a>
 				</div>
 			</div>
 
-			<nav aria-label={labels.socialMedia} class="flex flex-wrap gap-x-7 gap-y-3 text-xs font-medium uppercase tracking-[0.12em] lg:pt-14">
+			<nav aria-label={labels.socialMedia} class="site-footer__socials">
 				{socials.filter((item) => item.href !== '#').map((item) => (
-					<a href={pageHref(item.href)} class="transition-opacity hover:opacity-50">{item.label}</a>
+					<a href={pageHref(item.href)}>{item.label}</a>
 				))}
 			</nav>
 		</div>
 	</div>
 
-	<div class="mx-auto mt-10 h-px w-full max-w-[1440px] bg-black/10 lg:mt-0"></div>
+	<div class="site-footer__divider"></div>
 
-	<div class="mx-auto grid w-full max-w-[1440px] gap-6 px-4 py-10 text-xs leading-[1.6] tracking-[-0.01em] sm:grid-cols-2 lg:grid-cols-5 lg:px-10 xl:px-16">
+	<div class="site-footer__meta">
 		<div>
 			<p>{contact.label}</p>
-			<a href={contact.phone.href} class="border-b border-current pb-0.5">{contact.phone.label}</a>
+			<a href={contact.phone.href} class="site-footer__underline">{contact.phone.label}</a>
 		</div>
 		<div>
-			<a href={`mailto:${contact.email}`} class="border-b border-transparent transition-colors hover:border-current">{contact.email}</a>
+			<a href={`mailto:${contact.email}`} class="site-footer__hover-line">{contact.email}</a>
 		</div>
 		<div>
 			<p>{trade.label}</p>
-			<a href={`mailto:${trade.email}`} class="border-b border-transparent transition-colors hover:border-current">{trade.email}</a>
+			<a href={`mailto:${trade.email}`} class="site-footer__hover-line">{trade.email}</a>
 		</div>
 		<div>
 			{location.map((line) => <p>{line}</p>)}
 		</div>
-		<div class="text-black/50 lg:text-right">
+		<div class="site-footer__copyright">
 			<p>{copyright}</p>
 		</div>
 	</div>
 
-	<div class="flex justify-center px-4 pb-10 lg:hidden">
-		<a href={homeHref} aria-label={`${brand}, ${isInteriorPage ? 'Ir al inicio' : labels.backToTop}`} class="block w-full max-w-[320px]">
-			<CocoaLogo animated brand={brand} tagline={tagline} class="h-auto w-full" />
+	<div class="site-footer__mobile-brand">
+		<a href={homeHref} aria-label={`${brand}, ${isInteriorPage ? 'Ir al inicio' : labels.backToTop}`}>
+			<CocoaLogo animated brand={brand} tagline={tagline} class="site-footer__logo" />
 		</a>
 	</div>
-	<div class="border-t border-[#c6ab86]/15 bg-[#16100b] py-2 md:py-3">
-		<PackagingPattern class="h-12 text-[#c6ab86]/45 md:h-16 md:[--pattern-size:480px]" />
+	<div class="site-footer__band">
+		<PackagingPattern class="site-footer__pattern" />
 	</div>
 </footer>
+
+<style>
+	.site-footer { position: relative; z-index: 30; padding-top: 5rem; background: #f4f0e8; color: #17140f; }
+	.site-footer__main { display: flex; flex-direction: column; width: 100%; max-width: 1440px; margin-inline: auto; padding: 2.5rem 1rem 0; }
+	.site-footer__brand { display: none; flex-shrink: 0; }
+	.site-footer__brand-lift { display: block; width: 100%; transition: translate .5s cubic-bezier(.4, 0, .2, 1); }
+	.site-footer :global(.site-footer__logo) { width: 100%; height: auto; }
+	.site-footer__body { display: flex; flex: 1; flex-direction: column; justify-content: space-between; gap: 3rem; min-width: 0; }
+	.site-footer__top { display: flex; flex-direction: column; gap: 3rem; }
+	.site-footer__nav { flex: 1; min-width: 0; }
+	.site-footer__nav-list { display: flex; flex-direction: column; gap: .5rem; }
+	.site-footer__nav-link { display: inline-flex; align-items: baseline; gap: .75rem; font-size: 32px; line-height: 1.12; letter-spacing: -.04em; }
+	.site-footer__nav-rule { width: 0; height: 1px; background: currentColor; transition: width .3s cubic-bezier(.4, 0, .2, 1); }
+	.site-footer__aside { display: flex; flex-direction: column; gap: 2rem; width: 100%; font-size: .875rem; line-height: 1.6; letter-spacing: -.01em; }
+	.site-footer__policies { display: flex; flex-direction: column; gap: .25rem; }
+	.site-footer__policies a, .site-footer__aside > a { width: fit-content; }
+	.site-footer__hover-line { border-bottom: 1px solid; border-color: transparent; transition: border-color .15s cubic-bezier(.4, 0, .2, 1); }
+	.site-footer__underline { padding-bottom: .125rem; border-bottom: 1px solid; }
+	.site-footer__socials { display: flex; flex-wrap: wrap; gap: .75rem 1.75rem; font-size: .75rem; line-height: calc(1 / .75); font-weight: 500; letter-spacing: .12em; text-transform: uppercase; }
+	.site-footer__socials a { transition: opacity .15s cubic-bezier(.4, 0, .2, 1); }
+	.site-footer__divider { width: 100%; max-width: 1440px; height: 1px; margin: 2.5rem auto 0; background: rgb(0 0 0 / 10%); }
+	.site-footer__meta { display: grid; gap: 1.5rem; width: 100%; max-width: 1440px; margin-inline: auto; padding: 2.5rem 1rem; font-size: .75rem; line-height: 1.6; letter-spacing: -.01em; }
+	.site-footer__copyright { color: rgb(0 0 0 / 50%); }
+	.site-footer__mobile-brand { display: flex; justify-content: center; padding: 0 1rem 2.5rem; }
+	.site-footer__mobile-brand a { display: block; width: 100%; max-width: 320px; }
+	.site-footer__band { padding-block: .5rem; border-top: 1px solid; border-color: rgb(198 171 134 / 15%); background: #16100b; }
+	.site-footer :global(.site-footer__pattern) { height: 3rem; color: rgb(198 171 134 / 45%); }
+
+	@media (hover: hover) {
+		.site-footer__brand:hover .site-footer__brand-lift { translate: 0 -.25rem; }
+		.site-footer__nav-link:hover .site-footer__nav-rule { width: 2rem; }
+		.site-footer__hover-line:hover { border-color: currentColor; }
+		.site-footer__socials a:hover { opacity: .5; }
+	}
+
+	@media (min-width: 40rem) {
+		.site-footer__nav-link { font-size: 38px; }
+		.site-footer__meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	}
+
+	@media (min-width: 48rem) {
+		.site-footer { padding-top: 10rem; }
+		.site-footer__band { padding-block: .75rem; }
+		.site-footer :global(.site-footer__pattern) { height: 4rem; --pattern-size: 480px; }
+	}
+
+	@media (min-width: 64rem) {
+		.site-footer__main { flex-direction: row; gap: 4rem; padding: 5rem 2.5rem 2.5rem; }
+		.site-footer__brand { display: block; width: 220px; }
+		.site-footer__body { padding-bottom: 2.5rem; }
+		.site-footer__top { flex-direction: row; justify-content: space-between; gap: 2.5rem; }
+		.site-footer__aside { flex-shrink: 0; align-items: flex-end; width: 15rem; text-align: right; }
+		.site-footer__policies { align-items: flex-end; }
+		.site-footer__socials { padding-top: 3.5rem; }
+		.site-footer__divider { margin-top: 0; }
+		.site-footer__meta { grid-template-columns: repeat(5, minmax(0, 1fr)); padding-inline: 2.5rem; }
+		.site-footer__copyright { text-align: right; }
+		.site-footer__mobile-brand { display: none; }
+	}
+
+	@media (min-width: 80rem) {
+		.site-footer__main { gap: 7rem; padding-inline: 4rem; }
+		.site-footer__brand { width: 320px; }
+		.site-footer__nav-link { font-size: 44px; }
+		.site-footer__meta { padding-inline: 4rem; }
+	}
+</style>

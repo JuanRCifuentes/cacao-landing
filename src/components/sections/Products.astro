@@ -20,7 +20,7 @@ const orderHref = (message: string) => {
 };
 ---
 
-<section id="products" class="products relative" aria-labelledby="products-heading">
+<section id="products" class="products" aria-labelledby="products-heading">
 	<div class="products__inner">
 		<header class="products__header" data-motion="rise">
 			<div>
@@ -72,12 +72,13 @@ const orderHref = (message: string) => {
 			</ul>
 		</div>
 	</div>
-	<PackagingPattern class="absolute inset-x-0 bottom-0 h-8 border-t border-[#c6ab86]/10 text-[#c6ab86]/40 md:h-11 md:[--pattern-size:480px]" />
+	<PackagingPattern class="products__pattern" />
 </section>
 
 <style>
 	.products {
 		--products-gutter: 24px;
+		position: relative;
 		padding: 28px 0 56px;
 		background: #16100b;
 		color: #f4f0e8;
@@ -160,6 +161,7 @@ const orderHref = (message: string) => {
 	.product__order-channel { display: inline-flex; align-items: center; gap: 8px; font-size: 9px; font-weight: 500; letter-spacing: 0.04em; }
 	.product__cta:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
 	.product__image:focus-visible, .product h3 a:focus-visible { outline: 2px solid #f4f0e8; outline-offset: 5px; }
+	.products :global(.products__pattern) { position: absolute; inset-inline: 0; bottom: 0; height: 2rem; border-top: 1px solid; border-color: rgb(198 171 134 / 10%); color: rgb(198 171 134 / 40%); }
 
 	@media (max-width: 767px) {
 		.products {
@@ -181,6 +183,7 @@ const orderHref = (message: string) => {
 		.products { --products-gutter: 32px; padding-block: 56px 112px; }
 		.products__header { display: flex; align-items: end; justify-content: space-between; gap: 40px; margin-bottom: 48px; }
 		.products__description { max-width: 300px; margin: 0 0 4px; }
+		.products :global(.products__pattern) { height: 2.75rem; --pattern-size: 480px; }
 	}
 
 	@media (min-width: 1024px) {

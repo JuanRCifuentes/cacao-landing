@@ -9,7 +9,7 @@ const { brand } = footer.data;
 
 <div class="site-intro" data-site-intro aria-hidden="true">
 	<div class="site-intro__signature" data-intro-signature>
-		<CocoaLogo animated revealOnLoad brand={brand} showTagline={false} class="w-full" />
+		<CocoaLogo animated revealOnLoad brand={brand} showTagline={false} class="site-intro__logo" />
 	</div>
 </div>
 
@@ -38,6 +38,8 @@ const { brand } = footer.data;
 		position: relative;
 		width: min(74vw, 360px);
 	}
+
+	.site-intro__signature :global(.site-intro__logo) { width: 100%; }
 
 	.site-intro__signature :global(.cocoa-logo__wordmark) {
 		color: #ead6ae;
