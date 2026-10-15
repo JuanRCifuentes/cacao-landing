@@ -30,7 +30,7 @@ const { navigation, brand, tagline, contactEmail, labels } = Astro.props;
 
 	<dialog id="hero-navigation" class="hero-menu__dialog" aria-label={labels.dialogLabel}>
 		<div class="hero-menu__pattern" aria-hidden="true">
-			<PackagingPattern class="h-full w-full text-[#c6ab86]/15 [--pattern-size:640px]" />
+			<PackagingPattern class="hero-menu__tile" />
 		</div>
 		<div class="hero-menu__top">
 			<span class="hero-menu__brand">{brand}</span>
@@ -110,6 +110,7 @@ const { navigation, brand, tagline, contactEmail, labels } = Astro.props;
 	.hero-menu__dialog[open]::backdrop { animation: hero-menu-surface 260ms ease-out backwards; }
 	.hero-menu__top { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; }
 	.hero-menu__pattern { display: none; }
+	.hero-menu__pattern :global(.hero-menu__tile) { width: 100%; height: 100%; color: rgb(198 171 134 / 15%); --pattern-size: 640px; }
 	.hero-menu__brand { font-family: 'Abril Fatface', Georgia, serif; font-size: clamp(1.25rem, 2vw, 1.7rem); letter-spacing: -0.035em; }
 	.hero-menu__close { gap: 1rem; }
 	.hero-menu__cross { position: relative; width: 19px; height: 19px; }
