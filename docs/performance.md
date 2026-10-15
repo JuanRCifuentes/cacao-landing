@@ -22,4 +22,4 @@ An instrumented Chromium run scrolled the production page downward in 140px anim
 
 The final production JavaScript totals 7,903 bytes, or 2,661 bytes with gzip (estimated locally; actual transfer compression depends on hosting). No new project dependencies were added. The measured run recorded no long tasks or cumulative layout shift; remote assets and physical-device rendering remain separate variables.
 
-Browser support follows the existing [Tailwind 4 baseline](https://tailwindcss.com/docs/compatibility): Chrome 111+, Safari 16.4+, and Firefox 128+. Animations use standard CSS transitions/keyframes rather than experimental scroll timelines. WebKit automation covers the engine, not native iPhone Safari's browser chrome or every device's GPU.
+Browser support targets Chrome 111+, Safari 16.4+, and Firefox 128+. Animations use standard CSS transitions/keyframes rather than experimental scroll timelines. WebKit automation covers the engine, not native iPhone Safari's browser chrome or every device's GPU.
