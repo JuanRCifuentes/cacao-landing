@@ -8,78 +8,78 @@ const { eyebrow, heading, description, cta, images } = await getLandingSection('
 	id="heritage"
 	data-motion-scene="heritage"
 	aria-labelledby="heritage-heading"
-	class="relative isolate h-svh min-h-[700px] overflow-hidden bg-white text-black lg:min-h-[900px]"
+	class="heritage"
 >
-	<div class="absolute inset-0 flex justify-center lg:items-center" aria-hidden="true">
-		<div class="relative h-full w-full max-w-[1440px] lg:max-h-[900px]">
-			<div class="heritage__layer absolute top-[4%] left-1/2 z-30 hidden aspect-video w-[min(42%,640px)] -translate-x-1/2 overflow-hidden lg:block" style="--heritage-y: 30px; --heritage-drift: -3%;">
-				<img src={images.grower} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+	<div class="heritage__backdrop" aria-hidden="true">
+		<div class="heritage__stage">
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--grower" style="--heritage-y: 30px; --heritage-drift: -3%;">
+				<img src={images.grower} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[38%] left-[-5%] z-20 hidden aspect-video w-[min(22%,320px)] overflow-hidden lg:block" style="--heritage-x: -36px; --heritage-delay: 100ms; --heritage-drift: 4%;">
-				<img src={images.pods} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--pods" style="--heritage-x: -36px; --heritage-delay: 100ms; --heritage-drift: 4%;">
+				<img src={images.pods} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[10%] left-[8%] z-10 hidden aspect-3/2 w-[min(16%,220px)] overflow-hidden opacity-30 lg:block" style="--heritage-x: -24px; --heritage-delay: 160ms; --heritage-drift: -5%;">
-				<img src={images.drying} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--drying" style="--heritage-x: -24px; --heritage-delay: 160ms; --heritage-drift: -5%;">
+				<img src={images.drying} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[12%] left-[85%] z-10 hidden aspect-3/2 w-[min(22%,430px)] overflow-hidden opacity-30 lg:block" style="--heritage-x: 32px; --heritage-delay: 120ms; --heritage-drift: 4%;">
-				<img src={images.beans} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--beans" style="--heritage-x: 32px; --heritage-delay: 120ms; --heritage-drift: 4%;">
+				<img src={images.beans} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[48%] left-[75%] z-10 hidden aspect-3/2 w-[min(14%,200px)] overflow-hidden opacity-30 lg:block" style="--heritage-x: 24px; --heritage-delay: 200ms; --heritage-drift: -4%;">
-				<img src={images.cacaoTree} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--tree" style="--heritage-x: 24px; --heritage-delay: 200ms; --heritage-drift: -4%;">
+				<img src={images.cacaoTree} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[75%] left-[18%] z-10 hidden aspect-3/2 w-[min(15%,210px)] overflow-hidden opacity-35 lg:block" style="--heritage-x: -28px; --heritage-delay: 220ms; --heritage-drift: 5%;">
-				<img src={images.harvest} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--harvest" style="--heritage-x: -28px; --heritage-delay: 220ms; --heritage-drift: 5%;">
+				<img src={images.harvest} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[70%] left-[82%] z-20 hidden aspect-8/5 w-[min(32%,300px)] overflow-hidden lg:block" style="--heritage-x: 36px; --heritage-delay: 260ms; --heritage-drift: -3%;">
-				<img src={images.chocolate} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--desktop heritage__layer--chocolate" style="--heritage-x: 36px; --heritage-delay: 260ms; --heritage-drift: -3%;">
+				<img src={images.chocolate} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[2%] left-[-18%] z-10 aspect-4/3 w-[42vw] overflow-hidden opacity-[0.14] lg:hidden" style="--heritage-x: -20px; --heritage-drift: -4%;">
-				<img src={images.pods} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--mobile heritage__layer--mobile-pods" style="--heritage-x: -20px; --heritage-drift: -4%;">
+				<img src={images.pods} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[6%] left-[78%] z-10 aspect-3/2 w-[40vw] overflow-hidden opacity-[0.16] lg:hidden" style="--heritage-x: 20px; --heritage-delay: 100ms; --heritage-drift: 4%;">
-				<img src={images.drying} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--mobile heritage__layer--mobile-drying" style="--heritage-x: 20px; --heritage-delay: 100ms; --heritage-drift: 4%;">
+				<img src={images.drying} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[68%] left-[-12%] z-10 aspect-4/3 w-[38vw] overflow-hidden opacity-[0.14] lg:hidden" style="--heritage-x: -20px; --heritage-delay: 180ms; --heritage-drift: 5%;">
-				<img src={images.beans} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--mobile heritage__layer--mobile-beans" style="--heritage-x: -20px; --heritage-delay: 180ms; --heritage-drift: 5%;">
+				<img src={images.beans} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<div class="heritage__layer absolute top-[72%] left-[62%] z-10 aspect-4/3 w-[52vw] overflow-hidden opacity-20 lg:hidden" style="--heritage-x: 20px; --heritage-delay: 240ms; --heritage-drift: -5%;">
-				<img src={images.cacaoTree} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+			<div class="heritage__layer heritage__layer--mobile heritage__layer--mobile-tree" style="--heritage-x: 20px; --heritage-delay: 240ms; --heritage-drift: -5%;">
+				<img src={images.cacaoTree} alt="" loading="lazy" decoding="async" />
 			</div>
 		</div>
 	</div>
 
-	<div class="relative z-10 flex h-full flex-col items-center justify-center px-4 py-10 lg:justify-end lg:pb-48 lg:pt-0">
-		<div class="flex w-full max-w-[438px] flex-col items-center gap-8 text-center">
-			<div class="heritage__portrait relative aspect-16/10 w-[78vw] max-w-[320px] overflow-hidden lg:hidden" aria-hidden="true" data-motion="image">
-				<img src={images.grower} alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+	<div class="heritage__content">
+		<div class="heritage__inner">
+			<div class="heritage__portrait" aria-hidden="true" data-motion="image">
+				<img src={images.grower} alt="" loading="lazy" decoding="async" />
 			</div>
 
-			<p class="-mb-4 text-xs font-medium uppercase leading-none tracking-[0.72px]" data-motion="rise" style="--heritage-delay: 40ms;">{eyebrow}</p>
+			<p class="heritage__eyebrow" data-motion="rise" style="--heritage-delay: 40ms;">{eyebrow}</p>
 			<h2
 				id="heritage-heading"
 				data-motion="rise"
 				style="--heritage-delay: 100ms;"
-				class="w-full text-[40px] font-medium uppercase leading-[0.85] tracking-[2.24px] lg:text-[56px]"
+				class="heritage__heading"
 			>
 				{heading}
 			</h2>
-			<p class="w-full text-sm leading-[1.6] tracking-[-0.14px] text-black/80" data-motion="rise" style="--heritage-delay: 160ms;">
+			<p class="heritage__description" data-motion="rise" style="--heritage-delay: 160ms;">
 				{description}
 			</p>
-			<div class="flex justify-center" data-motion="rise" style="--heritage-delay: 220ms;">
+			<div class="heritage__actions" data-motion="rise" style="--heritage-delay: 220ms;">
 				<a
 					href={cta.href}
-					class="inline-flex h-9 min-w-[220px] items-center justify-center rounded-[2px] bg-black px-4 text-sm font-medium uppercase tracking-[0.84px] text-white transition-colors hover:bg-black/90 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-black"
+					class="heritage__cta"
 				>
 					{cta.label}
 				</a>
@@ -89,7 +89,58 @@ const { eyebrow, heading, description, cta, images } = await getLandingSection('
 </section>
 
 <style>
+	.heritage { position: relative; isolation: isolate; min-height: 700px; overflow: hidden; background: #fff; color: #000; }
 	#heritage { height: 100vh; height: 100svh; }
+	.heritage__backdrop { position: absolute; inset: 0; display: flex; justify-content: center; }
+	.heritage__stage { position: relative; width: 100%; height: 100%; max-width: 1440px; }
+
+	.heritage__layer { position: absolute; z-index: 10; overflow: hidden; }
+	.heritage__layer > img,
+	.heritage__portrait > img { width: 100%; height: 100%; object-fit: cover; }
+	.heritage__layer--desktop { display: none; aspect-ratio: 3 / 2; opacity: 0.3; }
+	.heritage__layer--mobile { aspect-ratio: 4 / 3; }
+	.heritage__layer--grower { top: 4%; left: 50%; z-index: 30; aspect-ratio: 16 / 9; width: min(42%, 640px); translate: -50%; opacity: 1; }
+	.heritage__layer--pods { top: 38%; left: -5%; z-index: 20; aspect-ratio: 16 / 9; width: min(22%, 320px); opacity: 1; }
+	.heritage__layer--drying { top: 10%; left: 8%; width: min(16%, 220px); }
+	.heritage__layer--beans { top: 12%; left: 85%; width: min(22%, 430px); }
+	.heritage__layer--tree { top: 48%; left: 75%; width: min(14%, 200px); }
+	.heritage__layer--harvest { top: 75%; left: 18%; width: min(15%, 210px); opacity: 0.35; }
+	.heritage__layer--chocolate { top: 70%; left: 82%; z-index: 20; aspect-ratio: 8 / 5; width: min(32%, 300px); opacity: 1; }
+	.heritage__layer--mobile-pods { top: 2%; left: -18%; width: 42vw; opacity: 0.14; }
+	.heritage__layer--mobile-drying { top: 6%; left: 78%; aspect-ratio: 3 / 2; width: 40vw; opacity: 0.16; }
+	.heritage__layer--mobile-beans { top: 68%; left: -12%; width: 38vw; opacity: 0.14; }
+	.heritage__layer--mobile-tree { top: 72%; left: 62%; width: 52vw; opacity: 0.2; }
+
+	.heritage__content { position: relative; z-index: 10; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 2.5rem 1rem; }
+	.heritage__inner { display: flex; flex-direction: column; align-items: center; gap: 2rem; width: 100%; max-width: 438px; text-align: center; }
+	.heritage__portrait { position: relative; aspect-ratio: 16 / 10; width: 78vw; max-width: 320px; overflow: hidden; }
+	.heritage__eyebrow { margin-bottom: -1rem; font-size: 0.75rem; font-weight: 500; line-height: 1; letter-spacing: 0.72px; text-transform: uppercase; }
+	.heritage__heading { width: 100%; font-size: 40px; font-weight: 500; line-height: 0.85; letter-spacing: 2.24px; text-transform: uppercase; }
+	.heritage__description { width: 100%; font-size: 0.875rem; line-height: 1.6; letter-spacing: -0.14px; color: rgb(0 0 0 / 80%); }
+	.heritage__actions { display: flex; justify-content: center; }
+	.heritage__cta {
+		display: inline-flex; align-items: center; justify-content: center; height: 2.25rem; min-width: 220px; padding-inline: 1rem;
+		border-radius: 2px; background: #000; color: #fff; font-size: 0.875rem; font-weight: 500; line-height: calc(1.25 / 0.875);
+		letter-spacing: 0.84px; text-transform: uppercase;
+		transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke;
+		transition-duration: 0.15s; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.heritage__cta:focus-visible { outline: 2px solid #000; outline-offset: 4px; }
+
+	@media (hover: hover) {
+		.heritage__cta:hover { background: rgb(0 0 0 / 90%); }
+	}
+
+	@media (min-width: 64rem) {
+		.heritage { min-height: 900px; }
+		.heritage__backdrop { align-items: center; }
+		.heritage__stage { max-height: 900px; }
+		.heritage__layer--desktop { display: block; }
+		.heritage__layer--mobile,
+		.heritage__portrait { display: none; }
+		.heritage__content { justify-content: flex-end; padding-top: 0; padding-bottom: 12rem; }
+		.heritage__heading { font-size: 56px; }
+	}
 
 	@media (prefers-reduced-motion: no-preference) {
 		#heritage[data-motion-state] .heritage__layer {
