@@ -17,17 +17,19 @@ interface Props {
 	modifiedTime?: string;
 	section?: string;
 	image?: { src: string; alt: string; width: number; height: number; type?: string };
+	/** Link preview card; the site's card when left out. */
+	card?: { src: string; alt: string; width: number; height: number; type?: string };
 	breadcrumbs?: { label: string; href?: string }[];
 	structuredData?: Record<string, unknown>;
 }
 
-const { title, description, intro = description, ogType, publishedTime, modifiedTime, section, eyebrow, heading = title.split(' — ')[0], image, breadcrumbs = [], structuredData } = Astro.props;
+const { title, description, intro = description, ogType, publishedTime, modifiedTime, section, eyebrow, heading = title.split(' — ')[0], image, card, breadcrumbs = [], structuredData } = Astro.props;
 const site = await getEntry('site', 'main');
 if (!site) throw new Error('Missing editorial page site content');
 ---
 
 <html lang={site.data.language} prefix="og: https://ogp.me/ns#">
-	<head><SEOHead title={title} description={description} image={image} structuredData={structuredData} ogType={ogType} publishedTime={publishedTime} modifiedTime={modifiedTime} section={section} /></head>
+	<head><SEOHead title={title} description={description} image={card} structuredData={structuredData} ogType={ogType} publishedTime={publishedTime} modifiedTime={modifiedTime} section={section} /></head>
 	<body class="editorial-page">
 		<a class="skip-link" href="#page-main">Saltar al contenido</a>
 		<SiteHeader />

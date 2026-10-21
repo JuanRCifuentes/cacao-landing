@@ -69,7 +69,9 @@ sitemap_paths = {urlsplit(node.text).path for node in urls}
 assert set(pages) == sitemap_paths, f'Sitemap mismatch: {set(pages) ^ sitemap_paths}'
 for route, page in pages.items():
     assert page.meta.get('og:url') == page.canonical, f'{route}: inconsistent social canonical'
-    assert urlsplit(page.meta.get('og:image', '')).scheme == 'https', f'{route}: social image must be absolute HTTPS'
+    image = urlsplit(page.meta.get('og:image', ''))
+    assert image.scheme == 'https', f'{route}: social image must be absolute HTTPS'
+    assert (ROOT / image.path.lstrip('/')).is_file(), f'{route}: missing link preview card {image.path}'
     if route.startswith('/historias/') and route != '/historias/':
         assert page.meta.get('og:type') == 'article', f'{route}: missing article Open Graph type'
         graph = [node for block in page.jsonld for node in block.get('@graph', [block])]
@@ -78,7 +80,7 @@ for route, page in pages.items():
         assert article['mainEntityOfPage']['@id'] == page.canonical
         assert article['datePublished'] == page.meta.get('article:published_time')
         assert article.get('dateModified') == page.meta.get('article:modified_time')
-        assert article['image']['url'] == page.meta['og:image']
+        assert image.path == f"/og{route.rstrip('/')}.jpg", f'{route}: story must use its own link preview card'
         assert breadcrumbs['itemListElement'][-1]['item'] == page.canonical
         sitemap_entry = next(node for node in ET.parse(ROOT / 'sitemap.xml').findall('{*}url') if node.find('{*}loc').text == page.canonical)
         assert sitemap_entry.find('{*}lastmod').text == article.get('dateModified', article['datePublished'])
