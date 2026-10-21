@@ -43,25 +43,21 @@ const patternBand = async (height: number, color: string) => {
 	return img(`data:image/png;base64,${png.toString('base64')}`, { width: CARD.width, height });
 };
 
-const photoUri = async (input: Buffer | string, width: number, height: number) => {
+const photoUri = async (input: Buffer, width: number, height: number) => {
 	const jpeg = await sharp(input).resize(width, height, { fit: 'cover' }).jpeg({ quality: 90 }).toBuffer();
 	return `data:image/jpeg;base64,${jpeg.toString('base64')}`;
 };
 
 /** A photo sized for the card, or nothing when it can't be fetched, leaving the espresso background. */
 const photo = async (src: string, width: number, height: number, style: Record<string, unknown> = {}) => {
-	let input: Buffer | string = `public${src}`;
-	if (!src.startsWith('/')) {
-		try {
-			const response = await fetch(src);
-			if (!response.ok) throw new Error(`HTTP ${response.status}`);
-			input = Buffer.from(await response.arrayBuffer());
-		} catch (error) {
-			console.warn(`[og] ${src} could not be fetched (${error}); drawing the card without it.`);
-			return null;
-		}
+	try {
+		const response = await fetch(src);
+		if (!response.ok) throw new Error(`HTTP ${response.status}`);
+		return img(await photoUri(Buffer.from(await response.arrayBuffer()), width, height), { width, height, ...style });
+	} catch (error) {
+		console.warn(`[og] ${src} could not be fetched (${error}); drawing the card without it.`);
+		return null;
 	}
-	return img(await photoUri(input, width, height), { width, height, ...style });
 };
 
 const box = (style: Record<string, unknown>, ...children: unknown[]): Node => ({
@@ -120,7 +116,7 @@ export interface PageCardText {
 	label?: string;
 	/** Closing line at the foot of the panel. */
 	footer: string;
-	/** Photo path or URL. */
+	/** Photo URL. */
 	photo: string;
 }
 
