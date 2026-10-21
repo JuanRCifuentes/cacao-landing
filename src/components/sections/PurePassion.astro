@@ -1,5 +1,6 @@
 ---
 import { getLandingSection } from '../../lib/content';
+import { srcset } from '../../lib/images';
 
 const { eyebrow, heading, description, images } = await getLandingSection('pure-passion', 'purePassion');
 ---
@@ -27,6 +28,8 @@ const { eyebrow, heading, description, images } = await getLandingSection('pure-
 					<div class="passion__frame">
 						<img
 							src={image.src}
+							srcset={srcset(image.src)}
+							sizes="(min-width: 1024px) 33vw, (min-width: 540px) 540px, 100vw"
 							alt={image.alt}
 							loading="lazy"
 							decoding="async"
