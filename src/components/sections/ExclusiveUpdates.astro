@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import { getLandingSection } from '../../lib/content';
+import { srcset } from '../../lib/images';
 
 const footer = await getEntry('footer', 'main');
 if (!footer) throw new Error('Missing footer contact content');
@@ -10,7 +11,7 @@ const { heading, description, background } = await getLandingSection('newsletter
 
 <section id="newsletter" aria-labelledby="newsletter-heading" class="newsletter">
 	<div class="newsletter__media">
-		<img src={background.src} alt={background.alt} loading="lazy" decoding="async" class="newsletter__image" />
+		<img src={background.src} srcset={srcset(background.src)} sizes="100vw" alt={background.alt} loading="lazy" decoding="async" class="newsletter__image" />
 	</div>
 	<div class="newsletter__shade"></div>
 
