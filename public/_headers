@@ -8,7 +8,5 @@
 # Unhashed files keep their names when replaced, so cache them for a week and revalidate after.
 /fonts/*
   Cache-Control: public, max-age=604800, stale-while-revalidate=86400
-/images/*
-  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
 /og/*
   Cache-Control: public, max-age=86400, stale-while-revalidate=604800

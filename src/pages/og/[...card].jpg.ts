@@ -15,7 +15,7 @@ export const getStaticPaths = (async () => {
 	]);
 	if (!footer) throw new Error('Missing footer content for the site card');
 	return [
-		{ params: { card: 'home' }, props: { draw: () => siteCard({ eyebrow: hero.eyebrow, name: footer.data.brand, tagline: footer.data.tagline }) } },
+		{ params: { card: 'home' }, props: { draw: () => siteCard({ eyebrow: hero.eyebrow, name: footer.data.brand, tagline: footer.data.tagline, photo: hero.image.src }) } },
 		...products.map((product) => ({
 			params: { card: `productos/${product.slug}` },
 			props: {

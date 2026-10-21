@@ -19,8 +19,8 @@ navigation:
   - label: Conectemos
     href: "https://wa.me/573195048115"
 image:
-  src: /images/hero-cacao.webp
-  smallSrc: /images/hero-cacao-960.webp
+  src: https://images.origentolima.com/hero-cacao.webp
+  smallSrc: https://images.origentolima.com/hero-cacao-960.webp
   alt: Mazorcas y granos de cacao sobre una superficie oscura bajo una luz cálida
   width: 1672
   height: 941

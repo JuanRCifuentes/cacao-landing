@@ -12,7 +12,6 @@ const INK = '#16100b';
 const CREAM = '#ead6ae';
 const PAPER = '#f4f0e8';
 const TAN = '#c6ab86';
-const HERO = 'public/images/hero-cacao.webp';
 
 /** A page's card, in the shape SEOHead takes for its image. */
 export const cardImage = (slug: string, alt: string) => ({ src: `/og/${slug}.jpg`, alt, ...CARD, type: 'image/jpeg' });
@@ -49,16 +48,20 @@ const photoUri = async (input: Buffer | string, width: number, height: number) =
 	return `data:image/jpeg;base64,${jpeg.toString('base64')}`;
 };
 
-const fetchPhoto = async (src: string) => {
-	if (src.startsWith('/')) return `public${src}`;
-	try {
-		const response = await fetch(src);
-		if (!response.ok) throw new Error(`HTTP ${response.status}`);
-		return Buffer.from(await response.arrayBuffer());
-	} catch (error) {
-		console.warn(`[og] ${src} could not be fetched (${error}); using the hero photo.`);
-		return HERO;
+/** A photo sized for the card, or nothing when it can't be fetched, leaving the espresso background. */
+const photo = async (src: string, width: number, height: number, style: Record<string, unknown> = {}) => {
+	let input: Buffer | string = `public${src}`;
+	if (!src.startsWith('/')) {
+		try {
+			const response = await fetch(src);
+			if (!response.ok) throw new Error(`HTTP ${response.status}`);
+			input = Buffer.from(await response.arrayBuffer());
+		} catch (error) {
+			console.warn(`[og] ${src} could not be fetched (${error}); drawing the card without it.`);
+			return null;
+		}
 	}
+	return img(await photoUri(input, width, height), { width, height, ...style });
 };
 
 const box = (style: Record<string, unknown>, ...children: unknown[]): Node => ({
@@ -86,14 +89,16 @@ export interface SiteCardText {
 	eyebrow: string;
 	name: string;
 	tagline: string;
+	/** The landing hero photo. */
+	photo: string;
 }
 
 /** The site's card: the landing hero, darkened, under the brand name. */
-export const siteCard = async ({ eyebrow, name, tagline }: SiteCardText) =>
+export const siteCard = async ({ eyebrow, name, tagline, photo: hero }: SiteCardText) =>
 	render(
 		box(
 			{ ...CARD, position: 'relative', background: INK },
-			img(await photoUri(HERO, CARD.width, CARD.height), { position: 'absolute', ...CARD }),
+			await photo(hero, CARD.width, CARD.height, { position: 'absolute' }),
 			box({ position: 'absolute', inset: 0, background: 'rgba(22, 16, 11, 0.58)' }),
 			box(
 				{ position: 'absolute', inset: 0, flexDirection: 'column', alignItems: 'center', justifyContent: 'center' },
@@ -115,18 +120,18 @@ export interface PageCardText {
 	label?: string;
 	/** Closing line at the foot of the panel. */
 	footer: string;
-	/** Photo path or URL; the hero photo stands in if it can't be fetched. */
+	/** Photo path or URL. */
 	photo: string;
 }
 
 /** A product's or story's card: its photo beside the espresso panel, like the product page. */
-export const pageCard = async ({ eyebrow, title, subtitle, label, footer, photo }: PageCardText) =>
+export const pageCard = async ({ eyebrow, title, subtitle, label, footer, photo: src }: PageCardText) =>
 	render(
 		box(
 			{ ...CARD, background: INK },
 			box(
 				{ position: 'relative', width: CARD.height, height: CARD.height },
-				img(await photoUri(await fetchPhoto(photo), CARD.height, CARD.height), { width: CARD.height, height: CARD.height }),
+				await photo(src, CARD.height, CARD.height),
 				label
 					? box({ ...caps(16, CREAM), position: 'absolute', top: 36, left: 36, padding: '10px 16px', border: '1px solid rgba(234, 214, 174, 0.5)', background: 'rgba(22, 16, 11, 0.35)' }, label)
 					: null,
