@@ -2,10 +2,10 @@
 
 Created with the built-in image generation tool for this hero. This is an illustrative cacao still life, not a photograph of a particular farm or the brand's packaged product.
 
-Final assets:
+Final assets, served from the Cloudflare R2 bucket behind `images.origentolima.com` so the repository holds no photos:
 
-- `public/images/hero-cacao.webp` — 1672 × 941
-- `public/images/hero-cacao-960.webp` — 960px responsive version
+- `https://images.origentolima.com/hero-cacao.webp` — 1672 × 941
+- `https://images.origentolima.com/hero-cacao-960.webp` — 960px responsive version
 
 The hero composition takes inspiration from https://spykercars.com/: full-bleed imagery, centered title, a compact light button, and minimal navigation. Brand typography, palette, imagery, and copy are adapted to Origen Tolima.
 
