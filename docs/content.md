@@ -55,7 +55,7 @@ description: Una descripción breve para la introducción, las tarjetas y los bu
 publishedDate: "2026-10-02"
 category: Origen
 image:
-  src: /images/historias/nueva-historia.jpg
+  src: https://images.origentolima.com/historias/nueva-historia.jpg
   alt: Una descripción de la fotografía en español
   width: 1200
   height: 900
@@ -72,7 +72,8 @@ Use quoted ISO dates (`YYYY-MM-DD`) for `publishedDate` and optional `modifiedDa
 The schema rejects impossible dates and modification dates before publication.
 Add `modifiedDate` when the article changes; it supplies article metadata and the
 sitemap's last modification date. The image requires a source (an absolute HTTP(S)
-URL or path starting with `/`), Spanish alt text, and positive integer dimensions.
+URL), Spanish alt text, and positive integer dimensions. Upload photos to the R2
+bucket behind `images.origentolima.com`, never to the repository.
 Its optional `type` is the known MIME type; omit it for images with automatic
 format negotiation. Optional `seo.title` and `seo.description` override search
 and social metadata while the visible heading and introduction keep using `title`
