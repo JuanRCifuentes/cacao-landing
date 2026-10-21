@@ -32,6 +32,8 @@ Customers arriving at `/#products` can also order directly: each homepage card p
 
 `src/components/SEOHead.astro` provides canonical URLs, unique metadata, and social previews. Product pages include Product, Organization, and BreadcrumbList JSON-LD. Prices, stock, reviews, delivery promises, certifications, and unverified dietary claims are intentionally omitted. Without verified offer or review data, Product markup alone does not establish eligibility for Google's product rich results. Preparation copy is general serving guidance, with the package instructions taking precedence.
 
+Link preview cards are drawn at build time by `src/lib/og.ts` and served from `/og/`: one 1200 × 630 JPEG for the site (the hero photo under the brand name), one per product and one per story (its photo beside the dark panel). They read their text and photos from the content files, so they follow content edits. A photo that can't be fetched during the build is replaced by the hero photo, with a warning in the build log.
+
 The sitemap and robots.txt are generated during the static build. The production origin defaults to `https://origentolima.com`; `SITE_URL` can explicitly override it. Preview deployment URLs are not used as canonical origins. Routes use trailing slashes consistently.
 
 ## History, stories, and policy pages
