@@ -1,5 +1,6 @@
 ---
 import { getLandingSection } from '../../lib/content';
+import { srcset } from '../../lib/images';
 import { getFeaturedStories } from '../../lib/stories';
 
 const { heading, cta } = await getLandingSection('partnerships-news', 'partnershipsNews');
@@ -18,6 +19,8 @@ const articles = await getFeaturedStories();
 						<div class="news__media">
 							<img
 								src={article.image.src}
+								srcset={srcset(article.image.src)}
+								sizes="(min-width: 48rem) 33vw, min(85vw, 460px)"
 								alt={article.image.alt}
 								width={article.image.width}
 								height={article.image.height}

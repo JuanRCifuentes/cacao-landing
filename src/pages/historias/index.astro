@@ -1,5 +1,6 @@
 ---
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { srcset } from '../../lib/images';
 import { getStories } from '../../lib/stories';
 const stories = await getStories();
 ---
@@ -7,7 +8,7 @@ const stories = await getStories();
 <EditorialLayout title="Historias y novedades — Origen Tolima" eyebrow="Tierra, tradición y cacao" description="Historias de nuestro origen en San Sebastián de Mariquita, de un proceso artesanal y del cuidado que acompaña cada taza de cacao.">
 	<section aria-labelledby="stories-title"><h2 id="stories-title" class="stories-heading">Desde nuestro origen.</h2><div class="stories-grid">
 		{stories.map((story) => <article class="story-card"><a href={story.href}>
-			<div class="story-card__image"><img src={story.image.src} alt={story.image.alt} width={story.image.width} height={story.image.height} loading="lazy" decoding="async" /></div>
+			<div class="story-card__image"><img src={story.image.src} srcset={srcset(story.image.src)} sizes="(max-width: 700px) 100vw, 33vw" alt={story.image.alt} width={story.image.width} height={story.image.height} loading="lazy" decoding="async" /></div>
 			<div class="story-card__meta"><time datetime={story.dateIso}>{story.date}</time><span>{story.category}</span></div>
 			<h3>{story.heading}</h3><p>{story.excerpt}</p><span class="story-card__link">Leer historia <span aria-hidden="true">↗</span></span>
 		</a></article>)}
