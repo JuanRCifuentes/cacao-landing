@@ -7,6 +7,7 @@ The page builds to static HTML and CSS. Astro content queries run at build time;
 - Navigation and settled-scroll checks handle deep links and skipped content without scanning the page on every scroll frame. Keyboard focus reveals content immediately.
 - Intro measurements are batched before style changes. Finished hero/logo animations release their animation-owned transforms. The header updates only when its scroll state or measured height changes.
 - Reduced motion, missing observers, and disabled JavaScript leave content visible. The menu has a normal link fallback, and video has native controls without JavaScript.
+- Astro's prefetch fetches each same-site link as it scrolls into view, so the next page is usually cached before it is opened.
 - Images decode asynchronously and below-fold images load lazily. Video uses `preload="none"`. Asset URLs, encodings, and resolutions are unchanged; asset tuning is deferred.
 
 ## Verification, 2026-09-17
