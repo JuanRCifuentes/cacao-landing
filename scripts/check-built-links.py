@@ -46,6 +46,8 @@ class Page(HTMLParser):
 
 pages = {}
 for file in ROOT.rglob('*.html'):
+    if file.name == '404.html':
+        continue
     route = '/' + file.relative_to(ROOT).as_posix().removesuffix('index.html')
     pages[route] = Page(file)
 assert len(pages) >= 12, f'Expected landing, 3 products and 8 new pages; got {len(pages)}'
