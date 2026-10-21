@@ -1,6 +1,7 @@
 ---
 import { render } from 'astro:content';
 import EditorialLayout from '../../layouts/EditorialLayout.astro';
+import { cardImage } from '../../lib/og';
 import { getStories } from '../../lib/stories';
 
 export async function getStaticPaths() {
@@ -45,7 +46,7 @@ const structuredData = {
 };
 ---
 
-<EditorialLayout title={story.seoTitle} description={story.seoDescription} heading={story.heading} intro={story.excerpt} eyebrow={story.category} image={story.image} breadcrumbs={[{ label: 'Historias', href: '/historias/' }]} structuredData={structuredData} ogType="article" publishedTime={story.dateIso} modifiedTime={story.modifiedTime} section={story.category}>
+<EditorialLayout title={story.seoTitle} description={story.seoDescription} heading={story.heading} intro={story.excerpt} eyebrow={story.category} image={story.image} card={cardImage(`historias/${story.slug}`, story.heading)} breadcrumbs={[{ label: 'Historias', href: '/historias/' }]} structuredData={structuredData} ogType="article" publishedTime={story.dateIso} modifiedTime={story.modifiedTime} section={story.category}>
 	<p slot="hero-meta" class="article-date">Publicado el <time datetime={story.dateIso}>{story.date}</time></p>
 	<article class="editorial-prose">
 		<div class="article-body"><Content /></div>

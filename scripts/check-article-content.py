@@ -125,8 +125,9 @@ def main():
             assert page.meta['article:published_time'] == '2026-10-02'
             assert page.meta['article:modified_time'] == '2026-10-03'
             assert page.meta['article:section'] == 'Origen de prueba'
-            assert page.meta['og:image:width'] == '1200' and page.meta['og:image:height'] == '900'
-            assert 'og:image:type' not in page.meta, 'An unknown image format was invented'
+            assert page.meta['og:image'].endswith(f"/og{HREF.rstrip('/')}.jpg")
+            assert page.meta['og:image:width'] == '1200' and page.meta['og:image:height'] == '630'
+            assert page.meta['og:image:type'] == 'image/jpeg'
             graph = next(item['@graph'] for item in page.jsonld if '@graph' in item)
             article = next(item for item in graph if item['@type'] == 'Article')
             assert article['headline'] == 'Una historia de prueba'

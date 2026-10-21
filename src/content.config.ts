@@ -40,7 +40,7 @@ const site = defineCollection({
 			siteName: z.string().min(1),
 			locale: z.string().min(2),
 			image: z.object({
-				src: z.url(),
+				src: z.union([z.url(), z.string().regex(/^\/(?!\/)/)]),
 				alt: z.string().min(1),
 				width: z.number().positive(),
 				height: z.number().positive(),

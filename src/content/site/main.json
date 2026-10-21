@@ -6,11 +6,11 @@
 		"siteName": "Origen Tolima",
 		"locale": "es_CO",
 		"image": {
-			"src": "https://images.origentolima.com/03-rugged-weathered-wood.webp",
-			"alt": "Piezas de cacao artesanal sobre una mesa de madera rústica",
+			"src": "/og/home.jpg",
+			"alt": "Origen Tolima, cacao de autor de San Sebastián de Mariquita, Tolima",
 			"width": 1200,
-			"height": 800,
-			"type": "image/webp"
+			"height": 630,
+			"type": "image/jpeg"
 		}
 	},
 	"menu": {
